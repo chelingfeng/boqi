@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=-devicewidth, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+   <title>餐饮管理系统 - 博启信息科技有限公司</title>
+   <link rel="stylesheet" href="__PUBLIC__/css/bootstrap.min.css">
+   <link rel="stylesheet" href="__PUBLIC__/css/app.css">
+   <link rel="stylesheet" href="__PUBLIC__/css/sweetalert.css">
+   <link rel="stylesheet" href="__PUBLIC__/css/bootstrap-select.css">
+   <link rel="stylesheet" href="__PUBLIC__/css/css.css">
+   <link rel="stylesheet" href="__PUBLIC__/css/iconfont-1.4.css" />
+   <link rel="stylesheet" href="//at.alicdn.com/t/font_957376_ji626559cys.css" />
+   <script type="text/javascript" src="__PUBLIC__/js/jquery-1.11.3.min.js"></script>
+   <script type="text/javascript" src="__PUBLIC__/js/bootstrap.min.js"></script>
+   <script type="text/javascript" src="__PUBLIC__/js/sweetalert.min.js"></script>
+   <script type="text/javascript" src="__PUBLIC__/js/bootstrap.select.min.js"></script>
+   <script src="__PUBLIC__/js/echarts.common.min.js"></script>
+   <script src="__PUBLIC__/js/bootstrap-datetimepicker.js"></script>
+   <script src="__PUBLIC__/js/bootstrap-datetimepicker.zh-CN.js"></script>
+   <script src="__PUBLIC__/js/jquery.jqprint-0.3.js"></script>
+   <script src="__PUBLIC__/js/jquery-migrate-1.2.1.min.js"></script>
+   <script src="__PUBLIC__/js/macarons.js"></script>
+   <script src="__PUBLIC__/Home/js/admin.js"></script>
+   <style>
+      .relative{position: relative;}
+      .i{background-color: rgba(0,0,0,.6); position: absolute; left: 0; right: 0; bottom: 0; color: #fff; height: 20px; line-height: 20px;}
+   </style>
+</head>
+<body>
+
+<div class="info-card fadeIn animated ng-scope" id="password_info">
+    <div class="info-card-wrapper">
+        <div class="info-card-dialog">
+            <div class="info-card-content">
+                <div class="panel panel-info">
+                    <div class="panel-heading"> 修改密码
+                        <a class="info-card-close"><i class="ALiconfont icon-close"></i></a>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-tabs" style="padding-top:0">
+                            <ul class="form-tabs-container" style="padding:0">
+                                <li class="fadeIn animated active">
+                                    <table class="table-bordered bg-white table-form">
+                                        <tbody>
+                                            <tr>
+                                                <td width="150" class="require">原密码</td>
+                                                <td><input type="password" class="ng-pristine ng-untouched ng-valid" name='password' /></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="150" class="require">新密码</td>
+                                                <td><input type="password" class="ng-pristine ng-untouched ng-valid" name='newpassword' /></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="150" class="require">重复新密码</td>
+                                                <td><input type="password" class="ng-pristine ng-untouched ng-valid" name='repassword' /></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td class="td-btn-box">
+                                                    <a class="btn btn-success ng-scope" id="save_password">保存</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-header ng-scope" ui-view="header">
+   <div class="page-navbar ng-scope" header-navbar="">
+      <a href="{:U('Admin/Index/index')}" style="color:#fff">
+        <!-- <div class="logo-nav"> <img src="__PUBLIC__/images/top.png"> </div> -->
+        <div class="title-nav" style="width:200px"> 餐饮管理系统 </div>
+      </a>
+      <div class="user-nav ">
+         <div>
+            <a class="ng-binding">{$Think.session.account.name}</a>
+         </div>
+         <ul>
+            <li id="editPassword">修改密码</li>
+            <li id="loginOut">退出登陆</li>
+         </ul>
+      </div>
+   </div>
+</div>
+
+<div class="page-aside ng-scope">
+   <div class="page-aside-container ng-scope"> 
+      <ul> 
+         <?php foreach (C('menus') as $key => $menu){ ?>
+         <li class="ng-scope <?php if(CONTROLLER_NAME == $key){echo 'active'; } ?>"> 
+            <a href="{:U('Admin/'.$key.'/index')}" title="<?=$menu['name'];?>">
+               <i class="iconfont icon-<?=$menu['icon'];?>"></i> <?=$menu['name'];?>
+            </a> 
+         </li>
+         <?php } ?>
+      </ul> 
+   </div> 
+</div>
+
+<block name="body"></block>
+<div class="loading ng-hide" style="display: none;"> <div class="windows8"> <div class="wBall" id="wBall_1"> <div class="wInnerBall"></div> </div> <div class="wBall" id="wBall_2"> <div class="wInnerBall"></div> </div> <div class="wBall" id="wBall_3"> <div class="wInnerBall"></div> </div> <div class="wBall" id="wBall_4"> <div class="wInnerBall"></div> </div> <div class="wBall" id="wBall_5"> <div class="wInnerBall"></div> </div> </div> </div>
+ 
+</body>
+</html>
+<script type="text/javascript">
+   $(function(){
+      //关闭弹窗
+      $('.info-card-close').click(function(event){
+         var a = event.target;
+         $(a).closest('.info-card').removeClass("show");
+      });
+      $(".user-nav").click(function(){
+         $(this).addClass('active');
+         $("body").one("click",function(){
+             $('.user-nav').removeClass('active');
+         });
+         return false;
+      });
+
+      $("#editPassword").click(function(){
+         $("#password_info").addClass('show');
+      });
+
+      $("#loginOut").click(function(){
+         swal({
+                title: "提示",  
+                text: "确定要退出吗？",  
+                type: "warning", 
+                showCancelButton: true, 
+                closeOnConfirm: false, 
+                cancelButtonText: '取消', 
+                confirmButtonText: '确定'
+         }, function(){
+               location.href='{:U('Admin/Login/loginOut')}';
+         });
+      });
+
+      //保存修改密码
+      $("#save_password").click(function(){
+         var password    = $("input[name='password']").val();
+         var newpassword = $("input[name='newpassword']").val();
+         var repassword  = $("input[name='repassword']").val();
+         if(!password){
+             swal({title: "提示", text: "原密码不能为空", type: "warning"}, function(){
+                 $("input[name='password']").focus();
+             });
+             return false;
+         }
+         if(!newpassword){
+             swal({title: "提示", text: "新密码不能为空", type: "warning"}, function(){
+                 $("input[name='newpassword']").focus();
+             });
+             return false;
+         }
+         if(!repassword){
+             swal({title: "提示", text: "重复密码不能为空", type: "warning"}, function(){
+                 $("input[name='repassword']").focus();
+             });
+             return false;
+         }
+         if(newpassword != repassword){
+             swal({title: "提示", text: "新密码和重复密码不一致", type: "warning"});
+             return false;
+         }
+         $.ajax({
+             type:'post',
+             url:'{:U('Admin/Login/editPassword')}',
+             data:{password:password, newpassword:newpassword, repassword:repassword},
+             success:function(data){
+                 if(data.code == 0){
+                     swal({title: "提示", text: "修改成功", type: "success"});
+                     $("#password_info").removeClass('show');
+                 }else{
+                     swal({title: "提示", text: data.msg, type: "warning"});
+                 }
+                 
+             }
+         });
+      });
+
+   });
+</script>

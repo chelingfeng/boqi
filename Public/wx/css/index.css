@@ -1,0 +1,345 @@
+.bar-tab .tab-item.active {
+	color: #b09552;
+	border-bottom: 2px solid #b09552;
+}
+
+.buttons-tab .button.active {
+	color: #b09552;
+    border-color: #b09552;
+    z-index: 100;
+}
+
+.buttons-list {
+	padding: 0.7rem 0;
+	width: 100%;
+	height: 3.1rem;
+	padding-left:17%;
+}
+
+.buttons-list .button {
+	width: 40%;
+	float: left;
+	line-height: 1.7rem;
+	height: 1.7rem;
+	border: 1px solid #525252;
+	color: #525252;
+	border-radius:0.35rem;
+	font-size: .7rem;
+}
+
+.buttons-list .button:nth-of-type(1) {
+	border-right: none;
+	border-top-right-radius:0px;
+	border-bottom-right-radius: 0px;
+}
+
+.buttons-list .button:nth-of-type(2) {
+	border-left: none;
+	border-top-left-radius:0px;
+	border-bottom-left-radius: 0px;
+}
+
+.buttons-list .button.active {
+	background: #525252;
+	color: #fff;
+}
+
+.qianbao-title {
+	margin-top: 0.75rem;
+	color: #8e8e8e;
+}
+
+.qianbao-list {
+	margin: 0;
+}
+
+.qianbao-list .item-content{
+	height: 3.8rem;
+}
+
+.qianbao-list .qianbao {
+	font-size: 2.5rem;
+	color: #b19653
+}
+
+.qianbao-list .item-title {
+	color: #525252;
+	font-weight: normal;
+}
+
+.qianbao-list .item-after {
+	color: #525252;
+}
+
+.qianbao-list .item-text {
+	color: #8e8e8e;
+	font-size: 0.65rem;
+}
+
+.qianbao-list .srow {
+	padding-top: 0.5rem;
+    height: 1.5rem;
+}
+
+.qianbao-list .balance {
+	font-size: 0.75rem;
+}
+
+.qianbao-list .yuan {
+	font-size: 0.4rem;
+}
+
+
+.coupon-tab .button{
+	color: #d1d1d1
+}
+
+.coupon-tab .button.active{
+	border-bottom:0;
+	color: #525252;
+}
+
+.empty {
+	text-align:center;
+	margin-top:3rem;
+}
+.empty p {
+	margin: 0px;
+	color: #8e8e8e;
+}
+.empty span {
+	font-size: 3rem;
+	color:#8e8e8e;
+}
+
+.coupon-list {
+	margin-top: 0.7rem;
+	width: 90%;
+	margin-left:5%;
+	height: 100px;
+	border-radius: 0.4rem;
+	border: 1px solid #525252;
+	color:#525252;
+	font-size: .7rem;
+}
+.coupon-list p {
+	margin: 0
+}
+
+.coupon-list .left {
+	width: 25%;
+	float: left;
+	text-align: center;
+	padding-top: 10px;
+	height: 100%;
+	border-right:1px dashed #d4d4d4;
+}
+
+.coupon-list .left .money span {
+	font-size: 1.8rem;
+}
+
+.coupon-list .right {
+	width: 15%;
+	float: left;
+	margin-right: 0px;
+	background: #525252;
+	color: #fff;
+	border-top-right-radius: 0.4rem;
+	border-bottom-right-radius: 0.4rem;
+	text-align: center;
+	height: 100%;
+	padding: 10px 0;
+}
+
+.coupon-list .middle {
+	width: 60%;
+	float: left;
+	padding-left: 15px;
+}
+
+.coupon-list .middle .tt {
+	color:#8d8d8d;
+	margin-top: 10px;
+}
+
+.coupon-list .middle .type {
+	color: #525252;
+	background: #e3e3e3;
+	padding: 5px 10px;
+	font-size: 0.6rem;
+}
+
+.coupon-list .middle .time {
+	font-size: .75rem;
+	margin: 5px 0;
+}
+
+.coupon-list .right p {
+	line-height: 20px;
+	font-size: 0.8rem;
+}
+
+
+.card-list {
+	margin-top: 0.7rem;
+	width: 95%;
+	margin-left:2.5%;
+	height: 210px;
+	position: relative;
+}
+
+.card-list .quanyi {
+	margin: 0;
+    margin-top: 20px;
+    position: absolute;
+    background: #b09552;
+	color: #fff;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	padding-right: 10px;
+	font-size: 0.7rem;
+	line-height: 1.2rem;
+	width: 110px;
+}
+
+.card-list .bottom-left {
+	color: #7c7c7c;
+    font-size: 0.65rem;
+    position: absolute;
+    bottom: -2px;
+    display: block;
+    left: 15px;
+}
+
+.card-list .bottom-right {
+	color: #7c7c7c;
+    font-size: 0.65rem;
+    position: absolute;
+    bottom: -2px;
+    display: block;
+    right: 15px;
+}
+
+.card-list .headimg {
+	border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 80px;
+    left: 15px;
+}
+
+.card-list .name {
+	position: absolute;
+    display: block;
+    top: 86px;
+    left: 87px;
+    color: #b09552;
+    font-size: 1rem;
+}
+
+.card-list .vip-level {
+	position: absolute;
+    display: block;
+    top: 115px;
+    left: 87px;
+    color: #e4d7c6;
+    font-size: 0.7rem;
+}
+
+.card-list .qucode {
+	font-size: 2.5rem;
+	color: #dfdfde;
+	right: 15px;
+	position: absolute;
+	top:70px;
+}
+
+.card-list .open {
+	position: absolute;
+    right: 15px;
+	background: #b09552;
+	color:#fff;
+    border-radius: 10px;
+	top: 97px;
+	border:none;
+	line-height: 1.35rem;
+	padding: 0 10px;
+}
+
+.index-card-list {
+	width: 100%;
+	position: relative;
+	margin-top: 0.8rem;
+	float: left;
+}
+
+.index-card-list .card-index {
+	color:#505050;
+	width: 30%;
+	margin: 0 1.5%;
+	padding: 0.6rem 0;
+	float: left;
+}
+
+.index-card-list .card-index .card-title {
+	margin: 0px;
+	font-size: 0.7rem;
+}
+
+.index-card-list .card-index .left {
+	float: left;
+}
+
+.index-card-list .card-index .icons {
+	font-size: 1.3rem;
+    margin: 0 5px;
+}
+
+.index-card-list .card-index .income {
+	color: #b09552;
+	margin: 0px;
+	font-size: 0.6rem;
+}
+
+.index-order {
+	color:#505050;
+	font-size: 0.65rem;
+	float:left;
+	width:100%;
+	margin: 0px;
+	margin-top: 0.5rem;
+}
+
+.index-order .icon-dingdan {
+	margin-top: 2px;
+}
+
+.index-money {
+	font-size: 1.4rem;
+	color: #b09552;
+}
+
+.index-money span {
+	font-size: 0.6rem;
+	color: #505050;
+	margin-left:5px;
+}
+
+.index-activity {
+	font-size: 1rem;
+	color: #b09552;
+}
+
+
+.index-order .btn {
+	color: #b09552;
+    border: 1px solid #b09552;
+    border-radius: 10px;
+    padding: 4px 10px;
+}
+
+.index-order a {
+	color: #505050;
+}

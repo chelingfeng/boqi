@@ -1,0 +1,7 @@
+{
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "codeages/biz-framework": "^0.9.30",
+        "lokielse/omnipay-wechatpay": "^3.0"
+    }
+}

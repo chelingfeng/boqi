@@ -1,0 +1,154 @@
+<extend name="Common/__base" />
+<block name="title">会员</block>
+<block name="body">
+    <div class="page-group">
+        <div class="page page-current" id="page-vip-index" style="background:#fbfbfb">
+
+            <include file="Common/__nav" />
+
+            <div class="content">
+                
+                <?php if($user['vip_level_id']){ ?>
+                <div class="card-list" style="background:url({$user.vip_level.background}) 0 0 no-repeat;background-size:100% 100%;">
+                    <p class="quanyi">查看会员权益 ></p>
+                    <p class="bottom-left">{:C('index_tips')}</p>
+                    <p class="bottom-right">ID:{$user.card_sn}</p>
+                    <img src="{$user.avatar}" class="headimg" />
+                    <span class="name">{$user.nickname}</span>
+                    <span class="vip-level">{$user.vip_level.title}</span>
+                    <span class="iconfont icon-erweima qucode qidai"></span>
+                </div>
+                <?php } else { ?>
+                    <div class="card-list" style="background:url(__PUBLIC__/wx/img/card_hei.png) 0 0 no-repeat;background-size:100% 100%;">
+                        <p class="quanyi no-vip">查看会员权益 ></p>
+                        <p class="bottom-left">{:C('index_tips')}</p>
+                        <img src="{$user.avatar}" class="headimg" />
+                        <span class="name">{$user.nickname}</span>
+                        <span class="vip-level">未开通会员</span>
+                        <a class="button open" href="{:U('card')}">马上开通</a>
+                    </div>
+                <?php } ?>
+
+                <div class="index-card-list">
+                    <a class="card card-index qidai">
+                        <div class="left">
+                            <span class="iconfont icon-meishi icons"></span>
+                        </div>
+                        <div class="right">
+                            <p class="card-title">我是美食家</p>
+                            <p class="income">收益<?=sprintf("%.2f", $user['profit'] / 100);?></p>
+                        </div>
+                    </a>
+                    <a class="card card-index" href="{:U('coupon')}">
+                        <div class="left">
+                            <span class="iconfont icon-youhuiquan icons"></span>
+                        </div>
+                        <div class="right">
+                            <p class="card-title">我的优惠券</p>
+                            <p class="income">待使用{$user.couponNum|default='0'}张</p>
+                        </div>
+                    </a>
+                    <a class="card card-index qidai">
+                        <div class="left">
+                            <span class="iconfont icon-aixin icons"></span>
+                        </div>
+                        <div class="right">
+                            <p class="card-title">我的积分</p>
+                            <p class="income">当前{$user.integral}分</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="list-block contacts-block index-order qidai">
+                    <div class="list-group">
+                        <ul>
+                            <li>
+                                <div class="item-content item-link">
+                                    <div class="item-inner">
+                                        <div class="item-title"><span class="iconfont icon-dingdan"></span>&nbsp;&nbsp;订单中心</div>
+                                        <div>查看全部订单</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="list-block contacts-block index-order" style="">
+                    <div class="list-group">
+                        <ul>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title"><span class="iconfont icon-qianbao1"></span>&nbsp;&nbsp;账户余额</div>
+                                    </div>
+                                </div>
+                                <div class="item-content">
+                                    <div class="item-inner" style="padding-top:0px">
+                                        <div class="item-title index-money"><?=sprintf("%.2f", $user['balance'] / 100);?><span>元</span></div>
+                                        <div class="btn recharge">立即充值</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="list-block contacts-block index-order">
+                    <div class="list-group">
+                        <ul>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title"><span class="iconfont icon-liwu"></span>&nbsp;&nbsp;我的活动</div>
+                                    </div>
+                                </div>
+                                <div class="item-content">
+                                    <div class="item-inner" style="padding-top:0px">
+                                        <div class="item-title index-activity" style="max-width:70%;">活动即将开放</div>
+                                        <div class="btn">敬请期待</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="list-block contacts-block index-order">
+                    <div class="list-group">
+                        <ul>
+                            <li>
+                                <div class="item-content item-link">
+                                    <div class="item-inner">
+                                        <div class="item-title"><span class="iconfont icon-tongji1"></span>&nbsp;&nbsp;我的账单</div>
+                                        <div><a href="{:U('bills', ['type' => 'inflow'])}">充值记录</a> | <a href="{:U('bills', ['type' => 'outflow'])}">消费记录</a></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="list-block contacts-block index-order">
+                    <a href="{:U('message')}">
+                        <div class="list-group">
+                            <ul>
+                                <li>
+                                    <div class="item-content item-link">
+                                        <div class="item-inner">
+                                            <div class="item-title"><span class="iconfont icon-dingdan"></span>&nbsp;&nbsp;个人信息</div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>

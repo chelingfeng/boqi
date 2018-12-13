@@ -1,0 +1,177 @@
+<extend name="Public/__base" />
+<block name="body">
+        
+<div class="page-main" style="left:170px;top:50px;">
+
+    <div class="history-container ng-scope">
+        <a class="return-btn" onclick="history.go(-1)">
+            <i class="ALiconfont icon-sortleft"></i> 返回 
+        </a> 
+        <ul class="history-list">
+            <li><a href="javascript:void(0)">门店管理</a></li>
+            <li>门店管理</li>
+        </ul>
+    </div>
+
+
+    <div class="page-tabs" style="top:50px;">
+
+        <ul class="page-tabs-nav" id="changeaction">
+            <li class="active" onclick="location.href='{:U('index')}'">门店管理</li>
+        </ul>
+
+        <form method="post" action="" id="formsubmit">
+        <div class="tool-bar ng-scope" style="background:#fff;border-bottom:1px solid #dfe0e0">
+            <div class="bar-full">
+            </div>
+
+            <!-- <div class="search-bool">
+              
+                    <div class="input-group ng-pristine ng-valid">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid" placeholder="姓名/手机号/昵称" name="keyword" value="{$Think.post.keyword}">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default" id="search_btn">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </button>
+                        </span>
+                    </div>
+               
+            </div> -->
+        </div>
+        </form>
+
+        <ul class="page-tabs-container">
+            <li class="fadeIn animated active">
+                <div class="table-container" style="top:50px;background:#fff">
+                    <table class="table table-striped table-hover">
+                        <!-- <thead>
+                            <tr>
+                                <th>微信昵称</th>
+                                <th>手机号</th>
+                                <th>真实姓名</th>
+                                <th>会员等级</th>
+                                <th>账户余额</th>
+                                <th>注册时间</th>
+                                <th>操作</th>
+                            </tr> 
+                        </thead> -->
+                        <tbody>
+                            <?php foreach($data as $v){ ?>
+                            <tr>
+                                <td>{$v.username}</td>
+                                <td>
+                                    <?php
+                                        echo C('roles')[$v['role']]['name'];
+                                    ?>
+                                </td>
+                                <td>{$v.name}</td>
+                                <td>{$v.code}</td>
+                                <td>{$v.create_time}</td>
+                                <td>{$v.remark}</td>
+                                <td>
+                                    <a class="btn btn-info btn-xs edit" data-id="{$v.adminid}">查看信息</a>
+                                    <a class="btn btn-info btn-xs edit" data-id="{$v.adminid}">消费查询</a>
+                                    <a class="btn btn-danger btn-xs delete" data-id="{$v.adminid}">删除</a>
+                                </td>
+                            </tr> 
+                            <?php } ?>
+                            <?php if(count($data) == 0){ ?>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="20" class="empty">该功能即将开放，敬请期待。。。</td>
+                                </tr>
+                            </tfoot> 
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+                {$page}
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="info-card fadeIn animated ng-scope" id="add_card">
+    <div class="info-card-wrapper">
+        <div class="info-card-dialog">
+            <div class="info-card-content">
+                <div class="panel panel-info">
+                    <div class="panel-heading"> 添加
+                        <a class="info-card-close"><i class="ALiconfont icon-close"></i></a>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-tabs">
+                            <ul class="form-tabs-container">
+                                <li class="fadeIn animated active">
+                                    <table class="table-bordered bg-white table-form">
+                                        <tbody>
+                                            <tr>
+                                                <td class="require">账号</td>
+                                                <td>
+                                                    <input type="text" name="username">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="require">类型</td>
+                                                <td>
+                                                    <select name="role">
+                                                        <?php foreach (C('roles') as $key => $role){ ?>
+                                                        <option value="<?=$key;?>"><?=$role['name'];?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="require">密码</td>
+                                                <td>
+                                                    <input type="password" name="password">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="require">重复密码</td>
+                                                <td>
+                                                    <input type="password" name="repassword">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="require">姓名</td>
+                                                <td>
+                                                    <input type="text" name="name">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="">工号</td>
+                                                <td>
+                                                    <input type="text" name="code">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="">备注</td>
+                                                <td>
+                                                    <input type="text" name="remark">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td-btn-box" colspan="2">
+                                                    <a class="btn btn-success" id="add_action">确定</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function(){
+        
+    });
+</script>
+</block>

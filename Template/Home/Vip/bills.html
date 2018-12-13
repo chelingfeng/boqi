@@ -1,0 +1,66 @@
+<extend name="Common/__base" />
+<block name="body">
+    <div class="page-group">
+        <div class="page page-current" style="background: #fff" id="page-vip-bills">
+            <div class="buttons-tab buttons-list" id="type">
+                <a class="button <?php if($_GET['type'] == 'inflow'){echo 'active';}?>" data-type="inflow">充值记录</a>
+                <a class="button <?php if($_GET['type'] == 'outflow'){echo 'active';}?>" data-type="outflow">消费记录</a>
+            </div>
+
+            <div class="empty" style="display:none">
+                <span class="iconfont icon-ico_meiyoushuju"></span>
+                <p>暂无记录</p>
+            </div>
+
+            <div class="datalist"></div>
+
+            <!-- <div class="qianbao-title content-block-title">17日-星期天</div>
+            <div class="list-block media-list qianbao-list">
+                <ul>
+                  <li>
+                    <a href="#" class="item-content">
+                        <div class="item-media">
+                            <span class="iconfont icon-qianbao qianbao"></span>
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title-row">
+                                <div class="item-title">微信充值</div>
+                                <div class="item-after">+115</div>
+                            </div>
+                            <div class="item-title-row srow">
+                                <div class="item-text">11月7日 13:55</div>
+                                <div class="item-text"><span class="balance">余额：125</span><span class="yuan">元</span></div>
+                            </div>
+                        </div>
+                    </a>
+                  </li>
+                </ul>
+            </div>
+
+            <div class="qianbao-title content-block-title">17日-星期天</div>
+            <div class="list-block media-list qianbao-list">
+                <ul>
+                  <li>
+                    <a href="#" class="item-content">
+                        <div class="item-media">
+                            <span class="iconfont icon-qianbao qianbao"></span>
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title-row">
+                                <div class="item-title">微信充值</div>
+                                <div class="item-after">+115</div>
+                            </div>
+                            <div class="item-title-row srow">
+                                <div class="item-text">11月7日 13:55</div>
+                                <div class="item-text"><span class="balance">余额：125</span><span class="yuan">元</span></div>
+                            </div>
+                        </div>
+                    </a>
+                  </li>
+                </ul>
+            </div> -->
+
+
+        </div>
+    </div>
+</block>

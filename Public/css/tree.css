@@ -1,0 +1,23 @@
+/***树样式重写***/
+.page-tree li.open>a.branch i::before {
+    content: "\e652 ";
+}
+.page-tree a.branch i::before {
+    padding-right: 5px;
+    content: "\e653 ";
+}
+.page-tree li.open>a.branch::before {
+    content: "";
+}
+.page-tree a.branch::before {
+    padding-right: 0px;
+    content: "";
+}
+.date-bar .term i, .page-tree a.branch i::before {
+    font-size: 16px;
+    font-family: ALiconfont!important;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: .2px;
+    -moz-osx-font-smoothing: grayscale;
+}

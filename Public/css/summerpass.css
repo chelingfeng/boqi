@@ -1,0 +1,109 @@
+.bar.bar-nav {
+	background-color: #228fff;
+}
+
+.bar .button-link {
+	color: #ffffff;
+}
+
+.title {
+	color: #ffffff;
+	font-weight: bold;
+}
+
+.footer-agreement {
+	padding: 1em;
+	background-color: #ffffff;
+}
+
+.footer-agreement div {
+	margin-bottom: .6em;
+}
+
+.button.button-fill, .button.button-fill:active, .button.button-fill.active {
+	background: #009dd9;
+}
+
+#page-agreement .content h4 {
+	text-align: center;
+}
+
+#page-agreement .content p {
+	margin: 0;
+	font-size: 12px;
+}
+
+#page-agreement .content ol {
+	margin: 0;
+	padding: 0;
+	list-style-type:none;
+}
+
+#page-agreement .content li {
+	font-size: 12px;
+}
+
+.msg-box {
+	margin: 1em;
+	background-color: #ffffff;
+	text-align: center;
+	padding: 10px;
+	border-radius: 10px;
+	margin-top: 40%;
+}
+
+.msg-box i.icon {
+	border: 3px solid #009dd9;
+	font-size: 1.3em;
+	height: 1.4em;
+	width: 1.4em;
+	border-radius: 50%;
+	color: #009dd9;
+	line-height: 1.2em;
+}
+
+.msg-box h4 {
+	margin: 0;
+}
+
+.msg-box h4 span {
+	font-size: 1.4em;
+    position: relative;
+    top: 4px;
+    margin-left: 10px;
+}
+
+.msg-box p {
+	margin: 0;
+	margin-top: 10px;
+}
+
+.assign, .status1{color:#0099ff;}
+.assigned, .status2{color:#00992c;}
+.returned, .status4{color:#fb9900;}
+.cancel, .status3{color:#cccccc;}
+.stime{margin-left: 0px;font-size: 12px;}
+
+/* 清除文本框数据 */
+input { padding: 5px; margin: 0; border: 1px solid #beceeb; }
+.clear { display: none; position: absolute; width: 16px; height: 16px; background: url(../images/clear.png) no-repeat; outline: none; position: absolute; top: .8rem; right: .6rem;}
+input::-ms-clear { display: none; }
+input:valid + .clear { display: inline; }
+
+/*时间轴*/
+#time_axis dl{margin-top: 5px;float: left;margin-bottom: 0px;width: 100%}
+#time_axis dt{font-size:20px;color:#363638;margin-bottom: 20px;}
+#time_axis dd{float: left;width: 100%;margin-left:5px;}
+#time_axis dd i{font-style:normal; width: 60px; height: 30px; line-height:30px; text-align:center;border-radius:5px; background: #dbe7ef; color:#707172;display:block;float: left;margin-top: -8px;}
+#time_axis dl div{font-size: 16px;float: left;margin-left: 20px;position: relative;border-left: 2px solid #a9aaaf;height: 60px;padding-left: 15px;}
+#time_axis b{width: 15px;height: 15px;display: block;position: absolute;background: #2591ec;border-radius: 50%;left: -9px;}
+#time_axis dl dd:last-child div{border-color: #fff}
+#time_axis dl dd p{line-height:30px;margin-top:-8px;width: 180px}
+#time_axis dl dd:first-child i{margin-top: -5px}
+.time_axis_border{float: left; padding: 10px 20px 0 20px;width:100%;background: #fff;min-height: 200px}
+
+
+#evaluation_table{width: 100%;display: none}
+#evaluation_table td{border:1px solid #ececec;background:#fff;line-height: 40px;text-align: center;border-top: none;border-left: none}
+.none{text-align: center;line-height: 30px}
+#login_action{background:#228fff;}

@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta name="renderer" content="ie-stand">
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+   <meta name="description" content="">
+   <meta name="keywords" content="">
+   <title>餐饮管理系统 - 博启信息科技有限公司</title>
+   <link rel="stylesheet" href="__PUBLIC__/login/bootstrap.css">
+   <link rel="stylesheet" href="__PUBLIC__/login/app.css">
+</head>
+
+<body>
+   <div class="wrapper">
+      <div class="block-center mt-xl wd-xl">
+         <!-- START panel-->
+         <div class="panel panel-dark panel-flat">
+            <div class="panel-heading text-center">
+               <a href="javascript:void(0);" style="color:#fff">
+                  餐饮管理系统
+               </a>
+            </div>
+            <div class="panel-body">
+               <p class="text-center pv">登录后继续操作.</p>
+               <form role="form" data-parsley-validate="" action="" class="mb-lg" method="POST">
+                  <div class="form-group has-feedback">
+                     <input id="exampleInputEmail1" type="text" placeholder="请输入账号" autocomplete="off" required class="form-control" name="username" value="<?php echo $_COOKIE['account_name'];?>">
+                     <span class="fa fa-envelope form-control-feedback text-muted"></span>
+                  </div>
+                  <div class="form-group has-feedback">
+                     <input id="exampleInputPassword1" type="password" placeholder="请输入密码" required class="form-control" name="password">
+                     <span class="fa fa-lock form-control-feedback text-muted"></span>
+                  </div>
+                  <div class="clearfix">
+                  </div>
+                  <button type="submit" class="btn btn-block btn-primary mt-lg">立即登录</button>
+               </form>
+            </div>
+         </div>
+         <!-- END panel-->
+         <div class="p-lg text-center">
+            <span>&copy;</span>
+            <span>2019</span>
+            <span>-</span>
+            <span>平湖市博启信息科技有限公司</span>
+         </div>
+      </div>
+   </div>
+   
+</body>
+
+</html>
