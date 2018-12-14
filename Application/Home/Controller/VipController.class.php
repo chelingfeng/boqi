@@ -72,6 +72,29 @@ class VipController extends CommonController {
     public function openVip()
     {
         $level = M('vip_level')->where(['id' => $_POST['id']])->find();
+        if (!$level) {
+            $this->ajaxReturn(codeReturn(10001));
+        }
+        $data = [
+            'title' => '开通'.$level['title'],
+            'type' => 'vip',
+            'user_id' => session('user.id'),
+            'items' => [
+                ['target_id' => $level['id'], 'target_type' => 'vip', 'amount' => $level['amount']]
+            ],
+            'discounts' => [],
+        ];
+        $order = createOrder($data);
+        if ($order) {
+            $this->ajaxReturn(codeReturn(0, $order));
+        } else {
+            $this->ajaxReturn(codeReturn(20003));
+        }
+    }
+
+    public function openVip_back()
+    {
+        $level = M('vip_level')->where(['id' => $_POST['id']])->find();
         $user = $this->getUserInfo();
         if (!$level) {
             $this->ajaxReturn(codeReturn(10001));
@@ -140,12 +163,12 @@ class VipController extends CommonController {
         $user = $this->getUserInfo();
         $data['index_tips'] = C('index_tips');
         $data['user'] = $user;
-        if ($user['vip_level_id'] > 0) {
-            $seq = M('vip_level')->where(['id' => $user['vip_level_id']])->getField('seq');
-        } else {
-            $seq = 0;
-        }
-        $data['card'] = M('vip_level')->where('del = 0 AND seq > '.$seq)->order('seq')->select();
+        // if ($user['vip_level_id'] > 0) {
+        //     $seq = M('vip_level')->where(['id' => $user['vip_level_id']])->getField('seq');
+        // } else {
+        //     $seq = 0;
+        // }
+        $data['card'] = M('vip_level')->where('del = 0')->order('seq')->select();
         $this->ajaxReturn(codeReturn(0, $data));
     }
 

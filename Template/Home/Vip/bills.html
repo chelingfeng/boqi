@@ -6,13 +6,14 @@
                 <a class="button <?php if($_GET['type'] == 'inflow'){echo 'active';}?>" data-type="inflow">充值记录</a>
                 <a class="button <?php if($_GET['type'] == 'outflow'){echo 'active';}?>" data-type="outflow">消费记录</a>
             </div>
+            <div class="content" style="margin-top:3rem;">
+                <div class="empty" style="display:none">
+                    <span class="iconfont icon-ico_meiyoushuju"></span>
+                    <p>暂无记录</p>
+                </div>
 
-            <div class="empty" style="display:none">
-                <span class="iconfont icon-ico_meiyoushuju"></span>
-                <p>暂无记录</p>
+                <div class="datalist"></div>
             </div>
-
-            <div class="datalist"></div>
 
             <!-- <div class="qianbao-title content-block-title">17日-星期天</div>
             <div class="list-block media-list qianbao-list">

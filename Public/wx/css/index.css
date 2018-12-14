@@ -198,7 +198,8 @@
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
 	padding-right: 10px;
-	font-size: 0.7rem;
+	font-size: 0.61rem;
+	text-align: center;
 	line-height: 1.2rem;
 	width: 110px;
 }
@@ -266,6 +267,34 @@
 	border:none;
 	line-height: 1.35rem;
 	padding: 0 10px;
+}
+
+.card-list.none-vip {
+	margin-top: 0;
+	margin-left: 0;
+	width: 100%;
+}
+
+.card-list.none-vip .quanyi {
+	top: 15%;
+    left: 5%;
+}
+
+.card-list.none-vip .headimg {
+	left: 10%;
+    top: 48%;
+}
+
+.card-list.none-vip .open {
+	right: 12%;
+    top: 51%;
+}
+
+.card-list.none-vip .name {
+	left: 29%;
+	top: 56%;
+	font-size: 0.8rem;
+	color:#525252;
 }
 
 .index-card-list {
@@ -342,4 +371,57 @@
 
 .index-order a {
 	color: #505050;
+}
+
+.mask {
+	position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.3);
+    z-index: 10600;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition-duration: .4s;
+	transition-duration: .4s;
+	visibility: visible;
+	opacity: 1;
+	display: none;
+}
+
+.open-vip {
+	position: absolute;
+	width: 90%;
+	left:5%;
+	top:15%;
+	z-index: 10601;
+	display: none;
+}
+
+.open-vip .img {
+	width:100%;
+	float: left;
+}
+
+.open-vip .open {
+	width:50%;
+	margin-left: 25%;
+	background-color: #ddc1a5;
+	height: 2rem;
+	border-radius: 0.65rem;
+	color: #734b34;
+	line-height: 2rem;
+	text-align: center;
+	font-size: 0.7rem;
+	bottom: 15%;
+	position: absolute;
+}
+
+.open-vip .close {
+	position: absolute;
+	color: #fff;
+	font-size: 1.5rem;
+	bottom: -15%;
+	left:45%;
 }

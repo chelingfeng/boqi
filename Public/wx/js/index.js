@@ -15,7 +15,7 @@ $(function () {
         $(".recharge").click(function(){
             $.prompt('请输入充值金额?', '提示', function (value) {
                 if (!isNaN(value) != '' && value != '' && value > 0) {
-                    $.showPreloader()
+                    $.showIndicator()
                     $.ajax({
                         type: 'POST',
                         data: {amount:value},
@@ -26,7 +26,7 @@ $(function () {
                             } else {
                                 $.alert(res.msg, '提示');
                             }
-                            $.hidePreloader()
+                            $.hideIndicator();
                         }
                     });
                 } else {
@@ -40,7 +40,7 @@ $(function () {
 
     //会员卡片列表页
     $(document).on("pageInit", "#page-vip-card", function (e, id, page) {
-        $.showPreloader()
+        $.showIndicator()
         $.ajax({
             type:'POST',
             data:{},
@@ -52,54 +52,55 @@ $(function () {
                     res.data.card.forEach(function (item) {
                         html += '<div class="card-list" style="background:url(' + item.background + ') 0 0 no-repeat;background-size:100% 100%;">';
                         html += '<p class="quanyi">查看会员权益 ></p>';
-                        html += '<p class="bottom-left">' + res.data.index_tips + '</p>';
+                        html += '<p class="bottom-left"></p>';
                         html += '<img src="' + res.data.user.avatar + '" class="headimg" />';
                         html += '<span class="name">' + res.data.user.nickname + '</span>';
                         html += '<span class="vip-level">' + item.title + '</span>';
                         html += "<a class='button open' onclick='' data-data='" + JSON.stringify(item) +"'>马上开通</a>";
                         html += '</div>';
                     });
-                } else {
-                    html = '<div class="empty"><p>没有可以开通的会员。</p></div>';
                 }
                 
-                $(".page").html(html);
-                $.hidePreloader()
+                $(".page .content").html(html);
+                if (html == '') {
+                    $('.empty').show();
+                }
+                $.hideIndicator();
             }
         })
 
+        $(".open-vip .open").click(function(){
+            $.showIndicator()
+            $.ajax({
+                type: 'POST',
+                data: { id: $(".open-vip [name='id']").val()},
+                url: 'index.php?m=Home&c=Vip&a=openVip',
+                success: function (res) {
+                    if (res.code == 0) {
+                        pay(res.data.id, $("[name='callback']").val());
+                    } else {
+                        $.alert(res.msg, '提示');
+                    }
+                    $.hideIndicator();
+                }
+            })
+        });
+
         $("#page-vip-card .open").die("click").live('click', function() {
             var data = JSON.parse($(this).data('data'));
-            $.confirm('开通'+data.title+'需要余额大于'+(data.amount/100)+'元，确定要开通吗？', '提示', function () {
-                $.showPreloader()
-                $.ajax({
-                    type: 'POST',
-                    data: {id:data.id},
-                    url: 'index.php?m=Home&c=Vip&a=openVip',
-                    success: function (res) {
-                        if (res.code == 0) {
-                            $.alert('开通成功', '提示', function () {               
-                                location.href = 'index.php?m=Home&c=Vip&a=index';
-                            });
-                        } else {
-                            $.alert(res.msg, '提示', function(){
-                                if (res.code == 20001) {
-                                    location.href = 'index.php?m=Home&c=Vip&a=index';
-                                } else {
-                                    window.location.reload();
-                                }
-                            });
-                        }
-                        $.hidePreloader()
-                    }
-                });
-            });
+            $(".open-vip [name='id']").val(data.id);
+            $(".open-vip .img").attr('src', data.open_background);
+            $(".mask, .open-vip").show();
+        });
+
+        $(".open-vip .close").click(function(){
+            $(".mask, .open-vip").hide();
         });
     });
 
     //会员信息页
     $(document).on("pageInit", "#page-vip-message", function (e, id, page) {
-        $.showPreloader()
+        $.showIndicator()
         $.ajax({
             type: 'GET',
             data: {},
@@ -113,7 +114,7 @@ $(function () {
                 }
                 $("[name='name']").val(res.data.name);
                 $("[name='address']").val(res.data.address);
-                $.hidePreloader()
+                $.hideIndicator();
             }
         })
 
@@ -140,7 +141,7 @@ $(function () {
                 $.alert('联系地址不能为空', '提示');
                 return false;
             }
-            $.showPreloader();
+            $.showIndicator();
             $.ajax({
                 type: 'POST',
                 data: data,
@@ -153,7 +154,7 @@ $(function () {
                     } else {
                         $.alert(res.msg, '提示')
                     }
-                    $.hidePreloader()
+                    $.hideIndicator();
                 }
             })
         });
@@ -179,7 +180,7 @@ $(function () {
         function loadData() {
             var type = $('#type .active').data('type');
             var status = $('#status .active').data('status');
-            $.showPreloader()
+            $.showIndicator()
             $.ajax({
                 type: 'GET',
                 data: { type:type, status:status},
@@ -235,7 +236,7 @@ $(function () {
                     }
 
                     $(".datalist").html(html);
-                    $.hidePreloader()
+                    $.hideIndicator();
                 }
             });
         }
@@ -254,7 +255,7 @@ $(function () {
 
         function loadData() {
             var type = $('#type .active').data('type');
-            $.showPreloader()
+            $.showIndicator()
             $.ajax({
                 type: 'GET',
                 data: { type: type},
@@ -298,7 +299,7 @@ $(function () {
                     }
 
                     $(".datalist").html(html);
-                    $.hidePreloader()
+                    $.hideIndicator();
                 }
             });
         }
@@ -306,7 +307,6 @@ $(function () {
 
     function pay(orderId = '', callback = '')
     {   
-        console.log(orderId);
         if (orderId) {
             if (callback == '') {
                 callback = location.href;

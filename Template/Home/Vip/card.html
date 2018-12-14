@@ -2,7 +2,24 @@
 <block name="body">
     <div class="page-group">
         <div class="page page-current" style="background: #fff" id="page-vip-card">
-            
+            <div class="content">
+                
+            </div>
+
+
+            <div class="mask"></div>
+
+            <div class="open-vip">
+                <img src="" class="img" />
+                <div class="open">确认充值开通</div>
+                <div class="close iconfont icon-guanbi"></div>
+                <input type="hidden" name="id" />
+            </div>
+            <input type="hidden" name="callback" value="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['HTTP_HOST']}{:U('Vip/index')}"/>
+            <div class="empty" style="display:none">
+                <span class="iconfont icon-ico_meiyoushuju"></span>
+                <p>没有可以开通的会员。</p>
+            </div>
         </div>
     </div>
 </block>

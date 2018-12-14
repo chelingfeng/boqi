@@ -103,7 +103,7 @@
                                                 <tr>
                                                     <td class="require">序号</td>
                                                     <td>
-                                                        <input type="text" name="seq" value="0">
+                                                        <input type="text" name="seq" value="1">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -124,6 +124,15 @@
                                                         <img src="" class="background" style="width: 285px;height: 165px;display: none" />
                                                         <a class="btn btn-default upload_action">点击上传</a>
                                                         <br />建议大小：570px * 330px
+                                                        <input type="hidden" name="background" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="require">开通背景图</td>
+                                                    <td>
+                                                        <img src="" class="background" style="width: 289px;height: 308px;display: none" />
+                                                        <a class="btn btn-default upload_action">点击上传</a>
+                                                        <br />建议大小：578px * 616px
                                                         <input type="hidden" name="background" />
                                                     </td>
                                                 </tr>
@@ -197,6 +206,15 @@
                                                         <img src="" class="background" style="width: 285px;height: 165px;" />
                                                         <a class="btn btn-default upload_action">点击上传</a>
                                                         <br />建议大小：570px * 330px
+                                                        <input type="hidden" name="background"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="require">开通背景图</td>
+                                                    <td>
+                                                        <img src="" class="background" style="width: 289px;height: 308px;" />
+                                                        <a class="btn btn-default upload_action">点击上传</a>
+                                                        <br />建议大小：578px * 616px
                                                         <input type="hidden" name="background" />
                                                     </td>
                                                 </tr>
@@ -279,8 +297,10 @@
                             $("#edit_card [name='id']").val(data.data.id);
                             $("#edit_card [name='title']").val(data.data.title);
                             $("#edit_card [name='seq']").val(data.data.seq);
-                            $("#edit_card [name='background']").val(data.data.background);
-                            $("#edit_card .background").attr('src', data.data.background);
+                            $("#edit_card [name='background']:eq(0)").val(data.data.background);
+                            $("#edit_card .background:eq(0)").attr('src', data.data.background);
+                            $("#edit_card [name='background']:eq(1)").val(data.data.open_background);
+                            $("#edit_card .background:eq(1)").attr('src', data.data.open_background);
                             $("#edit_card [name='amount']").val(data.data.amount / 100);
                             $("#edit_card [name='discount']").val(data.data.discount);
                             var give = JSON.parse(data.data.give);
@@ -305,7 +325,8 @@
                     seq: $("#add_card [name='seq']").val(),
                     amount: $("#add_card [name='amount']").val(),
                     discount: $("#add_card [name='discount']").val(),
-                    background: $("#add_card [name='background']").val(),
+                    background: $("#add_card [name='background']:eq(0)").val(),
+                    open_background: $("#add_card [name='background']:eq(1)").val(),
                 };
                 if(data.title == ''){
                     swal({title: "提示", text: "等级名称不能为空", type: "warning"}, function(){
@@ -334,6 +355,12 @@
                 if(data.background == ''){
                     swal({title: "提示", text: "背景图片不能为空", type: "warning"}, function(){
                        
+                    });
+                    return false;
+                }
+                if (data.open_background == '') {
+                    swal({ title: "提示", text: "开通背景图片不能为空", type: "warning" }, function () {
+
                     });
                     return false;
                 }
@@ -400,7 +427,8 @@
                     seq: $("#edit_card [name='seq']").val(),
                     amount: $("#edit_card [name='amount']").val(),
                     discount: $("#edit_card [name='discount']").val(),
-                    background: $("#edit_card [name='background']").val(),
+                    background: $("#edit_card [name='background']:eq(0)").val(),
+                    open_background: $("#edit_card [name='background']:eq(1)").val(),
                 };
                 if(data.title == ''){
                     swal({title: "提示", text: "等级名称不能为空", type: "warning"}, function(){
@@ -429,6 +457,12 @@
                 if(data.background == ''){
                     swal({title: "提示", text: "背景图片不能为空", type: "warning"}, function(){
                        
+                    });
+                    return false;
+                }
+                if (data.open_background == '') {
+                    swal({ title: "提示", text: "开通背景图片不能为空", type: "warning" }, function () {
+
                     });
                     return false;
                 }
