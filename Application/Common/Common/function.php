@@ -59,7 +59,13 @@ function createOrder($fields)
         'amount' => ($original_amount - $discount_amount) < 0 ? 0 : ($original_amount - $discount_amount),
     ]);
 
-    return M('order')->where(['id' => $orderId])->find();
+    $order = M('order')->where(['id' => $orderId])->find();
+
+    if ($order['amount'] == 0) {
+        orderPaid($order['id']);
+    }
+
+    return $order;
 }
 
 function createCoupon($data)
@@ -87,7 +93,7 @@ function createCoupon($data)
 function orderPaid($orderId)
 {
     $order = M('order')->where(['id' => $orderId])->find();
-    if ($order['status'] == 'paying') {
+    if ($order['status'] != 'paid') {
         $discounts = M('order_discount')->where(['id' => $order['id']])->select();
         $items = M('order_item')->where(['order_id' => $order['id']])->select();
         //更新状态

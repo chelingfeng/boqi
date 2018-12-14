@@ -77,7 +77,13 @@ $(function () {
                 url: 'index.php?m=Home&c=Vip&a=openVip',
                 success: function (res) {
                     if (res.code == 0) {
-                        pay(res.data.id, $("[name='callback']").val());
+                        if (res.data.amount == 0) {
+                            $.alert('开通成功', '提示', function(){
+                                window.location.href = $("[name='callback']").val();
+                            });
+                        } else {
+                            pay(res.data.id, $("[name='callback']").val());
+                        }
                     } else {
                         $.alert(res.msg, '提示');
                     }
