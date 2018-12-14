@@ -183,6 +183,16 @@ $(function () {
 
         loadData();
 
+        $(".use_coupon").die("click").live('click', function () {
+            var code = $(this).data('code');
+            $(".coupon_use .code").html(code);
+            $(".mask, .coupon_use").show();
+        });
+
+        $(".coupon_use .btn").die("click").live('click', function () {
+            $(".mask, .coupon_use").hide();
+        });
+
         function loadData() {
             var type = $('#type .active').data('type');
             var status = $('#status .active').data('status');
@@ -220,7 +230,11 @@ $(function () {
                                     html += '<span class="type">优惠券</span>';
                                 }
                             html += '</div>';
-                            html += '<div class="right qidai">';
+                            if (item.status == 'receive') {
+                                html += '<div class="right use_coupon" data-code="'+item.code+'">';
+                            } else {
+                                html += '<div class="right">';
+                            }
                                 html += '<p>立</p>';
                                 html += '<p>即</p>';
                                 html += '<p>使</p>';

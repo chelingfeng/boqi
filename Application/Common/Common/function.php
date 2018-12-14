@@ -72,7 +72,7 @@ function createCoupon($data)
 {
     for ($i = 1; $i <= $data['number']; $i++) {
         $d = [
-            'code' => getCode(6, $data['prefix']),
+            'code' => getCode(6, strtoupper($data['prefix'])),
             'title' => $data['title'],
             'type' => $data['type'],
             'rate' => $data['rate'],
@@ -160,7 +160,7 @@ function orderPaid($orderId)
             if ($give['coupon_friend']['number'] > 0) {
                 createCoupon([
                     'number' => $give['coupon_friend']['number'],
-                    'prefix' => 'ZS' . $vipHistoryId . '_',
+                    'prefix' => 'ZS' . $vipHistoryId,
                     'title' => '赠送优惠券',
                     'type' => 'minus',
                     'rate' => $give['coupon_friend']['amount'],
@@ -175,7 +175,7 @@ function orderPaid($orderId)
             if ($give['coupon']['number'] > 0) {
                 createCoupon([
                     'number' => $give['coupon']['number'],
-                    'prefix' => 'ZS' . $vipHistoryId . '_',
+                    'prefix' => 'ZS' . $vipHistoryId,
                     'title' => '赠送优惠券',
                     'type' => 'minus',
                     'rate' => $give['coupon']['amount'],

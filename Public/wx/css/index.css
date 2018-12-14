@@ -425,3 +425,52 @@
 	bottom: -15%;
 	left:45%;
 }
+
+.coupon_use {
+	display: none;
+	position: absolute;
+	width: 90%;
+	left:5%;
+	top:25%;
+	background: #fff;
+	z-index: 10601;
+	height: 12rem;
+	border-radius: 0.8rem;
+}
+
+.coupon_use .tt {
+	text-align: center;
+	color: #b09552;
+	font-size:1.2rem;
+	margin-bottom: 0.5rem;
+}
+
+.coupon_use .tips {
+	text-align: center;
+	color: #7d7d7d;
+	font-size:0.7rem;
+	margin:0;
+}
+
+.coupon_use .code {
+	color: #b09552;
+	margin: 1rem 16%;
+	height: 1.8rem;
+	line-height: 1.8rem;
+	border-radius: 0.75rem;
+	text-align: center;
+	border:1px solid #7d7d7d;
+}
+
+.coupon_use .btn {
+	color: #7d7d7d;
+	margin: 1rem 20%;
+	height: 1.5rem;
+	line-height: 1.5rem;
+	border-radius: 0.75rem;
+	text-align: center;
+	background: #b09552;
+	font-size:0.7rem;
+	color: #fff;
+	margin-top:2rem;
+}

@@ -13,7 +13,7 @@ class CouponController extends CommonController
     {
     	$where = "id > 0";
         if($_POST['keyword']){
-            $where .= " AND (title LIKE '%".$_POST['keyword']."%')";
+            $where .= " AND (code LIKE '%".$_POST['keyword']."%' OR title LIKE '%".$_POST['keyword']."%')";
         }
         if($_POST['type']){
             $where .= " AND type='".$_POST['type']."'";
@@ -32,6 +32,26 @@ class CouponController extends CommonController
         $this->assign('page', page($count));
     	$this->assign('data', $data);
         $this->display();
+    }
+
+    public function verification()
+    {
+        $coupon = M('coupon')->where(['id' => $_POST['id']])->find();
+        if (empty($coupon)) {
+            $this->ajaxReturn(codeReturn(10001));
+        }
+        if ($coupon['status'] != 'receive') {
+            $this->ajaxReturn(codeReturn(10004));
+        }
+        M('coupon')->where(['id' => $_POST['id']])->save([
+            'status' => 'used',
+            'use_time' => date('Y-m-d H:i:s'),
+        ]);
+
+        M('coupon_friend_log')->where(['coupon_id' => $_POST['id']])->save([
+            'status' => 'used',
+        ]);
+        $this->ajaxReturn(codeReturn(0));
     }
 
     public function addCoupon()
