@@ -9,6 +9,57 @@ $(function () {
 
     //会员首页
     $(document).on("pageInit", "#page-vip-index", function (e, id, page) {
+        
+        var timeFlag = 0;
+        var freeTime = 60;
+        var time = freeTime;
+
+        setInterval(function () {
+            if (timeFlag == 1) {
+                time = time - 1;
+                if (time <= 0) {
+                    time = freeTime;
+                    getQr();
+                }
+                $(".open-qrcode .shuaxin span").html(time);
+            }
+        }, 1000);
+
+        $(".qrcode_img").click(function () {
+            getQr();
+            $(".mask, .open-qrcode").show();
+        });
+
+        $(".open-qrcode .close").click(function () {
+            timeFlag = 0;
+            $(".mask, .open-qrcode").hide();
+        });
+
+        $(".shuaxin").click(function(){
+            getQr();
+        });
+        
+        function getQr()
+        {
+            $.showIndicator()
+            $.ajax({
+                type: 'GET',
+                data: { },
+                url: 'index.php?m=Home&c=Vip&a=getQrcode',
+                success: function (res) {
+                    if (res.code == 0) {
+                        timeFlag = 1;
+                        time = freeTime;
+                        $('.open-qrcode .barcode').attr('src', res.data.code1);
+                        $('.open-qrcode .qr').attr('src', res.data.code2);
+                    } else {
+                        $.alert(res.msg, '提示');
+                    }
+                    $.hideIndicator();
+                }
+            });
+        }
+
         $(".no-vip").click(function () {
             $.alert('开通会员后查看权益', '提示');
         });
@@ -51,12 +102,12 @@ $(function () {
                 if (res.data.card.length > 0) {
                     res.data.card.forEach(function (item) {
                         html += '<div class="card-list" style="background:url(' + item.background + ') 0 0 no-repeat;background-size:100% 100%;">';
-                        html += '<p class="quanyi">查看会员权益 ></p>';
-                        html += '<p class="bottom-left"></p>';
+                        html += '<p class="quanyi" style="background:'+item.color+'">查看会员权益 ></p>';
+                        html += '<p class="bottom-left">尚未开通</p>';
                         html += '<img src="' + res.data.user.avatar + '" class="headimg" />';
                         html += '<span class="name">' + res.data.user.nickname + '</span>';
-                        html += '<span class="vip-level">' + item.title + '</span>';
-                        html += "<a class='button open' onclick='' data-data='" + JSON.stringify(item) +"'>马上开通</a>";
+                        // html += '<span class="vip-level">' + item.title + '</span>';
+                        html += "<a class='button open' onclick='' data-data='" + JSON.stringify(item) +"' style='background:"+item.color+"'>马上开通</a>";
                         html += '</div>';
                     });
                 }
@@ -69,7 +120,7 @@ $(function () {
             }
         })
 
-        $(".open-vip .open").click(function(){
+        $(".open-vip .vip_open").click(function(){
             $.showIndicator()
             $.ajax({
                 type: 'POST',
@@ -95,7 +146,20 @@ $(function () {
         $("#page-vip-card .open").die("click").live('click', function() {
             var data = JSON.parse($(this).data('data'));
             $(".open-vip [name='id']").val(data.id);
-            $(".open-vip .img").attr('src', data.open_background);
+            $(".open-vip .card-list").css('background', 'url('+data.background+') 0 0 no-repeat')
+            $(".open-vip .card-list").css('background-size', '100% 100%');
+            $(".open-vip .quanyi").css('background', data.color);
+            $(".open-vip .open").css('background', data.color);
+            $(".open-vip .vip_title").html('欢迎开通'+data.title);
+            if (data.amount == 0) {
+                $(".open-vip .vip_amount").html('免费');
+            } else {
+                $(".open-vip .vip_amount").html((data.amount / 100).toFixed(2));
+            }
+            var give = JSON.parse(data.give);
+            if (give.balance.amount > 0) {
+                $(".open-vip .vip_zs").html('充值赠送' + give.balance.amount);
+            }
             $(".mask, .open-vip").show();
         });
 
@@ -164,6 +228,91 @@ $(function () {
                 }
             })
         });
+    });
+
+
+    $(document).on("pageInit", "#page-vip-coupon-receive", function (e, id, page) {
+
+        $(".close").click(function(){
+            $(".mask, .coupon_success").hide();
+        });
+
+        $(".receive").die("click").live('click', function () {
+            var id = $(this).attr('data-id');
+            $.showIndicator()
+            $.ajax({
+                type: 'GET',
+                data: {id:id},
+                url: 'index.php?m=Home&c=Vip&a=receive',
+                success: function (res) {
+                    if (res.code == 0) {
+                        loadData();
+                        $(".mask, .coupon_success").show();
+                    } else {
+                        $.alert(res.msg, '提示');
+                    }
+                    $.hideIndicator();
+                }
+            });
+        });
+        loadData();
+        function loadData()
+        {
+            $.showIndicator()
+            $.ajax({
+                type: 'GET',
+                data: { },
+                url: 'index.php?m=Home&c=Vip&a=getCouponBatch',
+                success: function (res) {
+                    var html = '';
+
+                    res.data.forEach(function (item) {
+                        html += '<div class="coupon-list">';
+                        html += '<div class="left">';
+                        var style = item.condition_amount == 0 ? 'style="margin-top:15px"' : '';
+                        if (item.type == 'discount') {
+                            if (item.rate % 10 == 0) {
+                                item.rate = item.rate / 10;
+                            }
+                            html += '<p class="money" ' + style + '><span>' + item.rate + '折</span></p>';
+                        } else {
+                            html += '<p class="money" ' + style + '>¥<span>' + item.rate + '</span></p>';
+                        }
+                        if (item.condition_amount > 0) {
+                            html += '<p class="message">满' + item.condition_amount + '可用</p>';
+                        }
+                        html += '</div>';
+                        html += '<div class="middle">';
+                        html += '<p class="tt">有效期</p>';
+                        html += '<p class="time">' + item.start_time.substring(0, 10) + ' - ' + item.end_time.substring(0, 10) + '</p>';
+                        if (item.type == 'discount') {
+                            html += '<span class="type">折扣券</span>';
+                        }
+                        if (item.type == 'minus') {
+                            html += '<span class="type">优惠券</span>';
+                        }
+                        html += '</div>';
+                        html += '<div class="right receive" data-id="'+item.id+'">';
+                        html += '<p>立</p>';
+                        html += '<p>即</p>';
+                        html += '<p>领</p>';
+                        html += '<p>取</p>';
+                        html += '</div>';
+                        html += '</div>';
+                    });
+
+                    if (html == '') {
+                        $(".empty").show();
+                    } else {
+                        $(".empty").hide();
+                    }
+
+                    $(".datalist").html(html);
+                    $.hideIndicator();
+                }
+            });
+        }
+        
     });
 
     //会员优惠券列表页
@@ -250,9 +399,9 @@ $(function () {
                     }
 
                     if (status == 'receive') {
-                        $('.datalist').css('opacity', '1');
+                        $('.datalist').removeClass('none');
                     } else {
-                        $('.datalist').css('opacity', '0.5');
+                        $('.datalist').addClass('none');
                     }
 
                     $(".datalist").html(html);

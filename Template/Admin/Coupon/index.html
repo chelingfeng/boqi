@@ -172,6 +172,12 @@
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <td class="require">条件</td>
+                                                <td>
+                                                    满 <input type="text" name="condition_amount" style="width: 60px" value="0"> <span class="">元可用</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td class="require">是否为朋友的券</td>
                                                 <td>
                                                     <select name="is_friend">
@@ -325,6 +331,7 @@
                 number: $("#add_card [name='number']").val(),
                 starttime: $("#add_card [name='starttime']").val(),
                 endtime: $("#add_card [name='endtime']").val(),
+                condition_amount: $("#add_card [name='condition_amount']").val(),
             }
             if(data.title == ''){
                 swal({title: "提示", text: "名称不能为空", type: "warning"}, function(){
@@ -341,6 +348,12 @@
             if(data.rate == ''){
                 swal({title: "提示", text: "优惠额不能为空", type: "warning"}, function(){
                    
+                });
+                return false;
+            }
+            if (data.condition_amount == '') {
+                swal({ title: "提示", text: "条件不能为空", type: "warning" }, function () {
+
                 });
                 return false;
             }

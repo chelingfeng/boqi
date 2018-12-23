@@ -1,0 +1,122 @@
+<extend name="Public/__base" />
+<block name="body">
+
+    <div class="page-main" style="left:170px;top:50px;">
+
+        <div class="history-container ng-scope">
+            <a class="return-btn" onclick="history.go(-1)">
+                <i class="ALiconfont icon-sortleft"></i> 返回
+            </a>
+            <ul class="history-list">
+                <li><a href="javascript:void(0)">系统设置</a></li>
+                <li>系统设置</li>
+            </ul>
+        </div>
+
+        <div class="page-tabs" style="top:50px;">
+
+            <ul class="page-tabs-nav" id="changeaction">
+                <li class="" onclick="location.href='{:U('index')}'">管理员管理</li>
+                <li class="active" onclick="location.href='{:U('setting')}'">系统设置</li>
+                <li onclick="location.href='{:U('backDb')}'">数据备份</li>
+            </ul>
+
+            <ul class="page-tabs-container" style="background-color:#fff;margin-top:-1px">
+                <li class="fadeIn animated active">
+                    <form method="post" action="">
+                        <table class="table-form table-bordered bg-white">
+                            <tbody>
+                                <tr>
+                                    <td class="" width="150">商家名称</td>
+                                    <td>
+                                        <input name="title" type="text" style="width: 300px" value="{:setting('system')['title']}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="" width="150">AppID(小程序ID)</td>
+                                    <td>
+                                        <input name="appid" type="text" style="width: 300px" value="{:setting('system')['appid']}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="" width="150">AppSecret(小程序密钥)</td>
+                                    <td>
+                                        <input name="secret" type="text" style="width: 300px" value="{:setting('system')['secret']}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="" width="150">支付商户号</td>
+                                    <td>
+                                        <input name="mch_id" type="text" style="width: 300px" value="{:setting('system')['mch_id']}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="" width="150">支付密钥</td>
+                                    <td>
+                                        <input name="api_key" type="text" style="width: 300px" value="{:setting('system')['api_key']}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="" width="150">未开通会员背景图片</td>
+                                    <td>
+                                        <img src="{:setting('system')['vip_none']}" class="background" style="width: 320px;height: 188.5px;" />
+                                        <a class="btn btn-default upload_action">点击上传</a>
+                                        <br />建议大小：640px * 377px
+                                        <input name="vip_none" type="hidden" class="background_hidden" value="{:setting('system')['vip_none']}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <button class="btn btn-success submit">保存</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </li>
+            </ul>
+
+            
+
+        </div>
+    </div>
+    <form style="display: none;" enctype="multipart/form-data" class="fileform">
+        <input type="file" name="img">
+    </form>
+
+
+    <script type="text/javascript">
+        $(function () {
+            var index;
+            $("input[name='img']").change(function () {
+                if ($(this).val() == '') return false;
+                $(".loading").show();
+                $.ajax({
+                    url: "{:U('Admin/Index/upload')}",
+                    type: 'POST',
+                    cache: false,
+                    data: new FormData($('.fileform')[0]),
+                    processData: false,
+                    contentType: false
+                }).done(function (res) {
+                    if (res.code == 0) {
+                        $(".background_hidden:eq(" + index + ")").val(res.data.imgurl);
+                        $(".background:eq(" + index + ")").attr('src', res.data.imgurl);
+                        $(".background:eq(" + index + ")").show();
+                    } else {
+                        swal("提示", res.msg, "warning");
+                    }
+                    $(".loading").hide();
+                });
+            });
+
+            $(".upload_action").click(function () {
+                index = $('.upload_action').index(this);
+                $("input[name='img']").trigger('click');
+            });
+
+
+        });
+    </script>
+</block>

@@ -3,3 +3,4 @@
 /db_back
 /Runtime
 /web
+/Application/Common/Conf/config_db.php

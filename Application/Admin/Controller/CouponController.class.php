@@ -56,6 +56,19 @@ class CouponController extends CommonController
 
     public function addCoupon()
     {
+        $data = [
+            'prefix' => $_POST['prefix'],
+            'title' => $_POST['title'],
+            'type' => $_POST['type'],
+            'rate' => $_POST['rate'],
+            'is_friend' => $_POST['is_friend'],
+            'number' => $_POST['number'],
+            'create_time' => date('Y-m-d H:i:s'),
+            'condition_amount' => $_POST['condition_amount'],
+            'start_time' => $_POST['starttime'],
+            'end_time' => $_POST['endtime'],
+        ];
+        $_POST['batch_id'] = M('coupon_batch')->add($data);
         createCoupon($_POST);
         $this->ajaxReturn(codeReturn(0));
     }

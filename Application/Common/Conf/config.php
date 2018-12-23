@@ -1,25 +1,12 @@
 <?php
-return array(
+$db = require __DIR__.'/config_db.php';
 
-    //数据库配置信息
-    'DB_TYPE'   => 'mysql', // 数据库类型
-    'DB_HOST'   => '127.0.0.1', // 服务器地址
-    'DB_NAME'   => 'boqi', // 数据库名
-    'DB_USER'   => 'root', // 用户名
-    'DB_PWD'    => '', // 密码
-    'DB_PORT'   => 3306, // 端口
-    'DB_PREFIX' => 'a_', // 数据库表前缀 
-
+return array_merge($db, array(
     'PAGESIZEADMIN'  => 10, // 后台分页大小 
 
     'LOG_RECORD'            =>   true, // 开启日志记录
     'LOG_LEVEL'             =>   'EMERG,ALERT,CRIT,ERR', // 只记录EMERG ALERT CRIT ERR 错误
     'URL_MODEL'             => 0,     //普通模式
-
-    'appid' => 'wx750670c7ead4c768',
-    'secret' => '4c21d33010487ff88aaa85027245172e',
-    'mch_id' => '1515697431',
-    'api_key' => 'phyx2018phyx2018phyx2018phyx2018',
   
     'CODELIST' => array(
         0       => 'ok',
@@ -27,6 +14,7 @@ return array(
         10002   => '系统繁忙，请稍后再试',
         10003   => '用户名已存在',
         10004   => '该优惠券无法核销',
+        10005   => '金额不足',
 
         20001 => '余额不足，请充值！',
         20002 => '您的等级已经大于当前等级',
@@ -34,6 +22,8 @@ return array(
         20004 => '订单不存在',
         20005 => '该订单无法支付',
         20006 => '支付失败',
+        20007 => '优惠券已领完',
+        20008 => '已经领取过了',
     ),
 
     'coupon_status' => [
@@ -60,5 +50,5 @@ return array(
 
     'index_tips' => '',
 
-    'version' => time(),
-);
+    'version' => 'v1.0.3',
+));

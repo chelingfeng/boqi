@@ -128,6 +128,12 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td class="require">颜色代码</td>
+                                                    <td>
+                                                        <input type="text" name="color" value="">
+                                                    </td>
+                                                </tr>
+                                                <tr style="display:none">
                                                     <td class="require">开通背景图</td>
                                                     <td>
                                                         <img src="" class="background" style="width: 289px;height: 308px;display: none" />
@@ -210,6 +216,12 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td class="require">颜色代码</td>
+                                                    <td>
+                                                        <input type="text" name="color" value="">
+                                                    </td>
+                                                </tr>
+                                                <tr style="display:none">
                                                     <td class="require">开通背景图</td>
                                                     <td>
                                                         <img src="" class="background" style="width: 289px;height: 308px;" />
@@ -303,6 +315,7 @@
                             $("#edit_card .background:eq(1)").attr('src', data.data.open_background);
                             $("#edit_card [name='amount']").val(data.data.amount / 100);
                             $("#edit_card [name='discount']").val(data.data.discount);
+                            $("#edit_card [name='color']").val(data.data.color);
                             var give = JSON.parse(data.data.give);
                             $("#edit_card [name='balance_amount']").val(give.balance.amount);
                             $("#edit_card [name='coupon_friend_num']").val(give.coupon_friend.number);
@@ -327,6 +340,7 @@
                     discount: $("#add_card [name='discount']").val(),
                     background: $("#add_card [name='background']:eq(0)").val(),
                     open_background: $("#add_card [name='background']:eq(1)").val(),
+                    color: $("#add_card [name='color']").val(),
                 };
                 if(data.title == ''){
                     swal({title: "提示", text: "等级名称不能为空", type: "warning"}, function(){
@@ -358,12 +372,18 @@
                     });
                     return false;
                 }
-                if (data.open_background == '') {
-                    swal({ title: "提示", text: "开通背景图片不能为空", type: "warning" }, function () {
-
+                if (data.color == '') {
+                    swal({ title: "提示", text: "颜色代码不能为空", type: "warning" }, function () {
+                        $("#add_card [name='color']").focus();
                     });
                     return false;
                 }
+                // if (data.open_background == '') {
+                //     swal({ title: "提示", text: "开通背景图片不能为空", type: "warning" }, function () {
+
+                //     });
+                //     return false;
+                // }
                 var give = {
                     balance: {'amount':$("#add_card [name='balance_amount']").val()},
                     coupon_friend: {number:$("#add_card [name='coupon_friend_num']").val(), amount:$("#add_card [name='coupon_friend_amount']").val()},
@@ -429,6 +449,7 @@
                     discount: $("#edit_card [name='discount']").val(),
                     background: $("#edit_card [name='background']:eq(0)").val(),
                     open_background: $("#edit_card [name='background']:eq(1)").val(),
+                    color: $("#edit_card [name='color']").val(),
                 };
                 if(data.title == ''){
                     swal({title: "提示", text: "等级名称不能为空", type: "warning"}, function(){
@@ -460,12 +481,18 @@
                     });
                     return false;
                 }
-                if (data.open_background == '') {
-                    swal({ title: "提示", text: "开通背景图片不能为空", type: "warning" }, function () {
-
+                if (data.color == '') {
+                    swal({ title: "提示", text: "颜色代码不能为空", type: "warning" }, function () {
+                        $("#edit_card [name='color']").focus();
                     });
                     return false;
                 }
+                // if (data.open_background == '') {
+                //     swal({ title: "提示", text: "开通背景图片不能为空", type: "warning" }, function () {
+
+                //     });
+                //     return false;
+                // }
                 var give = {
                     balance: {'amount':$("#edit_card [name='balance_amount']").val()},
                     coupon_friend: {number:$("#edit_card [name='coupon_friend_num']").val(), amount:$("#edit_card [name='coupon_friend_amount']").val()},

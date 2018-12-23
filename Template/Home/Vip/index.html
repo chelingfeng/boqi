@@ -6,20 +6,28 @@
 
             <include file="Common/__nav" />
 
+            <div class="mask"></div>
+            <div class="open-qrcode">
+                <img src="" class="barcode" />
+                <img src="" class="qr" />
+                <div class="shuaxin"><span>60</span>s 点击刷新</div>
+                <div class="close iconfont icon-guanbi"></div>
+            </div>
+
             <div class="content">
                 
                 <?php if($user['vip_level_id']){ ?>
                 <div class="card-list" style="background:url({$user.vip_level.background}) 0 0 no-repeat;background-size:100% 100%;">
-                    <p class="quanyi">查看会员权益 ></p>
+                    <p class="quanyi" style="background:{$user.vip_level.color}">查看会员权益 ></p>
                     <p class="bottom-left"></p>
                     <p class="bottom-right">ID:{$user.card_sn}</p>
                     <img src="{$user.avatar}" class="headimg" />
-                    <span class="name">{$user.nickname}</span>
-                    <span class="vip-level">{$user.vip_level.title}</span>
-                    <span class="iconfont icon-erweima qucode qidai"></span>
+                    <span class="name" style="top:90px;color:#b19452">{$user.nickname}</span>
+                    <span class="vip-level" style="color:#716b6b">{$user.vip_level.title}</span>
+                    <img src="__PUBLIC__/wx/img/qrcode.png" class="qrcode_img"/>
                 </div>
                 <?php } else { ?>
-                    <div class="card-list none-vip" style="background:url(__PUBLIC__/wx/img/none-vip.jpg) 0 0 no-repeat;background-size:100% 100%;">
+                    <div class="card-list none-vip" style="background:url({:setting('system')['vip_none']}) 0 0 no-repeat;background-size:100% 100%;">
                         <p class="quanyi no-vip">查看会员权益 ></p>
                         <p class="bottom-left"></p>
                         <img src="{$user.avatar}" class="headimg" />

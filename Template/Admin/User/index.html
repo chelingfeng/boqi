@@ -78,6 +78,7 @@
                                 <td>
                                     <a class="btn btn-info btn-xs detail" data-id="{$v.id}">查看信息</a>
                                     <!-- <a class="btn btn-info btn-xs cashflow" data-id="{$v.id}">消费查询</a> -->
+                                    <a class="btn btn-success btn-xs outflow" data-id="{$v.id}">扣款</a>
                                 </td>
                             </tr> 
                             <?php } ?>
@@ -169,12 +170,105 @@
     </div>
 </div>
 
+<div class="info-card fadeIn animated ng-scope" id="outflow_card">
+    <div class="info-card-wrapper">
+        <div class="info-card-dialog">
+            <div class="info-card-content">
+                <div class="panel panel-info">
+                    <div class="panel-heading"> 扣款
+                        <a class="info-card-close"><i class="ALiconfont icon-close"></i></a>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-tabs">
+                            <ul class="form-tabs-container">
+                                <li class="fadeIn animated active">
+                                    <table class="table-bordered bg-white table-form">
+                                        <tbody>
+                                            <tr>
+                                                <td class="require">金额</td>
+                                                <td>
+                                                    <input type="number" name="amount" value="">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="">备注</td>
+                                                <td>
+                                                    <input type="text" name="remark" value="">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td-btn-box" colspan="2">
+                                                    <input type="hidden" name="id" value="" />
+                                                    <a class="btn btn-info" id="outflow_action">确定</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript">
     $(function(){
 
+        $(".outflow").click(function(){
+            $("#outflow_card [name='id']").val($(this).attr('data-id'));
+            $("#outflow_card").addClass('show');
+        });
+
         $("#vip_level_id").change(function(){
             $("#formsubmit").submit();
+        });
+
+        $("#outflow_action").click(function(){
+            var id = $("#outflow_card [name='id']").val();
+            var remark = $("#outflow_card [name='remark']").val();
+            var amount = $("#outflow_card [name='amount']").val();
+            if (amount == '') {
+                swal({ title: "提示", text: "金额不能为空", type: "warning" }, function () {
+                    $("#outflow_card [name='amount']").focus();
+                });
+                return false;
+            }
+            if (amount <= 0) {
+                swal({ title: "提示", text: "金额必须大于0", type: "warning" }, function () {
+                    $("#outflow_card [name='amount']").focus();
+                });
+                return false;
+            }
+            swal({
+                title: "提示",
+                text: "确定要扣款吗？",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                cancelButtonText: '取消',
+                confirmButtonText: '确定'
+            }, function () {
+                $(".loading").show();
+                $.ajax({
+                    url: "{:U('outflow')}",
+                    type: 'POST',
+                    data: { id: id, amount:amount, remark:remark},
+                    success: function (data) {
+                        if (data.code == 0) {
+                            swal({ title: "提示", text: "扣款成功", type: "success", timer: 1500, }, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            swal("提示", data.msg, "warning");
+                        }
+                        $(".loading").hide();
+                    }
+                })
+            });
         });
 
         //详情

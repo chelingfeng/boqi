@@ -47,6 +47,24 @@ class UserController extends CommonController
         $this->display();
     }
 
+    public function outflow()
+    {
+        $user = M('user')->where(['id' => $_POST['id']])->find();
+        if ($user['balance'] - ($_POST['amount'] * 100) < 0) {
+            $this->ajaxReturn(codeReturn(10005));
+        }
+        M('user')->where(['id' => $_POST['id']])->setDec('balance', $_POST['amount'] * 100);
+        M('cash_flow')->add([
+            'type' => 'outflow',
+            'title' => '消费',
+            'user_id' => $_POST['id'],
+            'amount' => $_POST['amount'] * 100,
+            'balance' => M('user')->where(['id' => $_POST['id']])->getField('balance'),
+            'create_time' => date('Y-m-d H:i:s'),
+        ]);
+        $this->ajaxReturn(codeReturn(0));
+    }
+
     public function getVipLevels()
     {
         return M('vip_level')->where(['del' => 0])->order('seq ASC, id DESC')->select();

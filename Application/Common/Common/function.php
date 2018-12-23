@@ -68,6 +68,29 @@ function createOrder($fields)
     return $order;
 }
 
+function setting($type) {
+    return json_decode(
+       M('setting')->where(['type' => $type])->find()['val'], true
+    );
+}
+
+function setSetting($type, $val) {
+    $data = M('setting')->where(['type' => $type])->find();
+    if ($data) {
+        M('setting')->where(['id' => $data['id']])->save([
+            'update_time' => date('Y-m-d H:i:s'),
+            'val' => json_encode($val),
+        ]);
+    } else {
+        M('setting')->add([
+            'create_time' => date('Y-m-d H:i:s'),
+            'update_time' => date('Y-m-d H:i:s'),
+            'type' => $type,
+            'val' => json_encode($val),
+        ]);
+    }
+}
+
 function createCoupon($data)
 {
     for ($i = 1; $i <= $data['number']; $i++) {
@@ -82,6 +105,7 @@ function createCoupon($data)
             'user_id' => $data['user_id'] ?? 0,
             'end_time' => $data['endtime'],
             'start_time' => $data['starttime'],
+            'batch_id' => $data['batch_id'] ?? 0,
         ];
         if ($data['user_id']) {
             $d['status'] = 'receive';

@@ -2,12 +2,27 @@
 
 namespace Home\Controller;
 use Codeages\Biz\Framework\Util\ArrayToolkit;
+use Endroid\QrCode\QrCode;
 
 class VipController extends CommonController {
     
     public function index(){
         $this->assign('user', $this->getUserInfo());
        	$this->display();
+    }
+
+    public function getQrcode()
+    {
+        $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+        $code1 = 'data:image/png;base64,' . base64_encode($generator->getBarcode(time(), $generator::TYPE_CODE_128));
+
+        $qrCode = new QrCode(time());
+        $code2 = 'data:image/png;base64,'. base64_encode($qrCode->writeString());
+
+        $this->ajaxReturn(codeReturn(0, [
+            'code1' => $code1,
+            'code2' => $code2,
+        ]));
     }
 
     private function getUserInfo()
@@ -168,7 +183,7 @@ class VipController extends CommonController {
         // } else {
         //     $seq = 0;
         // }
-        $data['card'] = M('vip_level')->where('del = 0')->order('seq')->select();
+        $data['card'] = M('vip_level')->where('del = 0')->order('seq, id DESC')->select();
         $this->ajaxReturn(codeReturn(0, $data));
     }
 
@@ -203,6 +218,51 @@ class VipController extends CommonController {
         } else {
             $this->ajaxReturn(codeReturn(20003));
         }
+    }
+
+    public function couponReceive()
+    {
+        $this->display();
+    }
+
+    public function getCouponBatch()
+    {
+        if (IS_AJAX) {
+            $coupons = M('coupon_batch')->where([
+                'end_time' => ['gt', date('Y-m-d H:i:s')],
+            ])->order('id DESC')->select();
+            foreach ($coupons as $key => $coupon) {
+                $a = M('coupon')->where(['status' => ['neq', 'unreceive'], 'batch_id' => $coupon['id']])->count();
+                if ($a >= $coupon['number']) {
+                    unset($coupons[$key]);
+                }
+                $b = M('coupon')->where(['user_id' => session('user.id'), 'batch_id' => $coupon['id']])->find();
+                if ($b) {
+                    unset($coupons[$key]);
+                }
+            }
+            $this->ajaxReturn(codeReturn(0, array_values($coupons)));
+        }
+    }
+
+    public function receive()
+    {
+        $batch = M('coupon_batch')->where(['id' => $_GET['id']])->find();
+        $a = M('coupon')->where(['status' => ['neq', 'unreceive'], 'batch_id' => $coupon['id']])->count();
+        if ($a >= $batch['number']) {
+            $this->ajaxReturn(codeReturn(20007));
+        }
+        $b = M('coupon')->where(['user_id' => session('user.id'), 'batch_id' => $batch['id']])->find();
+        if ($b) {
+            $this->ajaxReturn(codeReturn(20008));
+        }
+        $coupon = M('coupon')->where(['status' => 'unreceive', 'batch_id' => $batch['id']])->find();
+        M('coupon')->where(['id' => $coupon['id']])->save([
+            'status' => 'receive',
+            'user_id' => session('user.id'),
+            'receivetime' => date('Y-m-d H:i:s')
+        ]);
+        $this->ajaxReturn(codeReturn(0));
     }
 
     public function getMessage()

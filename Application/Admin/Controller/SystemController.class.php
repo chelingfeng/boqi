@@ -24,6 +24,14 @@ class SystemController extends CommonController{
         $this->display();
     }
 
+    public function setting()
+    {   
+        if (IS_POST) {
+            setSetting('system', $_POST);
+        }
+        $this->display();
+    }
+
     public function addAdmin(){
         if (M('admin')->where(['username' => $_POST['username']])->find()) {
             $this->ajaxReturn(codeReturn(10003));

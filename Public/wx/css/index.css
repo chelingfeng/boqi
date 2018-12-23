@@ -1,11 +1,11 @@
 .bar-tab .tab-item.active {
-	color: #b09552;
-	border-bottom: 2px solid #b09552;
+	color: #f9bf1f;
+	border-bottom: 2px solid #f9bf1f;
 }
 
 .buttons-tab .button.active {
-	color: #b09552;
-    border-color: #b09552;
+	color: #f9bf1f;
+	border-color:#525252;
     z-index: 100;
 }
 
@@ -59,7 +59,7 @@
 
 .qianbao-list .qianbao {
 	font-size: 2.5rem;
-	color: #b19653
+	color: #f9bf1f
 }
 
 .qianbao-list .item-title {
@@ -95,8 +95,8 @@
 }
 
 .coupon-tab .button.active{
-	border-bottom:0;
-	color: #525252;
+	border-bottom-color:#f9bf1f;
+	color: #f9bf1f;
 }
 
 .empty {
@@ -143,7 +143,7 @@
 	width: 15%;
 	float: left;
 	margin-right: 0px;
-	background: #525252;
+	background: #f9bf1f;
 	color: #fff;
 	border-top-right-radius: 0.4rem;
 	border-bottom-right-radius: 0.4rem;
@@ -193,7 +193,7 @@
 	margin: 0;
     margin-top: 20px;
     position: absolute;
-    background: #b09552;
+    background: #f9bf1f;
 	color: #fff;
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
@@ -234,10 +234,10 @@
 .card-list .name {
 	position: absolute;
     display: block;
-    top: 86px;
+    top: 100px;
     left: 87px;
-    color: #b09552;
-    font-size: 1rem;
+    color: #515350;
+    font-size: 0.8rem;
 }
 
 .card-list .vip-level {
@@ -249,7 +249,7 @@
     font-size: 0.7rem;
 }
 
-.card-list .qucode {
+.card-list .qrcode {
 	font-size: 2.5rem;
 	color: #dfdfde;
 	right: 15px;
@@ -257,10 +257,17 @@
 	top:70px;
 }
 
+.card-list .qrcode_img {
+	position: absolute;
+    right: 0;
+    top: 0;
+    width: 3rem;
+}
+
 .card-list .open {
 	position: absolute;
     right: 15px;
-	background: #b09552;
+	background: #f9bf1f;
 	color:#fff;
     border-radius: 10px;
 	top: 97px;
@@ -327,7 +334,7 @@
 }
 
 .index-card-list .card-index .income {
-	color: #b09552;
+	color: #f9bf1f;
 	margin: 0px;
 	font-size: 0.6rem;
 }
@@ -347,7 +354,7 @@
 
 .index-money {
 	font-size: 1.4rem;
-	color: #b09552;
+	color: #f9bf1f;
 }
 
 .index-money span {
@@ -358,13 +365,13 @@
 
 .index-activity {
 	font-size: 1rem;
-	color: #b09552;
+	color: #f9bf1f;
 }
 
 
 .index-order .btn {
-	color: #b09552;
-    border: 1px solid #b09552;
+	color: #f9bf1f;
+    border: 1px solid #f9bf1f;
     border-radius: 10px;
     padding: 4px 10px;
 }
@@ -397,6 +404,9 @@
 	top:15%;
 	z-index: 10601;
 	display: none;
+	background: #fff;
+	height: 21.5rem;
+	border-radius: 0.8rem;
 }
 
 .open-vip .img {
@@ -404,26 +414,54 @@
 	float: left;
 }
 
-.open-vip .open {
-	width:50%;
-	margin-left: 25%;
-	background-color: #ddc1a5;
+.open-vip .vip_open {
+	width:80%;
+	margin-left: 10%;
+	background-color: #f9bf1f;
 	height: 2rem;
 	border-radius: 0.65rem;
-	color: #734b34;
+	color: #fff;
 	line-height: 2rem;
 	text-align: center;
 	font-size: 0.7rem;
-	bottom: 15%;
-	position: absolute;
 }
 
 .open-vip .close {
 	position: absolute;
-	color: #fff;
-	font-size: 1.5rem;
-	bottom: -15%;
-	left:45%;
+    color: #fff;
+    font-size: 1.5rem;
+    bottom: -15%;
+	left: 45%;
+	border: 1px solid #ccc;
+	border-radius: 50%;
+	width: 2rem;
+	height: 2rem;
+	line-height: 2rem;
+	text-align: center;
+	background: #ccc;
+}
+
+.open-vip .vip_title {
+	text-align: center;
+	font-weight: 300;
+	margin: 0;
+	margin-top: 0.8rem;
+}
+
+.open-vip .vip_amount {
+	color:#b39453;
+	font-size: 2.2rem;
+	text-align: center;
+	margin: 0;
+}
+
+.open-vip .vip_zs {
+	text-align: center;
+	color:#b39453;
+	margin: 0;
+	font-size: 0.8rem;
+	font-weight: 300;
+	margin-bottom: 0.5rem;
 }
 
 .coupon_use {
@@ -440,7 +478,7 @@
 
 .coupon_use .tt {
 	text-align: center;
-	color: #b09552;
+	color: #f9bf1f;
 	font-size:1.2rem;
 	margin-bottom: 0.5rem;
 }
@@ -453,7 +491,7 @@
 }
 
 .coupon_use .code {
-	color: #b09552;
+	color: #f9bf1f;
 	margin: 1rem 16%;
 	height: 1.8rem;
 	line-height: 1.8rem;
@@ -469,8 +507,159 @@
 	line-height: 1.5rem;
 	border-radius: 0.75rem;
 	text-align: center;
-	background: #b09552;
+	background: #f9bf1f;
 	font-size:0.7rem;
 	color: #fff;
 	margin-top:2rem;
+}
+
+.datalist.none {
+	opacity: 0.5;
+}
+.datalist.none .right {
+	background: #525252;
+}
+
+.coupon_receive_btn {
+	position: fixed;
+	width: 100%;
+	background: #f9bf1f;
+	color: #fff;
+	height: 2rem;
+	line-height: 2rem;
+	text-align: center;
+	bottom: 0px;
+}
+
+.coupon_success {
+	display: none;
+	position: absolute;
+	width: 90%;
+	left:5%;
+	top:25%;
+	background: #fff;
+	z-index: 10601;
+	height: 12rem;
+	border-radius: 0.8rem;
+}
+
+.coupon_success .tt {
+	text-align: center;
+	color: #f9bf1f;
+	font-size:1.2rem;
+	margin-bottom: 0.5rem;
+}
+
+.coupon_success .tips {
+	text-align: center;
+	color: #7d7d7d;
+	font-size:0.7rem;
+	margin:0;
+}
+
+.coupon_success .code {
+	color: #f9bf1f;
+	margin: 1rem 16%;
+	height: 1.8rem;
+	line-height: 1.8rem;
+	border-radius: 0.75rem;
+	text-align: center;
+	border:1px solid #7d7d7d;
+}
+
+.coupon_success .btn {
+	color: #7d7d7d;
+	margin: 1rem 20%;
+	height: 1.5rem;
+	line-height: 1.5rem;
+	border-radius: 0.75rem;
+	text-align: center;
+	background: #f9bf1f;
+	font-size:0.7rem;
+	color: #fff;
+	display: block;
+}
+
+.coupon_success .close {
+	position: absolute;
+    color: #fff;
+    font-size: 1.5rem;
+    bottom: -23%;
+	left: 45%;
+	border: 1px solid #ccc;
+	border-radius: 50%;
+	width: 2rem;
+	height: 2rem;
+	line-height: 2rem;
+	text-align: center;
+	background: #ccc;
+}
+
+.coupon_success .success {
+	background: #06c951;
+    width: 4rem;
+    margin: 0 auto;
+    border-radius: 50%;
+    height: 4rem;
+	margin-top: 1rem;
+	text-align: center;
+    color: #fff;
+    line-height: 4rem;
+}
+
+.coupon_success .success span {
+	font-size: 2rem;
+}
+
+.open-qrcode {
+	position: absolute;
+	width: 90%;
+	left:5%;
+	top:15%;
+	z-index: 10601;
+	display: none;
+	background: #fff;
+	height: 20.5rem;
+	border-radius: 0.8rem;
+}
+
+.open-qrcode .close {
+	position: absolute;
+    color: #fff;
+    font-size: 1.5rem;
+    bottom: -15%;
+	left: 45%;
+	border: 1px solid #ccc;
+	border-radius: 50%;
+	width: 2rem;
+	height: 2rem;
+	line-height: 2rem;
+	text-align: center;
+	background: #ccc;
+}
+
+.open-qrcode .barcode {
+	width: 80%;
+	margin-left:10%;
+	height: 3rem;;
+	margin-top: 1.5rem;
+	margin-bottom: 1rem;
+}
+
+.open-qrcode .qr {
+	width: 50%;
+	margin-left: 25%;
+	margin-bottom: 2rem;
+}
+
+.open-qrcode .shuaxin {
+	width:50%;
+	margin-left: 25%;
+	height: 2rem;
+	border-radius: 0.65rem;
+	color: #b39453;
+	line-height: 2rem;
+	text-align: center;
+	font-size: 0.7rem;
+	border:1px solid #b39453;
 }

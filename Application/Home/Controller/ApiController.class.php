@@ -61,9 +61,9 @@ class ApiController extends Controller {
 		}
 
 		$gateway = Omnipay::create('WechatPay_Js');
-		$gateway->setAppId(C('appid'));
-		$gateway->setMchId(C('mch_id'));
-		$gateway->setApiKey(C('api_key'));
+		$gateway->setAppId(setting('system')['appid']);
+		$gateway->setMchId(setting('system')['mch_id']);
+		$gateway->setApiKey(setting('system')['api_key']);
 
 		$out_trade_no = generateSn();
 		$payOrder = [
@@ -108,9 +108,9 @@ class ApiController extends Controller {
 	public function wechatCallback()
 	{
 		$gateway = Omnipay::create('WechatPay');
-		$gateway->setAppId(C('appid'));
-		$gateway->setMchId(C('mch_id'));
-		$gateway->setApiKey(C('api_key'));
+		$gateway->setAppId(setting('system')['appid']);
+		$gateway->setMchId(setting('system')['mch_id']);
+		$gateway->setApiKey(setting('system')['api_key']);
 
 		$response = $gateway->completePurchase([
 			'request_params' => file_get_contents('php://input')
@@ -133,8 +133,8 @@ class ApiController extends Controller {
 	private function getOpenid($code)
 	{
 		$client = new Client();
-		$appid = C('appid');
-		$secret = C('secret');
+		$appid = setting('system')['appid'];
+		$secret = setting('system')['secret'];
 		$url = "https://api.weixin.qq.com/sns/jscode2session?appid={$appid}&secret={$secret}&js_code={$code}&grant_type=authorization_code";
 
 		$response = $client->get($url);
