@@ -58,7 +58,7 @@ return array(
 
     'week' => ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
 
-    'index_tips' => '享受美味 感受伊丽舍',
+    'index_tips' => '',
 
     'version' => time(),
 );
