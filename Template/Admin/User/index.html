@@ -79,7 +79,7 @@
                                     <a class="btn btn-info btn-xs detail" data-id="{$v.id}">查看信息</a>
                                     <!-- <a class="btn btn-info btn-xs cashflow" data-id="{$v.id}">消费查询</a> -->
                                     <a class="btn btn-success btn-xs outflow" data-id="{$v.id}">扣款</a>
-                                    <a class="btn btn-danger btn-xs vip" data-id="{$v.id}" data-name="{$v.name|default='-'}" data-mobile="{$v.mobile|default='-'}">开卡</a>
+                                    <a class="btn btn-danger btn-xs vip" data-id="{$v.id}" data-vip="<?=$vipLevels[$v['vip_level_id']]['title'] ?? '-';?>" data-name="{$v.name|default='-'}" data-mobile="{$v.mobile|default='-'}">开卡</a>
                                 </td>
                             </tr> 
                             <?php } ?>
@@ -114,7 +114,7 @@
                                     <table class="table-bordered bg-white table-form">
                                         <tbody>
                                             <tr>
-                                                <td class="">微信昵称</td>
+                                                <td class="" width="200">微信昵称</td>
                                                 <td class="nickname">
                                                     
                                                 </td>
@@ -242,6 +242,12 @@
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <td class="">当前等级</td>
+                                                <td class="vip">
+                                            
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td class="require">卡片</td>
                                                 <td>
                                                     <select name="vip_id">
@@ -294,6 +300,7 @@
             $("#vip_card [name='id']").val($(this).attr('data-id'));
             $("#vip_card .name").html($(this).data('name'));
             $("#vip_card .mobile").html($(this).data('mobile'));
+            $("#vip_card .vip").html($(this).data('vip'));
             $("#vip_card [name='vip_id']").trigger('change');
             $("#vip_card").addClass('show');
         });

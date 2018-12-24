@@ -103,11 +103,19 @@ $(function () {
                     res.data.card.forEach(function (item) {
                         html += '<div class="card-list" style="background:url(' + item.background + ') 0 0 no-repeat;background-size:100% 100%;">';
                         html += '<p class="quanyi" style="background:'+item.color+'">查看会员权益 ></p>';
-                        html += '<p class="bottom-left">尚未开通</p>';
+                        if (res.data.user.vip_level != '' && item.id == res.data.user.vip_level.id) {
+                            html += '<p class="bottom-left">'+item.title+'</p>';
+                        } else {
+                            html += '<p class="bottom-left">尚未开通</p>';
+                        }
                         html += '<img src="' + res.data.user.avatar + '" class="headimg" />';
                         html += '<span class="name">' + res.data.user.nickname + '</span>';
                         // html += '<span class="vip-level">' + item.title + '</span>';
-                        html += "<a class='button open' onclick='' data-data='" + JSON.stringify(item) +"' style='background:"+item.color+"'>马上开通</a>";
+                        if (res.data.user.vip_level != '' && item.id == res.data.user.vip_level.id) {
+                            html += "<a class='button open' onclick='' data-open='1' data-data='" + JSON.stringify(item) +"' style='background:"+item.color+"'>继续充值</a>";
+                        } else {
+                            html += "<a class='button open' onclick='' data-open='0' data-data='" + JSON.stringify(item) + "' style='background:" + item.color + "'>马上开通</a>";
+                        }
                         html += '</div>';
                     });
                 }
@@ -150,7 +158,15 @@ $(function () {
             $(".open-vip .card-list").css('background-size', '100% 100%');
             $(".open-vip .quanyi").css('background', data.color);
             $(".open-vip .open").css('background', data.color);
-            $(".open-vip .vip_title").html('欢迎开通'+data.title);
+            if ($(this).data('open') == '1') {
+                $(".open-vip .open").hide();
+                $(".open-vip .bottom-left").html(data.title);
+                $(".open-vip .vip_title").html('欢迎充值' + data.title);
+            } else {
+                $(".open-vip .open").show();
+                $(".open-vip .bottom-left").html('尚未开通');
+                $(".open-vip .vip_title").html('欢迎开通' + data.title);
+            }
             if (data.amount == 0) {
                 $(".open-vip .vip_amount").html('免费');
                 $(".open-vip .vip_open").html('马上开通');
