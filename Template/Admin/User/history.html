@@ -1,0 +1,120 @@
+<extend name="Public/__base" />
+<block name="body">
+
+    <div class="page-main" style="left:170px;top:50px;">
+
+        <div class="history-container ng-scope">
+            <a class="return-btn" onclick="history.go(-1)">
+                <i class="ALiconfont icon-sortleft"></i> 返回
+            </a>
+            <ul class="history-list">
+                <li><a href="javascript:void(0)">用户管理</a></li>
+                <li>充值记录</li>
+            </ul>
+        </div>
+
+
+        <div class="page-tabs" style="top:50px;">
+
+            <ul class="page-tabs-nav" id="changeaction">
+                <li onclick="location.href='{:U('index')}'">用户管理</li>
+                <li onclick="location.href='{:U('vipLevel')}'">会员等级设置</li>
+                <li class="active" onclick="location.href='{:U('history')}'">充值记录</li>
+            </ul>
+
+            <form method="post" action="" id="formsubmit">
+                <div class="tool-bar ng-scope" style="background:#fff;border-bottom:1px solid #dfe0e0">
+                    <div class="bar-full"></div>
+                    <div>
+                        <select class="form-control type" style="width:160px;" name="vip_level_id" id="vip_level_id">
+                            <option value="">全部会员等级</option>
+                            <?php foreach ($vipLevels as $level) { ?>
+                            <option value="{$level.id}" <?php if($level['id']==$_POST['vip_level_id']) {echo 'selected'
+                                ;}?>>{$level.title}</option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="search-bool">
+                        <div class="input-group ng-pristine ng-valid">
+                            <input type="text" class="form-control ng-pristine ng-untouched ng-valid" placeholder="姓名/手机号/昵称"
+                                name="keyword" value="{$Think.post.keyword}">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-default" id="search_btn">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <ul class="page-tabs-container">
+                <li class="fadeIn animated active">
+                    <div class="table-container" style="top:50px;background:#fff">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>用户id</th>
+                                    <th>微信昵称</th>
+                                    <th>手机号</th>
+                                    <th>真实姓名</th>
+                                    <th>充值等级</th>
+                                    <th>充值金额</th>
+                                    <th>充值时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach($data as $v){ ?>
+                                <tr>
+                                    <td>{$v.id}</td>
+                                    <td>{$v.nickname}</td>
+                                    <td>
+                                        {$v.mobile|default='-'}
+                                    </td>
+                                    <td>{$v.name|default='-'}</td>
+                                    <td>
+                                        {$v.title}
+                                    </td>
+                                    <td>
+                                        <?=sprintf("%.2f", $v['amount'] / 100);?>
+                                    </td>
+                                    <td>
+                                        <?=$v['create_time'];?>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+                                <?php if(count($data) == 0){ ?>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="20" class="empty">没有检索到相关数据</td>
+                                </tr>
+                            </tfoot>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    {$page}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $(function () {
+            
+            $("#vip_level_id").change(function () {
+                $("#formsubmit").submit();
+            });
+
+            //点击页码
+            $(".pagination a").click(function () {
+                if (typeof ($(this).attr('href')) != 'undefined') {
+                    $('#formsubmit').attr('action', $(this).attr('href')).submit();
+                }
+                return false;
+            });
+
+        });
+    </script>
+</block>

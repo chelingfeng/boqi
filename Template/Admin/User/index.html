@@ -19,6 +19,7 @@
         <ul class="page-tabs-nav" id="changeaction">
             <li class="active" onclick="location.href='{:U('index')}'">用户管理</li>
             <li onclick="location.href='{:U('vipLevel')}'">会员等级设置</li>
+            <li onclick="location.href='{:U('history')}'">充值记录</li>
         </ul>
 
         <form method="post" action="" id="formsubmit">
@@ -290,7 +291,15 @@
 
 <script type="text/javascript">
     $(function(){
-         
+        
+        //点击页码
+        $(".pagination a").click(function () {
+            if (typeof ($(this).attr('href')) != 'undefined') {
+                $('#formsubmit').attr('action', $(this).attr('href')).submit();
+            }
+            return false;
+        });
+
         $("#vip_card [name='vip_id']").change(function () {
             var amount = $(this).find("option:selected").data('amount');
             $("#vip_card .amount").html(amount + '元');

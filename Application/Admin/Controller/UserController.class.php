@@ -65,6 +65,24 @@ class UserController extends CommonController
         $this->ajaxReturn(codeReturn(0));
     }
 
+    public function history()
+    {
+        $where = 'a.amount > 0';
+        if ($_POST['keyword']) {
+            $where .= " AND (b.name LIKE '%" . $_POST['keyword'] . "%' OR b.nickname LIKE '%" . $_POST['keyword'] . "%' OR b.mobile LIKE '%" . $_POST['keyword'] . "%')";
+        }
+        if ($_POST['vip_level_id']) {
+            $where .= " AND a.vip_level_id = " . $_POST['vip_level_id'];
+        }
+        $_GET['epage'] || $_GET['epage'] = 1;
+        $data = M('vip_history')->where($where)->page($_GET['epage'], C('PAGESIZEADMIN'))->field('a.create_time,c.*,b.*')->alias('a')->join('LEFT JOIN a_user b ON a.user_id = b.id')->join('LEFT JOIN a_vip_level c ON a.vip_level_id = c.id')->order('a.id DESC')->select();
+        $count = M('vip_history')->where($where)->field('a.create_time,c.*,b.*')->alias('a')->join('LEFT JOIN a_user b ON a.user_id = b.id')->join('LEFT JOIN a_vip_level c ON a.vip_level_id = c.id')->count();
+        $vipLevels = $this->getVipLevels();
+        $this->assign('vipLevels', $vipLevels);
+        $this->assign('data', $data);
+        $this->assign('page', page($count));
+        $this->display();
+    }
     public function openVip()
     {
         if (IS_AJAX) {
