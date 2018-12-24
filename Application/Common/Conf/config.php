@@ -50,5 +50,5 @@ return array_merge($db, array(
 
     'index_tips' => '',
 
-    'version' => 'v1.0.3.2',
+    'version' => 'v1.0.3.5',
 ));

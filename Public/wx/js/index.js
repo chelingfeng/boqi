@@ -91,6 +91,7 @@ $(function () {
 
     //会员卡片列表页
     $(document).on("pageInit", "#page-vip-card", function (e, id, page) {
+        var user = null;
         $.showIndicator()
         $.ajax({
             type:'POST',
@@ -98,12 +99,12 @@ $(function () {
             url:'index.php?m=Home&c=Vip&a=getCard',
             success:function(res){
                 var html = '';
-                
+                user = res.data.user;
                 if (res.data.card.length > 0) {
                     res.data.card.forEach(function (item) {
                         html += '<div class="card-list" style="background:url(' + item.background + ') 0 0 no-repeat;background-size:100% 100%;">';
                         html += '<p class="quanyi" style="background:'+item.color+'">查看会员权益 ></p>';
-                        if (res.data.user.vip_level != '' && item.id == res.data.user.vip_level.id) {
+                        if (typeof (res.data.user.vip_level) != 'undefined' && item.id == res.data.user.vip_level.id) {
                             html += '<p class="bottom-left">'+item.title+'</p>';
                         } else {
                             html += '<p class="bottom-left">尚未开通</p>';
@@ -111,7 +112,7 @@ $(function () {
                         html += '<img src="' + res.data.user.avatar + '" class="headimg" />';
                         html += '<span class="name">' + res.data.user.nickname + '</span>';
                         // html += '<span class="vip-level">' + item.title + '</span>';
-                        if (res.data.user.vip_level != '' && item.id == res.data.user.vip_level.id) {
+                        if (typeof (res.data.user.vip_level) != 'undefined' && item.id == res.data.user.vip_level.id) {
                             html += "<a class='button open' onclick='' data-open='1' data-data='" + JSON.stringify(item) +"' style='background:"+item.color+"'>继续充值</a>";
                         } else {
                             html += "<a class='button open' onclick='' data-open='0' data-data='" + JSON.stringify(item) + "' style='background:" + item.color + "'>马上开通</a>";
@@ -152,10 +153,18 @@ $(function () {
         });
 
         $("#page-vip-card .open").die("click").live('click', function() {
+            if (user.mobile == '') {
+                $.alert('请先完善个人信息', '提示', function () {
+                    $.router.load('index.php?m=Home&c=Vip&a=message');
+                });
+                return;
+            }
             var data = JSON.parse($(this).data('data'));
             $(".open-vip [name='id']").val(data.id);
             $(".open-vip .card-list").css('background', 'url('+data.background+') 0 0 no-repeat')
             $(".open-vip .card-list").css('background-size', '100% 100%');
+            $(".open-vip .name").html(user.nickname);
+            $(".open-vip .headimg").attr('src', user.avatar);
             $(".open-vip .quanyi").css('background', data.color);
             $(".open-vip .open").css('background', data.color);
             if ($(this).data('open') == '1') {
@@ -226,8 +235,8 @@ $(function () {
                 return false;
             }
             if (data.address == '') {
-                $.alert('联系地址不能为空', '提示');
-                return false;
+                // $.alert('联系地址不能为空', '提示');
+                // return false;
             }
             $.showIndicator();
             $.ajax({
@@ -237,6 +246,7 @@ $(function () {
                 success: function (res) {
                     if (res.code == 0) {
                         $.alert('保存成功', '提示', function(){
+                            history.go(-1);
                             $("[name='mobile']").attr('disabled', 'disabled');
                         })
                     } else {

@@ -400,6 +400,10 @@
                 data: {id:id},
                 success:function(data){
                     if(data.code == 0){
+                        if (data.data.mobile == '')
+                        data.data.mobile = data.data.mobile == '' ? '-' : data.data.mobile;
+                        data.data.name = data.data.name == '' ? '-' : data.data.name;
+                        data.data.address = data.data.address == '' ? '-' : data.data.address;
                         $("#detail_card .nickname").html(data.data.nickname);
                         $("#detail_card .mobile").html(data.data.mobile);
                         $("#detail_card .name").html(data.data.name);
