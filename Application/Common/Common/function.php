@@ -143,75 +143,90 @@ function orderPaid($orderId)
         }
 
         if ($order['type'] == 'vip') {
-            $user = M('user')->where(['id' => $order['user_id']])->find();
-            $levelId = $items[0]['target_id'];
-            $level = M('vip_level')->where(['id' => $levelId])->find();
-
-            M('user')->where(['id' => $order['user_id']])->setInc('balance', $order['amount']);
-            M('cash_flow')->add([
-                'type' => 'inflow',
-                'title' => '微信充值',
-                'user_id' => $order['user_id'],
-                'amount' => $order['amount'],
-                'balance' => M('user')->where(['id' => $order['user_id']])->getField('balance'),
-                'create_time' => date('Y-m-d H:i:s'),
-            ]);
-
-            //插入记录表
-            $vipHistoryId = M('vip_history')->add([
-                'user_id' => $user['id'],
-                'vip_level_id' => $level['id'],
-                'amount' => $level['amount'],
-                'create_time' => date('Y-m-d H:i:s'),
-                'remark' => $level['give'],
-            ]);
-            //更新等级字段
-            M('user')->where(['id' => $user['id']])->save(['vip_level_id' => $level['id']]);
-            //赠送
-            $give = json_decode($level['give'], true);
-            if ($give['balance']['amount'] > 0) {
-                M('user')->where(['id' => $user['id']])->setInc('balance', $give['balance']['amount'] * 100);
-                M('cash_flow')->add([
-                    'type' => 'inflow',
-                    'title' => '系统赠送',
-                    'user_id' => $order['user_id'],
-                    'amount' => $give['balance']['amount'] * 100,
-                    'balance' => M('user')->where(['id' => $order['user_id']])->getField('balance'),
-                    'create_time' => date('Y-m-d H:i:s'),
-                ]);
-            }
-
-            if ($give['coupon_friend']['number'] > 0) {
-                createCoupon([
-                    'number' => $give['coupon_friend']['number'],
-                    'prefix' => 'ZS' . $vipHistoryId,
-                    'title' => '赠送优惠券',
-                    'type' => 'minus',
-                    'rate' => $give['coupon_friend']['amount'],
-                    'is_friend' => 0,
-                    'receivetime' => date('Y-m-d H:i:s'),
-                    'user_id' => $user['id'],
-                    'starttime' => date('Y-m-d H:i:s'),
-                    'endtime' => date('Y-m-d H:i:s', strtotime('+7 day')),
-                ]);
-            }
-
-            if ($give['coupon']['number'] > 0) {
-                createCoupon([
-                    'number' => $give['coupon']['number'],
-                    'prefix' => 'ZS' . $vipHistoryId,
-                    'title' => '赠送优惠券',
-                    'type' => 'minus',
-                    'rate' => $give['coupon']['amount'],
-                    'is_friend' => 1,
-                    'receivetime' => date('Y-m-d H:i:s'),
-                    'user_id' => $user['id'],
-                    'starttime' => date('Y-m-d H:i:s'),
-                    'endtime' => date('Y-m-d H:i:s', strtotime('+7 day')),
-                ]);
-            }
             
+            openVip($order['user_id'], $items[0]['target_id']);
+
         }
+    }
+}
+
+function openVip($userId, $levelId, $isAdmin = 0, $remark = '')
+{
+    $user = M('user')->where(['id' => $userId])->find();
+    if (empty($user)) {
+        return false;
+    }
+    $level = M('vip_level')->where(['id' => $levelId])->find();
+    if (empty($level)) {
+        return false;
+    }
+
+    if ($level['amount'] > 0) {
+        M('user')->where(['id' => $userId])->setInc('balance', $level['amount']);
+        M('cash_flow')->add([
+            'type' => 'inflow',
+            'title' => $isAdmin == 1 ? '线下充值' : '微信充值',
+            'user_id' => $userId,
+            'amount' => $level['amount'],
+            'balance' => M('user')->where(['id' => $userId])->getField('balance'),
+            'create_time' => date('Y-m-d H:i:s'),
+        ]);
+    }
+
+    //插入记录表
+    $vipHistoryId = M('vip_history')->add([
+        'user_id' => $user['id'],
+        'vip_level_id' => $level['id'],
+        'amount' => $level['amount'],
+        'create_time' => date('Y-m-d H:i:s'),
+        'remark' => $remark .$level['give'],
+    ]);
+
+    //更新等级字段
+    M('user')->where(['id' => $user['id']])->save(['vip_level_id' => $level['id']]);
+
+    //赠送
+    $give = json_decode($level['give'], true);
+    if ($give['balance']['amount'] > 0) {
+        M('user')->where(['id' => $user['id']])->setInc('balance', $give['balance']['amount'] * 100);
+        M('cash_flow')->add([
+            'type' => 'inflow',
+            'title' => '系统赠送',
+            'user_id' => $userId,
+            'amount' => $give['balance']['amount'] * 100,
+            'balance' => M('user')->where(['id' => $userId])->getField('balance'),
+            'create_time' => date('Y-m-d H:i:s'),
+        ]);
+    }
+
+    if ($give['coupon_friend']['number'] > 0) {
+        createCoupon([
+            'number' => $give['coupon_friend']['number'],
+            'prefix' => 'ZS' . $vipHistoryId,
+            'title' => '赠送优惠券',
+            'type' => 'minus',
+            'rate' => $give['coupon_friend']['amount'],
+            'is_friend' => 0,
+            'receivetime' => date('Y-m-d H:i:s'),
+            'user_id' => $user['id'],
+            'starttime' => date('Y-m-d H:i:s'),
+            'endtime' => date('Y-m-d H:i:s', strtotime('+7 day')),
+        ]);
+    }
+
+    if ($give['coupon']['number'] > 0) {
+        createCoupon([
+            'number' => $give['coupon']['number'],
+            'prefix' => 'ZS' . $vipHistoryId,
+            'title' => '赠送优惠券',
+            'type' => 'minus',
+            'rate' => $give['coupon']['amount'],
+            'is_friend' => 1,
+            'receivetime' => date('Y-m-d H:i:s'),
+            'user_id' => $user['id'],
+            'starttime' => date('Y-m-d H:i:s'),
+            'endtime' => date('Y-m-d H:i:s', strtotime('+7 day')),
+        ]);
     }
 }
 

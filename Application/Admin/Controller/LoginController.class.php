@@ -21,13 +21,13 @@ class LoginController extends Controller{
     		if($account){
     			session('account', $account);
                 setcookie("account_name", $_POST['username'], time() + 365*24*60*60);
-    			$this->success('登录成功', U('Admin/Index/index'));
+				$this->redirect('Admin/Index/index');
     		}else{
     			$this->error('账号或密码错误');
     		}
     		exit();
     	}
-        $this->display();
+        $this->display('login_new');
     }
 
     public function loginOut(){

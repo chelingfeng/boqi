@@ -31,7 +31,7 @@ class VipController extends CommonController {
         if (!$user) {
             return [];
         }
-        $user['couponNum'] = M('coupon')->where(['user_id' => $user['id'], 'status' => 'receive'])->count();
+        $user['couponNum'] = M('coupon')->where(['user_id' => $user['id'], 'is_friend' => 0, 'status' => 'receive'])->count();
         if ($user['vip_level_id']) {
             $user['vip_level'] = M('vip_level')->where(['id' => $user['vip_level_id']])->find();
         }
@@ -53,16 +53,15 @@ class VipController extends CommonController {
         $type = $_GET['type'];
         $status = $_GET['status'];
         if ($type == 'my') {
+            $w['is_friend'] = 0;
             $w['status'] = $_GET['status'];
             $w['user_id'] = session('user.id');
             $coupons = M('coupon')->where($w)->order('receivetime DESC')->select();
         } else {
+            $w['is_friend'] = 1;
             $w['status'] = $_GET['status'];
             $w['user_id'] = session('user.id');
-            $couponIds = ArrayToolkit::column(M('coupon_friend_log')->where($w)->order('create_time DESC')->select(), 'coupon_id');
-            if ($couponIds) {
-                $coupons = M('coupon')->where(['id' => array('in', $couponIds)])->order('id DESC')->select();
-            }
+            $coupons = M('coupon')->where($w)->order('receivetime DESC')->select();
         }
         $this->ajaxReturn(codeReturn(0, $coupons));
     }

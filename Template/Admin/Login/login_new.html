@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="ie-stand">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>餐饮管理系统 - 博启信息科技有限公司</title>
+    <link rel="stylesheet" href="__PUBLIC__/login/bootstrap.css">
+    <link rel="stylesheet" href="__PUBLIC__/login/app.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_957376_7qt4o1lwdf6.css">
+    <style type="text/css">
+        .login-content {
+            width: 400px;
+            margin:0 auto;
+            height: 370px;
+            background: rgba(3, 17, 60, 0.7);
+        }
+        .login-title {
+            color: #fff;
+            font-size: 25px;
+            text-align: center;
+            padding: 30px 0;
+        }
+        .login-login {
+            width: 400px;
+            margin:0 auto;
+            margin-top: 150px;
+        }
+        .login-login img {
+            width: 50%;
+            margin-left: 25%;
+        }
+        .line {
+            width: 80%;
+            margin-left: 10%;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 30px;
+        }
+        .icon {
+            font-size: 25px;
+            color: #fff;
+        }
+        .line input {
+            width: 250px;
+            border:0px;
+            background:none;
+            color: #fff;
+            font-size: 20px;
+            margin-left: 10px;
+        }
+        .btn2 {
+            width: 80%;
+            margin-left: 10%;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background-color: #53b1f1;
+            color: #fff;
+            border-radius: 5px;
+            border: 0px;
+        }
+        .butto {
+            width: 80%;
+            margin-left: 10%;
+            color: #fff;
+            margin-top: 30px;
+        }
+        .butto a {
+            color: #fff;
+        }
+        .butto .register {
+            float: left;
+        }
+        .butto .find-password {
+            float: right;
+        }
+
+
+        ::-webkit-input-placeholder { /* WebKit browsers */
+            color:    #fff;
+            font-size: 18px;
+        }
+        :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            color:    #fff;
+            font-size: 18px;
+        }
+        ::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color:    #fff;
+            font-size: 18px;
+        }
+        :-ms-input-placeholder { /* Internet Explorer 10+ */
+            color:    #fff;
+            font-size: 18px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper" style="background:url(__PUBLIC__/images/login_background.jpg) 0 0 no-repeat;background-size:100% 100%">
+        <form action="" method="POST">
+            <div class="login-login">
+                <img src="__PUBLIC__/images/admin_login_logo.png" />
+            </div>
+            <div class="login-content">
+                <p class="login-title">系统登录</p>
+                <div class="line">
+                    <span class="iconfont icon-yonghu1 icon"></span>
+                    <input type="text" name="username" placeholder="用户名" value="<?php echo $_COOKIE['account_name'];?>">
+                </div>
+                <div class="line">
+                    <span class="iconfont icon-mima icon"></span>
+                    <input type="password" name="password" placeholder="密码" value="<?php echo $_COOKIE['account_name'];?>">
+                </div>
+                <input type="submit" value="登录" class="btn2" />
+                <div class="butto">
+                    <a class="register">注册</a>
+                    <a class="find-password">忘记密码?</a>
+                </div>
+            </div>
+            <div class="p-lg text-center" style="margin-top:20px">
+                <span style="color:#fff;filter:alpha(Opacity=80);-moz-opacity:0.8;opacity: 0.8;">博启信息科技技术有限公司 ALL rights reserved</span>
+            </div>
+        </form>
+    </div>
+
+
+</body>
+
+</html>

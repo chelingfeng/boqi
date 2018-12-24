@@ -65,6 +65,14 @@ class UserController extends CommonController
         $this->ajaxReturn(codeReturn(0));
     }
 
+    public function openVip()
+    {
+        if (IS_AJAX) {
+            openVip($_POST['id'], $_POST['vip_id'], 1, $_POST['remark']);
+            $this->ajaxReturn(codeReturn(0));
+        }
+    }
+
     public function getVipLevels()
     {
         return M('vip_level')->where(['del' => 0])->order('seq ASC, id DESC')->select();

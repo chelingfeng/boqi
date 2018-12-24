@@ -153,8 +153,10 @@ $(function () {
             $(".open-vip .vip_title").html('欢迎开通'+data.title);
             if (data.amount == 0) {
                 $(".open-vip .vip_amount").html('免费');
+                $(".open-vip .vip_open").html('马上开通');
             } else {
                 $(".open-vip .vip_amount").html((data.amount / 100).toFixed(2));
+                $(".open-vip .vip_open").html('确定支付');
             }
             var give = JSON.parse(data.give);
             if (give.balance.amount > 0) {
