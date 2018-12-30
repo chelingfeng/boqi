@@ -19,4 +19,17 @@ class CommonController extends Controller {
 		expiredCoupon();
 		parent::__construct();
 	}
+
+	public function getUserInfo()
+	{
+		$user = session('user');
+		if (!$user) {
+			return [];
+		}
+		$user['couponNum'] = M('coupon')->where(['user_id' => $user['id'], 'is_friend' => 0, 'status' => 'receive'])->count();
+		if ($user['vip_level_id']) {
+			$user['vip_level'] = M('vip_level')->where(['id' => $user['vip_level_id']])->find();
+		}
+		return $user;
+	}
 }

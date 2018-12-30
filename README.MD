@@ -26,3 +26,17 @@ CREATE TABLE `a_coupon_batch` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 COMMENT='优惠券批次表';
 ```
+
+v1.0.3.1
+```
+增加分享
+var data = {
+    data:{
+        type: 'share',
+        title: '测试3333',
+        path: '/pages/index/index?callback=',
+        imageUrl: '',
+    },
+};
+wx.miniProgram.postMessage(data);
+```

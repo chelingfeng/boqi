@@ -6,6 +6,15 @@
 
             <include file="Common/__nav" />
 
+            <div class="coupon_success">
+                <p class="success">
+                    <span class="iconfont icon-gougou"></span>
+                </p>
+                <p class="tt">领取成功</p>
+                <a class="btn" href="{:U('coupon')}">点击查看</a>
+                <div class="close iconfont icon-guanbi"></div>
+            </div>
+
             <div class="mask"></div>
             <div class="open-qrcode">
                 <img src="" class="barcode" />
@@ -18,7 +27,7 @@
                 
                 <?php if($user['vip_level_id']){ ?>
                 <div class="card-list" style="background:url({$user.vip_level.background}) 0 0 no-repeat;background-size:100% 100%;">
-                    <p class="quanyi" style="background:{$user.vip_level.color}">查看会员权益 ></p>
+                    <a href="{:U('equity', array('id' => $user['vip_level_id']))}" class="quanyi" style="background:{$user.vip_level.color}">查看会员权益 ></a>
                     <p class="bottom-left"></p>
                     <p class="bottom-right">ID:{$user.card_sn}</p>
                     <img src="{$user.avatar}" class="headimg" />
@@ -28,7 +37,7 @@
                 </div>
                 <?php } else { ?>
                     <div class="card-list none-vip" style="background:url({:setting('system')['vip_none']}) 0 0 no-repeat;background-size:100% 100%;">
-                        <p class="quanyi no-vip">查看会员权益 ></p>
+                        <!-- <a href="{:U('equity')}" class="quanyi no-vip">查看会员权益 ></a> -->
                         <p class="bottom-left"></p>
                         <img src="{$user.avatar}" class="headimg" />
                         <span class="name">{$user.nickname}</span>
@@ -36,14 +45,14 @@
                     </div>
                 <?php } ?>
 
-                <div class="index-card-list">
-                    <a class="card card-index qidai">
+                <!-- <div class="index-card-list">
+                    <a class="card card-index">
                         <div class="left">
                             <span class="iconfont icon-meishi icons"></span>
                         </div>
                         <div class="right">
                             <p class="card-title">我是美食家</p>
-                            <p class="income">收益<?=sprintf("%.2f", $user['profit'] / 100);?></p>
+                            <p class="income">收益<span id="profit"><?=sprintf("%.2f", $user['profit'] / 100);?></span></p>
                         </div>
                     </a>
                     <a class="card card-index" href="{:U('coupon')}">
@@ -52,21 +61,21 @@
                         </div>
                         <div class="right">
                             <p class="card-title">我的优惠券</p>
-                            <p class="income">待使用{$user.couponNum|default='0'}张</p>
+                            <p class="income">待使用<span id="couponNum">{$user.couponNum|default='0'}</span>张</p>
                         </div>
                     </a>
-                    <a class="card card-index qidai">
+                    <a class="card card-index">
                         <div class="left">
                             <span class="iconfont icon-aixin icons"></span>
                         </div>
                         <div class="right">
                             <p class="card-title">我的积分</p>
-                            <p class="income">当前{$user.integral}分</p>
+                            <p class="income">当前<span id="integral">{$user.integral}</span>分</p>
                         </div>
                     </a>
-                </div>
+                </div> -->
 
-                <div class="list-block contacts-block index-order qidai">
+                <!-- <div class="list-block contacts-block index-order">
                     <div class="list-group">
                         <ul>
                             <li>
@@ -79,7 +88,7 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="list-block contacts-block index-order" style="">
                     <div class="list-group">
@@ -92,7 +101,7 @@
                                 </div>
                                 <div class="item-content">
                                     <div class="item-inner" style="padding-top:0px">
-                                        <div class="item-title index-money"><?=sprintf("%.2f", $user['balance'] / 100);?><span>元</span></div>
+                                        <div class="item-title index-money"><em id="balance"><?=sprintf("%.2f", $user['balance'] / 100);?></em><span>元</span></div>
                                         <a class="btn" href="{:U('card')}">立即充值</a>
                                     </div>
                                 </div>
@@ -102,26 +111,51 @@
                 </div>
 
 
+                
+
                 <div class="list-block contacts-block index-order">
                     <div class="list-group">
                         <ul>
                             <li>
-                                <div class="item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title"><span class="iconfont icon-liwu"></span>&nbsp;&nbsp;我的活动</div>
+                                <a href="{:U('Home/Vip/coupon')}">
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-title"><span class="iconfont icon-liwu"></span>&nbsp;&nbsp;我的优惠券</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="item-content">
-                                    <div class="item-inner" style="padding-top:0px">
-                                        <div class="item-title index-activity" style="max-width:70%;">活动即将开放</div>
-                                        <div class="btn">敬请期待</div>
+                                    <div class="item-content">
+                                        <div class="item-inner" style="padding-top:0px">
+                                            <div class="item-title index-activity" style="max-width:70%;"><span id="quan">券</span>待使用<span id="couponNum">{$user.couponNum|default='0'}</span>张</div>
+                                            <div class="btn">立即使用</div>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </li>
                         </ul>
                     </div>
                 </div>
 
+                <div class="list-block contacts-block index-order">
+                    <div class="list-group">
+                        <ul>
+                            <li>
+                                <a href="{:U('Home/Activity/my')}">
+                                    <div class="item-content item-link">
+                                        <div class="item-inner">
+                                            <div class="item-title"><span class="iconfont icon-liwu"></span>&nbsp;&nbsp;我的活动</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <!-- <div class="item-content">
+                                    <div class="item-inner" style="padding-top:0px">
+                                        <div class="item-title index-activity" style="max-width:70%;">活动即将开放</div>
+                                        <div class="btn">敬请期待</div>
+                                    </div>
+                                </div> -->
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
                 <div class="list-block contacts-block index-order">
                     <div class="list-group">

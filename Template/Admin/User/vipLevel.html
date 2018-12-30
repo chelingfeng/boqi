@@ -91,7 +91,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="form-tabs">
-                                <ul class="form-tabs-container">
+                                <ul class="form-tabs-container" style="width:850px">
                                     <li class="fadeIn animated active">
                                         <table class="table-bordered bg-white table-form">
                                             <tbody>
@@ -147,8 +147,13 @@
                                                     <td class="require">赠送</td>
                                                     <td>
                                                         余额：<input type="number" style="width: 60px" name="balance_amount" value="0"> 元 <br /><br />
-                                                        朋友的券： <input type="number" style="width: 60px" name="coupon_friend_num" value="0"> 张 每张价值 <input type="number" style="width: 60px" name="coupon_friend_amount"  style="width: 60px" value="0"> 元 <br /><br />
-                                                        普通券： <input type="number" style="width: 60px" name="coupon_num" value="0"> 每张价值 <input type="number" style="width: 60px" name="coupon_amount" value="0"> 元 
+                                                        朋友的券： <input type="number" style="width: 60px" name="coupon_friend_num" value="0"> 张 每张价值 <input type="number"
+                                                           style="width: 60px" name="coupon_friend_amount" value="0"> 元 开始时间 <input class="datetime" type="text"
+                                                            style="width: 150px" name="coupon_friend_start_time" value=""> 结束时间 <input class="datetime" type="text" style="width: 150px"
+                                                            name="coupon_friend_end_time" value=""><br /><br />
+                                                        普通券： <input type="number" style="width: 60px" name="coupon_num" value="0"> 每张价值 <input type="number" style="width: 60px"
+                                                            name="coupon_amount" value="0"> 元 开始时间 <input class="datetime" type="text" style="width: 150px" name="coupon_start_time"
+                                                            value=""> 结束时间 <input class="datetime" type="text" style="width: 150px" name="coupon_end_time" value="">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -172,7 +177,7 @@
     <div class="info-card fadeIn animated ng-scope" id="edit_card">
         <div class="info-card-wrapper">
             <div class="info-card-dialog">
-                <div class="info-card-content">
+                <div class="info-card-content" style="width:850px">
                     <div class="panel panel-info">
                         <div class="panel-heading"> 编辑
                             <a class="info-card-close"><i class="ALiconfont icon-close"></i></a>
@@ -235,8 +240,8 @@
                                                     <td class="require">赠送</td>
                                                     <td>
                                                         余额：<input type="number" style="width: 60px" name="balance_amount" value="0"> 元 <br /><br />
-                                                        朋友的券： <input type="number" style="width: 60px" name="coupon_friend_num" value="0"> 张 每张价值 <input type="number" style="width: 60px" name="coupon_friend_amount"  style="width: 60px" value="0"> 元 <br /><br />
-                                                        普通券： <input type="number" style="width: 60px" name="coupon_num" value="0"> 每张价值 <input type="number" style="width: 60px" name="coupon_amount" value="0"> 元 
+                                                        朋友的券： <input type="number" style="width: 60px" name="coupon_friend_num" value="0"> 张 每张价值 <input type="number" style="width: 60px" name="coupon_friend_amount"  value="0"> 元 开始时间 <input class="datetime" type="text" style="width: 150px" name="coupon_friend_start_time" value=""> 结束时间 <input class="datetime" type="text" style="width: 150px" name="coupon_friend_end_time" value=""><br /><br />
+                                                        普通券： <input type="number" style="width: 60px" name="coupon_num" value="0"> 每张价值 <input type="number" style="width: 60px" name="coupon_amount" value="0"> 元 开始时间 <input class="datetime" type="text" style="width: 150px" name="coupon_start_time" value=""> 结束时间 <input class="datetime" type="text" style="width: 150px" name="coupon_end_time" value="">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -263,6 +268,16 @@
 
     <script type="text/javascript">
         $(function () {
+
+             $('.datetime').datetimepicker({
+                format: "yyyy-mm-dd hh:ii:ss",
+                language: 'zh-CN',
+                autoclose: true,
+                todayBtn: true,
+                startView: 'year',
+                pickerPosition: 'top-left'
+            });
+
             $("#add").click(function(){
                 $("#add_card").addClass('show');
                 return false;
@@ -321,8 +336,12 @@
                             $("#edit_card [name='balance_amount']").val(give.balance.amount);
                             $("#edit_card [name='coupon_friend_num']").val(give.coupon_friend.number);
                             $("#edit_card [name='coupon_friend_amount']").val(give.coupon_friend.amount);
+                            $("#edit_card [name='coupon_friend_start_time']").val(give.coupon_friend.start_time);
+                            $("#edit_card [name='coupon_friend_end_time']").val(give.coupon_friend.end_time);
                             $("#edit_card [name='coupon_num']").val(give.coupon.number);
                             $("#edit_card [name='coupon_amount']").val(give.coupon.amount);
+                            $("#edit_card [name='coupon_start_time']").val(give.coupon.start_time);
+                            $("#edit_card [name='coupon_end_time']").val(give.coupon.end_time);
                             $("#edit_card").addClass('show');
                         }else{
                             swal("提示", data.msg, "warning");
@@ -387,8 +406,18 @@
                 // }
                 var give = {
                     balance: {'amount':$("#add_card [name='balance_amount']").val()},
-                    coupon_friend: {number:$("#add_card [name='coupon_friend_num']").val(), amount:$("#add_card [name='coupon_friend_amount']").val()},
-                    coupon: {number:$("#add_card [name='coupon_num']").val(), amount: $("#add_card [name='coupon_amount']").val()},
+                    coupon_friend: {
+                        number:$("#add_card [name='coupon_friend_num']").val(), 
+                        amount:$("#add_card [name='coupon_friend_amount']").val(),
+                        start_time: $("#add_card [name='coupon_friend_start_time']").val(),
+                        end_time: $("#add_card [name='coupon_friend_end_time']").val(),
+                    },
+                    coupon: {
+                        number:$("#add_card [name='coupon_num']").val(), 
+                        amount: $("#add_card [name='coupon_amount']").val(),
+                        start_time: $("#add_card [name='coupon_start_time']").val(),
+                        end_time: $("#add_card [name='coupon_end_time']").val(),
+                    },
                 };
 
                 data.give = JSON.stringify(give);
@@ -494,10 +523,20 @@
                 //     });
                 //     return false;
                 // }
-                var give = {
-                    balance: {'amount':$("#edit_card [name='balance_amount']").val()},
-                    coupon_friend: {number:$("#edit_card [name='coupon_friend_num']").val(), amount:$("#edit_card [name='coupon_friend_amount']").val()},
-                    coupon: {number:$("#edit_card [name='coupon_num']").val(), amount: $("#edit_card [name='coupon_amount']").val()},
+               var give = {
+                    balance: { 'amount': $("#edit_card [name='balance_amount']").val() },
+                    coupon_friend: {
+                        number: $("#edit_card [name='coupon_friend_num']").val(),
+                        amount: $("#edit_card [name='coupon_friend_amount']").val(),
+                        start_time: $("#edit_card [name='coupon_friend_start_time']").val(),
+                        end_time: $("#edit_card [name='coupon_friend_end_time']").val(),
+                    },
+                    coupon: {
+                        number: $("#edit_card [name='coupon_num']").val(),
+                        amount: $("#edit_card [name='coupon_amount']").val(),
+                        start_time: $("#edit_card [name='coupon_start_time']").val(),
+                        end_time: $("#edit_card [name='coupon_end_time']").val(),
+                    },
                 };
 
                 data.give = JSON.stringify(give);

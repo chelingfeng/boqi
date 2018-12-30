@@ -209,8 +209,8 @@ function openVip($userId, $levelId, $isAdmin = 0, $remark = '')
             'is_friend' => 1,
             'receivetime' => date('Y-m-d H:i:s'),
             'user_id' => $user['id'],
-            'starttime' => date('Y-m-d H:i:s'),
-            'endtime' => date('Y-m-d H:i:s', strtotime('+7 day')),
+            'starttime' => $give['coupon_friend']['start_time'] ?? date('Y-m-d H:i:s'),
+            'endtime' => $give['coupon_friend']['end_time'] ?? date('Y-m-d H:i:s', strtotime('+7 day')),
         ]);
     }
 
@@ -224,8 +224,8 @@ function openVip($userId, $levelId, $isAdmin = 0, $remark = '')
             'is_friend' => 0,
             'receivetime' => date('Y-m-d H:i:s'),
             'user_id' => $user['id'],
-            'starttime' => date('Y-m-d H:i:s'),
-            'endtime' => date('Y-m-d H:i:s', strtotime('+7 day')),
+            'starttime' => $give['coupon']['start_time'] ?? date('Y-m-d H:i:s'),
+            'endtime' => $give['coupon']['end_time'] ?? date('Y-m-d H:i:s', strtotime('+7 day')),
         ]);
     }
 }

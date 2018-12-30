@@ -9,7 +9,40 @@ $(function () {
 
     //会员首页
     $(document).on("pageInit", "#page-vip-index", function (e, id, page) {
-        
+
+        if ($_GET['action'] == 'coupon_receive') {
+            var code = $_GET['coupon_code'];
+            $.ajax({
+                type: 'GET',
+                data: {code:code},
+                async:false,
+                url: 'index.php?m=Home&c=Vip&a=receiveFriendCoupon',
+                success: function (res) {
+                    if (res.code == 0) {
+                        $(".mask, .coupon_success").show();
+                    }
+                }
+            });
+        }
+
+        $(".close").click(function () {
+            $(".mask, .coupon_success").hide();
+        });
+
+        $.ajax({
+            type: 'GET',
+            data: {},
+            url: 'index.php?m=Home&c=Vip&a=user',
+            success: function (res) {
+                if (res.code == 0) {
+                    $("#balance").html(res.data.balance);
+                    $("#profit").html(res.data.profit);
+                    $("#integral").html(res.data.integral);
+                    $("#couponNum").html(res.data.couponNum);
+                }
+            }
+        });
+
         var timeFlag = 0;
         var freeTime = 60;
         var time = freeTime;
@@ -345,7 +378,6 @@ $(function () {
 
     //会员优惠券列表页
     $(document).on("pageInit", "#page-vip-coupon", function (e, id, page) {
-       
         $("#type a").click(function(){
             $("#type a").removeClass('active');
             $(this).addClass('active');
@@ -358,12 +390,31 @@ $(function () {
             loadData();
         });
 
-        loadData();
+        $(".invite-modal__btn").click(function(){
+            $(".invite-modal").hide();
+        });
 
+        loadData();
+        
         $(".use_coupon").die("click").live('click', function () {
-            var code = $(this).data('code');
-            $(".coupon_use .code").html(code);
-            $(".mask, .coupon_use").show();
+            if ($(this).data('type') == 'my') {
+                var code = $(this).data('code');
+                $(".coupon_use .code").html(code);
+                $(".mask, .coupon_use").show();
+            } else {
+                var code = $(this).data('code');
+                var callback = location.origin + '?m=Home&c=Vip&a=index&action=coupon_receive&openid={openid}&coupon_code=' + code;
+                var data = {
+                    data:{
+                        type: 'share',
+                        title: config.title,
+                        path: '/pages/index/index?callback=' + encodeURIComponent(callback),
+                        imageUrl: location.origin+config.share_coupon,
+                    },
+                };
+                wx.miniProgram.postMessage(data);
+                $(".invite-modal").show();
+            }
         });
 
         $(".coupon_use .btn").die("click").live('click', function () {
@@ -408,14 +459,22 @@ $(function () {
                                 }
                             html += '</div>';
                             if (item.status == 'receive') {
-                                html += '<div class="right use_coupon" data-code="'+item.code+'">';
+                                html += '<div class="right use_coupon" data-type="'+type+'" data-code="'+item.code+'">';
                             } else {
                                 html += '<div class="right">';
                             }
+                            if (type == 'my') {
                                 html += '<p>立</p>';
                                 html += '<p>即</p>';
                                 html += '<p>使</p>';
                                 html += '<p>用</p>';
+                            } else {
+                                html += '<p>立</p>';
+                                html += '<p>即</p>';
+                                html += '<p>分</p>';
+                                html += '<p>享</p>';
+                            }
+                               
                             html += '</div>';
                         html += '</div>';
                     });
@@ -502,15 +561,55 @@ $(function () {
         }
     });
 
-    function pay(orderId = '', callback = '')
-    {   
-        if (orderId) {
-            if (callback == '') {
-                callback = location.href;
-            }
-            wx.miniProgram.navigateTo({ url: '/pages/pay/pay?orderId=' + orderId + '&callback=' +encodeURIComponent(callback) })
+    //会员权限页面
+    $(document).on("pageInit", "#page-vip-equity", function (e, id, page) {
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 'auto',
+            centeredSlides: true,
+            spaceBetween: '2%',
+        });
+    });
+
+    //我的活动
+    $(document).on("pageInit", "#page-activity-my", function (e, id, page) {
+        $("#type a").click(function () {
+            $("#type a").removeClass('active');
+            $(this).addClass('active');
+            loadData();
+        });
+
+        $("#status a").click(function () {
+            $("#status a").removeClass('active');
+            $(this).addClass('active');
+            loadData();
+        });
+
+        loadData();
+
+        function loadData() {
+            var type = $('#type .active').data('type');
+            var status = $('#status .active').data('status');
+            $.showIndicator()
+            $.ajax({
+                type: 'GET',
+                data: { type: type, status: status },
+                url: 'index.php?m=Home&c=Activity&a=getMyActivity',
+                success: function (res) {
+                    var html = '';
+
+                    if (html == '') {
+                        $(".empty").show();
+                    } else {
+                        $(".empty").hide();
+                    }
+
+                    $(".datalist").html(html);
+                    $.hideIndicator();
+                }
+            });
         }
-    }
+    });
+
 
     $.init();
 });

@@ -357,6 +357,10 @@
 	color: #f9bf1f;
 }
 
+.index-money em {
+	font-style: normal;
+}
+
 .index-money span {
 	font-size: 0.6rem;
 	color: #505050;
@@ -662,4 +666,339 @@
 	text-align: center;
 	font-size: 0.7rem;
 	border:1px solid #b39453;
+}
+
+
+.buttons-list-three {
+	padding: 0.7rem 0;
+	width: 100%;
+	height: 3.1rem;
+	padding-left:5%;
+	padding-right:5%;
+	background: #fbfbfb;
+}
+
+.buttons-list-three .button {
+	color: #fff;
+	width: 40%;
+	float: left;
+	line-height: 1.7rem;
+	height: 1.7rem;
+	border: 1px solid #525252;
+	color: #525252;
+	border-radius:0.35rem;
+	font-size: .7rem;
+	background: #fff;
+}
+
+#page-activity-my .buttons-tab:after {
+	content: none;
+}
+
+.buttons-list-three .button:nth-of-type(1) {
+	border-right: none;
+	border-top-right-radius:0px;
+	border-bottom-right-radius: 0px;
+}
+
+.buttons-list-three .button:nth-of-type(3) {
+	border-left: none;
+	border-top-left-radius:0px;
+	border-bottom-left-radius: 0px;
+}
+
+.buttons-list-three .button:nth-of-type(2) {
+	border-radius: 0;
+}
+
+.buttons-list-three .button.active {
+	background: #525252;
+	color: #fff;
+}
+
+.activity-list {
+	margin: 0.5rem 0;
+}
+
+.activity-list.list-block.media-list .item-title {
+	font-weight: 350;
+	color: #222222;
+}
+
+.activity-list .remark span{
+	border: 1px solid #f9bf1f;
+	color: #f9bf1f;
+	font-weight: normal;
+	border-radius: 0.25rem;
+	padding: 0.1rem 0.5rem;
+	font-size: 0.7rem;
+}
+
+.activity-list .remark{
+	margin-top: 1rem;
+}
+
+.activity-list.list-block.media-list .item-media {
+	padding-top: .7rem;
+    padding-bottom: .7rem;
+}
+
+.activity-list .money {
+	font-size: 0.9rem;
+	font-weight: normal;
+	color: red;
+	margin-top: 0.6rem;
+}
+
+.activity-list .money s {
+	color:#868686;
+	font-size: 0.7rem;
+	font-weight: 300;
+}
+
+.activity-list .status_btn {
+	position: absolute;
+	bottom: 0.5rem;
+	right: 0.75rem;
+	background: #e5e5e5;
+	color: #fff;
+	border-radius: 0.7rem;
+	padding: 0.3rem 0.9rem;
+	font-size: 0.65rem;
+}
+
+.activity-list .status_btn.active {
+	background: #f9bf1f;
+}
+
+.activity-bottom {
+	height: 2.2rem;
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+	border-top: 1px solid #f9bf1f;
+}
+.activity-bottom div {
+	width: 50%;
+	float: left;
+	line-height: 2.2rem;
+	text-align: center;
+	color: #f9bf1f;
+	font-weight: 345;
+}
+
+.activity-bottom div.active {
+	background: #f9bf1f;
+	color: #fff;
+}
+
+#page-vip-equity .swiper-container {
+	width: 100%;
+	height: 9rem;
+	margin-top: -7rem;
+}
+
+#page-vip-equity .swiper-slide {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+	width: 80%;
+}
+
+#page-vip-equity .swiper-slide-active .vip-list{
+	transform: scale(1);
+	transition: all 0s;
+}
+
+#page-vip-equity .vip-list {
+	width: 100%;
+	height: 9rem;
+	position: relative;
+	transform: scale(0.9);
+}
+
+#page-vip-equity .vip-list .bottom-left {
+	color: #7c7c7c;
+    font-size: 0.65rem;
+    position: absolute;
+    bottom: 20px;
+    display: block;
+    left: 30px;
+}
+
+#page-vip-equity .vip-list .bottom-right {
+	color: #7c7c7c;
+    font-size: 0.65rem;
+    position: absolute;
+    bottom: -2px;
+    display: block;
+    right: 15px;
+}
+
+#page-vip-equity .vip-list .headimg {
+	border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 65px;
+    left: 15px;
+}
+
+#page-vip-equity .vip-list .name {
+	position: absolute;
+    display: block;
+    top: 85px;
+    left: 87px;
+    color: #515350;
+	font-size: 0.8rem;
+	top:75px;
+}
+
+#page-vip-equity .vip-list .vip-level {
+	position: absolute;
+    display: block;
+    top: 100px;
+    left: 87px;
+    color: #716b6b;
+    font-size: 0.7rem;
+}
+
+#page-vip-equity .vip-list .vip-none-level {
+	position: absolute;
+    display: block;
+    top: 30px;
+	left: 30px;
+	border:1px solid #716b6b;
+	color: #716b6b;
+	width: 25px;
+	padding: 5px 5px;
+    font-size: 0.7rem;
+}
+
+#page-vip-equity .vip-list .qrcode_img {
+	position: absolute;
+    right: 0;
+    top: 0;
+    width: 3rem;
+}
+
+.vip-top {
+	background: #414141;
+    height: 10rem;
+}
+
+.vip-top .title2 {
+	color: #fff;
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 3rem;
+    padding-left: 5%;
+}
+
+#page-vip-equity .ftitle {
+	text-align: center;
+	margin: 1.2rem 0 ;
+	color: #1b1b1b;
+}
+
+.equity-swiper-container {
+	width: 95%;
+	margin-left: 2.5%;
+	float: left;
+}
+
+.equity-swiper-container .equity {
+	width: 33.3%;
+	float: left;
+	margin-bottom: 0.6rem;
+}
+
+.equity-swiper-container .kuang {
+	border: 1px solid #f9bf1f;
+	border-radius: 50%;
+	width: 55px;
+	height: 55px;
+	line-height: 55px;
+	text-align: center;
+	color: #f9bf1f;
+	margin: 0 auto;
+}
+
+.equity-swiper-container .kuang span {
+	font-size: 1.3rem;
+}
+
+.equity-swiper-container .equity-title {
+	font-size: 0.7rem;
+	color: #1b1b1b;
+	text-align: center;
+}
+
+.equity-open {
+	color: #fff;
+	text-align: center;
+	background: #f9bf1f;
+    border-radius: 10px;
+	height: 2rem;
+	line-height: 2rem;
+	width: 60%;
+	margin-left: 20%;
+	bottom: 2rem;
+	position: fixed;
+}
+
+.invite-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.7);
+	z-index: 1000;
+}
+
+.invite-modal span {
+	display: block;
+	width: 100%;
+	padding-right: 10%;
+	text-align: right;
+	color: #fff;
+	letter-spacing: 3.5px;
+}
+
+.invite-modal .invite-modal__content {
+    text-align: right;
+    margin-right: 17%;
+    margin-top: 5px;
+}
+
+.invite-modal .invite-modal__content img {
+    width: 290px;
+    height: auto;
+}
+
+.invite-modal .invite-modal__btn {
+    float: right;
+    margin-right: 20%;
+    margin-top: 20px;
+    height: 40px;
+}
+
+#quan {
+	border: 1px solid #f9bf1f;
+    padding: 2px 2px;
+    background: #f9bf1f;
+    color: #fff;
+    border-radius: 0.2rem;
+	margin-right: 5px;
+	font-size: 0.8rem;
 }

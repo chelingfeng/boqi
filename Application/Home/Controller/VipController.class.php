@@ -6,6 +6,12 @@ use Endroid\QrCode\QrCode;
 
 class VipController extends CommonController {
     
+    public function __construct()
+    {
+        parent::__construct();
+        $this->assign('system_config', json_encode(setting('system')));
+    }
+
     public function index(){
         $this->assign('user', $this->getUserInfo());
        	$this->display();
@@ -25,7 +31,7 @@ class VipController extends CommonController {
         ]));
     }
 
-    private function getUserInfo()
+    public function user()
     {
         $user = session('user');
         if (!$user) {
@@ -35,7 +41,10 @@ class VipController extends CommonController {
         if ($user['vip_level_id']) {
             $user['vip_level'] = M('vip_level')->where(['id' => $user['vip_level_id']])->find();
         }
-        return $user;
+        $user['balance'] = sprintf("%.2f", $user['balance'] / 100);
+        $user['profit'] = sprintf("%.2f", $user['profit'] / 100);
+        
+        $this->ajaxReturn(codeReturn(0, $user));
     }
 
     public function card()
@@ -244,6 +253,29 @@ class VipController extends CommonController {
         }
     }
 
+    //领取朋友的券
+    public function receiveFriendCoupon()
+    {
+        if (IS_AJAX) {
+            $code = $_GET['code'];
+            $coupon = M('coupon')->where(['user_id' => ['neq', session('user.id')], 'is_friend' => 1, 'status' => 'receive', 'code' => $code])->find();
+            if ($coupon) {
+                M('coupon_friend_log')->add([
+                    'user_id' => session('user.id'),
+                    'coupon_id' => $coupon['id'],
+                    'status' => $coupon['status'],
+                    'create_time' => $coupon['start_time'],
+                    'end_time' => $coupon['end_time'],
+                ]);
+                M('coupon')->where(['id' => $coupon['id']])->save([
+                    'is_friend' => 0,
+                    'user_id' => session('user.id'),
+                ]);
+                $this->ajaxReturn(codeReturn(0));
+            }
+        }
+    }
+
     public function receive()
     {
         $batch = M('coupon_batch')->where(['id' => $_GET['id']])->find();
@@ -267,5 +299,10 @@ class VipController extends CommonController {
     public function getMessage()
     {
         $this->ajaxReturn(codeReturn(0, $this->getUserInfo()));
+    }
+
+    public function equity()
+    {
+        $this->display();
     }
 }
