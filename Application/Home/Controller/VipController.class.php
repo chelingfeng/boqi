@@ -95,8 +95,12 @@ class VipController extends CommonController {
     public function openVip()
     {
         $level = M('vip_level')->where(['id' => $_POST['id']])->find();
+        $userInfo = $this->getUserInfo();
         if (!$level) {
             $this->ajaxReturn(codeReturn(10001));
+        }
+        if ($userInfo['vip_level_id'] > 0 && $level['amount'] == 0) {
+            $this->ajaxReturn(codeReturn(20009));
         }
         $data = [
             'title' => '开通'.$level['title'],
