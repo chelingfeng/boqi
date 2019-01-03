@@ -7,8 +7,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [2.0.1] - 2018-12-16
 
+### Fixed
+- `\Http\Adapter\Guzzle6\Client::sendRequest` no longer throws any exceptions that do not implement
+  the PSR exception interface.
+
+  Instead of `\UnexpectedValueException` we now throw `Http\Adapter\Guzzle6\Exception\UnexpectedValueException`
+  (which extends `\UnexpectedValueException` and implements `Psr\Http\Client\ClientExceptionInterface`).
+
+  Instead of `\RuntimeException` we now throw `Http\Client\Exception\TransferException`
+  (which extends `\RuntimeException` and  implements `Psr\Http\Client\ClientExceptionInterface`).
 
 ## [2.0.0] - 2018-11-14
 

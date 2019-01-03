@@ -40,3 +40,11 @@ var data = {
 };
 wx.miniProgram.postMessage(data);
 ```
+
+migration脚本命名规范
+* 创建表 create_table_[table_name]
+* 删除表 drop_table_[table_name]
+* 新增字段 add_filed_[table_name]_[field_name]
+* 删除字段 delete_filed_[table_name]_[field_name]
+* 新增索引 add_index_[table_name]_[index_name]
+* 删除索引 delete_index_[table_name]_[index_name]
