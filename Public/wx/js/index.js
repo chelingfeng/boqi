@@ -136,7 +136,7 @@ $(function () {
                 if (res.data.card.length > 0) {
                     res.data.card.forEach(function (item) {
                         html += '<div class="card-list" style="background:url(' + item.background + ') 0 0 no-repeat;background-size:100% 100%;">';
-                        html += '<p class="quanyi" style="background:'+item.color+'">查看会员权益 ></p>';
+                        html += '<a href="index.php?m=Home&c=Vip&a=equity&id='+item.id+'" class="quanyi" data-no-cache="true" style="background:'+item.color+'">查看会员权益 ></a>';
                         if (typeof (res.data.user.vip_level) != 'undefined' && item.id == res.data.user.vip_level.id) {
                             html += '<p class="bottom-left">'+item.title+'</p>';
                         } else {
@@ -328,37 +328,33 @@ $(function () {
                     var html = '';
 
                     res.data.forEach(function (item) {
-                        html += '<div class="coupon-list">';
-                        html += '<div class="left">';
-                        var style = item.condition_amount == 0 ? 'style="margin-top:15px"' : '';
-                        if (item.type == 'discount') {
-                            if (item.rate % 10 == 0) {
-                                item.rate = item.rate / 10;
+                        html += '<div class="coupon-list" data-status="' + item.status + '" data-code="' + item.code + '">';
+                        html += '<div class="left" style="background:' + item.color + ';">';
+                        if (item.rate > 0) {
+                            if (item.type == 'discount') {
+                                if (item.rate % 10 == 0) {
+                                    item.rate = item.rate / 10;
+                                }
+                                html += '<p class="money"><span>' + item.rate + '</span> 折</p>';
+                            } else {
+                                html += '<p class="money">¥ <span>' + item.rate + '</span></p>';
                             }
-                            html += '<p class="money" ' + style + '><span>' + item.rate + '折</span></p>';
+                            html += '<p><span>' + item.typeName + '</span></p>';
                         } else {
-                            html += '<p class="money" ' + style + '>¥<span>' + item.rate + '</span></p>';
-                        }
-                        if (item.condition_amount > 0) {
-                            html += '<p class="message">满' + item.condition_amount + '可用</p>';
+                            html += '<p class="type">' + item.typeName + '</p>';
                         }
                         html += '</div>';
                         html += '<div class="middle">';
-                        html += '<p class="tt">有效期</p>';
+                        html += '<p class="tt">' + item.title + '</p>';
+                        if (item.condition_amount > 0) {
+                            html += '<p class="condition_amount">满' + item.condition_amount + '可用</p>';
+                        } else {
+                            html += '<p class="condition_amount">&nbsp;</p>';
+                        }
                         html += '<p class="time">' + item.start_time.substring(0, 10) + ' - ' + item.end_time.substring(0, 10) + '</p>';
-                        if (item.type == 'discount') {
-                            html += '<span class="type">折扣券</span>';
-                        }
-                        if (item.type == 'minus') {
-                            html += '<span class="type">优惠券</span>';
-                        }
                         html += '</div>';
-                        html += '<div class="right receive" data-id="'+item.id+'">';
-                        html += '<p>立</p>';
-                        html += '<p>即</p>';
-                        html += '<p>领</p>';
-                        html += '<p>取</p>';
-                        html += '</div>';
+                        html += '<div class="coupon_detail receive" data-id="' + item.id + '">立即领取</div>';
+    
                         html += '</div>';
                     });
 
@@ -395,25 +391,67 @@ $(function () {
         });
 
         loadData();
-        
-        $(".use_coupon").die("click").live('click', function () {
-            if ($(this).data('type') == 'my') {
+
+        var index_flag = 0;
+        $(".coupon-list .zuanfa, .detail_card_bottom_friend").die("click").live('click', function () {
+            var code = $(this).data('code');
+            var callback = location.origin + '?m=Home&c=Vip&a=index&action=coupon_receive&openid={openid}&coupon_code=' + code;
+            var data = {
+                data: {
+                    type: 'share',
+                    title: config.title,
+                    path: '/pages/index/index?callback=' + encodeURIComponent(callback),
+                    imageUrl: location.origin + config.share_coupon,
+                },
+            };
+            wx.miniProgram.postMessage(data);
+            $(".invite-modal").show();
+            index_flag = 1;
+            setTimeout(function(){
+                index_flag = 0;
+            }, 1000)
+            $(".mask, .coupon_detail_card").hide();
+        });
+
+        $(".coupon_detail").die("click").live('click', function () {
+            var id = $(this).data('id');
+            $.showIndicator()
+            $.ajax({
+                type: 'GET',
+                data: { id: id },
+                url: 'index.php?m=Home&c=Vip&a=findCoupon',
+                success: function (res) {
+                    if (res.code == 0) {
+                        $('.detail_card_ct').css('background', res.data.color);
+                        $('.detail_card_ct_coupon_name').html(res.data.title);
+                        $('.detail_card_remark').html(res.data.remark);
+                        $('.detail_card_bottom_friend').attr('data-code', res.data.code);
+                        if (res.data.is_friend == 1) {
+                            $('.detail_card_bottom').show();
+                        } else {
+                            $('.detail_card_bottom').hide();
+                        }
+                        $(".mask, .coupon_detail_card").show();
+                    }
+                    $.hideIndicator();
+                }
+            });
+            index_flag = 1;
+            setTimeout(function () {
+                index_flag = 0;
+            }, 1000)
+        });
+
+        $(".coupon_detail_card .close").click(function(){
+            $(".mask, .coupon_detail_card").hide();
+        });
+
+        $(".coupon-list").die("click").live('click', function () {
+            if (index_flag > 0) return;
+            if ($(this).data('status') == 'receive') {
                 var code = $(this).data('code');
                 $(".coupon_use .code").html(code);
                 $(".mask, .coupon_use").show();
-            } else {
-                var code = $(this).data('code');
-                var callback = location.origin + '?m=Home&c=Vip&a=index&action=coupon_receive&openid={openid}&coupon_code=' + code;
-                var data = {
-                    data:{
-                        type: 'share',
-                        title: config.title,
-                        path: '/pages/index/index?callback=' + encodeURIComponent(callback),
-                        imageUrl: location.origin+config.share_coupon,
-                    },
-                };
-                wx.miniProgram.postMessage(data);
-                $(".invite-modal").show();
             }
         });
 
@@ -433,49 +471,44 @@ $(function () {
                     var html = '';
 
                     res.data.forEach(function(item){
-                        html += '<div class="coupon-list">';
-                            html += '<div class="left">';
-                                var style = item.condition_amount == 0 ? 'style="margin-top:15px"' : ''; 
-                                if (item.type == 'discount') {
-                                    if (item.rate % 10 == 0) {
-                                        item.rate = item.rate / 10;
+                        if (item.status != 'receive') {
+                            item.color = '#cbcbcb';
+                        }
+                        html += '<div class="coupon-list" data-status="'+item.status+'" data-code="' + item.code +'">';
+                            html += '<div class="left" style="background:'+item.color+';">';
+                                if (item.rate > 0) {
+                                    if (item.type == 'discount') {
+                                        if (item.rate % 10 == 0) {
+                                            item.rate = item.rate / 10;
+                                        }
+                                        html += '<p class="money"><span>'+item.rate+'</span> 折</p>';
+                                    } else {
+                                        html += '<p class="money">¥ <span>' + item.rate +'</span></p>';
                                     }
-                                    html += '<p class="money" ' + style +'><span>'+item.rate+'折</span></p>';
+                                    html += '<p><span>' + item.typeName +'</span></p>';
                                 } else {
-                                    html += '<p class="money" ' + style +'>¥<span>' + item.rate +'</span></p>';
-                                }
-                                if (item.condition_amount > 0) {
-                                    html += '<p class="message">满'+item.condition_amount+'可用</p>';
+                                    html += '<p class="type">'+item.typeName+'</p>';
                                 }
                             html += '</div>';
                             html += '<div class="middle">';
-                                html += '<p class="tt">有效期</p>';
-                                html += '<p class="time">' + item.start_time.substring(0, 10) +' - '+ item.end_time.substring(0, 10)+'</p>';
-                                if (item.type == 'discount') {
-                                    html += '<span class="type">折扣券</span>';
+                                html += '<p class="tt">'+item.title+'</p>';
+                                if (item.condition_amount > 0) {
+                                    html += '<p class="condition_amount">满'+item.condition_amount+'可用</p>';
+                                } else {
+                                    html += '<p class="condition_amount">&nbsp;</p>';
                                 }
-                                if (item.type == 'minus') {
-                                    html += '<span class="type">优惠券</span>';
-                                }
+                                html += '<p class="time">'+item.start_time.substring(0, 10)+' - '+item.end_time.substring(0, 10)+'</p>';
                             html += '</div>';
-                            if (item.status == 'receive') {
-                                html += '<div class="right use_coupon" data-type="'+type+'" data-code="'+item.code+'">';
-                            } else {
-                                html += '<div class="right">';
+                            if (status == 'receive') {
+                                html += '<div class="coupon_detail" data-id="'+item.id+'">查看详情</div>';
+                            } else if (status == 'used') {
+                                html += '<img src="' + $("[name='coupon_img_used']").val()+'" class="coupon_img" />';
+                            } else if (status == 'expired') { 
+                                html += '<img src="' + $("[name='coupon_img_expired']").val() + '" class="coupon_img" />';
                             }
-                            if (type == 'my') {
-                                html += '<p>立</p>';
-                                html += '<p>即</p>';
-                                html += '<p>使</p>';
-                                html += '<p>用</p>';
-                            } else {
-                                html += '<p>立</p>';
-                                html += '<p>即</p>';
-                                html += '<p>分</p>';
-                                html += '<p>享</p>';
+                            if (item.is_friend == 1 && status == 'receive') {
+                                html += '<div class="zuanfa" data-code="'+item.code+'"><span class="iconfont icon-zhuanfa"></span> 可赠送</div>';
                             }
-                               
-                            html += '</div>';
                         html += '</div>';
                     });
                     
@@ -563,10 +596,82 @@ $(function () {
 
     //会员权限页面
     $(document).on("pageInit", "#page-vip-equity", function (e, id, page) {
+
+        var initialSlide = 0;
+        $(".swiper-slide").each(function(index){
+            var vip = JSON.parse($("[name='vip']").val());
+            if ($(this).data('id') == vip.id) {
+                initialSlide = index;
+            }
+        });
+
+        function showBtn() {
+            var user_vip_level = JSON.parse($("[name='user_vip_level']").val());
+            var vip = JSON.parse($("[name='vip']").val());
+            $(".ftitle span").html(vip.title + '会员');
+            if (user_vip_level == null || vip.seq > user_vip_level.seq) {
+                $(".equity-open").show();
+            } else {
+                $(".equity-open").hide();
+            }
+        }
+        showBtn();
+
+
         var swiper = new Swiper('.swiper-container', {
             slidesPerView: 'auto',
+            initialSlide: initialSlide,
             centeredSlides: true,
             spaceBetween: '2%',
+            on: {
+                slideChangeTransitionEnd: function () {
+                    $("[name='vip']").val($(".swiper-slide").eq(this.activeIndex).data('data'));
+                    showBtn();
+                },
+            },
+        });
+        
+        $(".equity-detail .close").click(function(){
+            $(".mask, .equity-detail").hide();
+        });
+
+        $(".equity").click(function(){
+            var type = $(this).data('type');
+            var vip = JSON.parse($("[name='vip']").val());
+            var title = $(this).find('.equity-title').html();
+            $(".equity-detail .tt").html(title);
+            $(".equity-detail .equity-detail-remark").html(vip[type+'_remark']);
+            $(".mask, .equity-detail").show();
+        });
+    });
+
+    //充值页
+    $(document).on("pageInit", "#page-vip-recharge", function (e, id, page) {
+        $(".recharge-card-list").click(function(){
+            var amount = $(this).data('amount');
+            $("#amount").val(amount);
+        });
+
+        $("#recharge_action").click(function(){
+            var amount = $("#amount").val();
+            if (!isNaN(amount) != '' && amount != '' && amount > 0) {
+                $.showIndicator()
+                $.ajax({
+                    type: 'POST',
+                    data: { amount: amount },
+                    url: 'index.php?m=Home&c=Vip&a=addOrder',
+                    success: function (res) {
+                        if (res.code == 0) {
+                            pay(res.data.id);
+                        } else {
+                            $.alert(res.msg, '提示');
+                        }
+                        $.hideIndicator();
+                    }
+                });
+            } else {
+                $.alert('金额必须为大小0的数字')
+            }
         });
     });
 

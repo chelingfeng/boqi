@@ -12,7 +12,7 @@
 
             <div class="buttons-tab buttons-list" id="type">
                 <a class="button active" data-type="my">我的券</a>
-                <a class="button" data-type="friend">朋友的券</a>
+                <a class="button" data-type="friend">可赠送的券</a>
             </div>
             <div class="buttons-tab coupon-tab" id="status">
                 <a class="tab-link button active" data-status="receive">未使用</a>
@@ -28,56 +28,88 @@
               <div class="btn">已核销/关闭</div>
             </div>
 
+
+            <div class="coupon_detail_card">
+              <div class="detail_card_ct">
+                <img src="{$config.logo}" class="detail_card_ct_logo" />
+                <div class="detail_card_ct_title">{$config.title}</div>
+                <div class="detail_card_ct_coupon_name">50元优惠券</div>
+              </div>
+              <div class="detail_card_remark"></div>
+              <div class="detail_card_bottom">
+                <div class="detail_card_bottom_friend">
+                  <span class="iconfont icon-weixin-copy"></span>
+                  <p>分享至好友</p>
+                </div>
+              </div>
+              <div class="close iconfont icon-guanbi"></div>
+            </div>
+
             <div class="content" style="margin-top:5rem;margin-bottom: 2.2rem;">
               <div class="empty" style="display:none">
                   <img src="__PUBLIC__/wx/img/no-coupon.png" width="40%" />
-                  <p>您没用可使用的券</p>
+                  <p>没有相关数据</p>
               </div>
 
               <div class="datalist">
 
+                <!-- <div class="coupon-list">
+                  <div class="left" style="background:#f78815;">
+                    <p class="money"><span>100</span>折</p>
+                    <p><span>代金券</span></p>
+                  </div>
+                  <div class="middle">
+                    <p class="tt">XXX优惠券</p>
+                    <p class="condition_amount">满200可用</p>
+                    <p class="time">2019-01-07 - 2019-01-17</p>
+                  </div>
+                  <div class="coupon_detail">查看详情</div>
+                </div>
+
+                <div class="coupon-list">
+                  <div class="left" style="background:#f78815;">
+                    <p class="type">代金券</p>
+                  </div>
+                  <div class="middle">
+                    <p class="tt">XXX优惠券</p>
+                    <p class="condition_amount">满200可用</p>
+                    <p class="time">2019-01-07 - 2019-01-17</p>
+                  </div>
+                  <div class="coupon_detail">查看详情</div>
+                </div>
+
+                <div class="coupon-list">
+                  <div class="left" style="background:#f78815;">
+                    <p class="type">代金券</p>
+                  </div>
+                  <div class="middle">
+                    <p class="tt">XXX优惠券</p>
+                    <p class="condition_amount">满200可用</p>
+                    <p class="time">2019-01-07 - 2019-01-17</p>
+                  </div>
+                  <img src="__PUBLIC__/wx/img/coupon_img_used.png" class="coupon_img" />
+                </div>
+
+                <div class="coupon-list">
+                  <div class="zuanfa"><span class="iconfont icon-zhuanfa"></span> 可赠送</div>
+                  <div class="left" style="background:#f78815;">
+                    <p class="type">代金券</p>
+                  </div>
+                  <div class="middle">
+                    <p class="tt">XXX优惠券</p>
+                    <p class="condition_amount">满200可用</p>
+                    <p class="time">2019-01-07 - 2019-01-17</p>
+                  </div>
+                  <div class="coupon_detail">查看详情</div>
+                </div> -->
+
               </div>
             </div>
 
-            <a class="coupon_receive_btn" href="{:U('couponReceive')}">我要领券</a>
-          
-            <!-- <div class="coupon-list">
-              <div class="left">
-                <p class="money">¥<span>10</span></p>
-                <p class="message">满100可用</p>
-              </div>
-              <div class="middle">
-                <p class="tt">有效期</p>
-                <p class="time">2018.11.10-2018.10.30</p>
-                <span class="type">优惠券</span>
-              </div>
-              <div class="right">
-                <p>立</p>
-                <p>即</p>
-                <p>使</p>
-                <p>用</p>
-              </div>
-            </div>
-
-            <div class="coupon-list">
-              <div class="left">
-                <p class="money">¥<span>10</span></p>
-                <p class="message">满100可用</p>
-              </div>
-              <div class="middle">
-                <p class="tt">有效期</p>
-                <p class="time">2018.11.10-2018.10.30</p>
-                <span class="type">优惠券</span>
-              </div>
-              <div class="right">
-                <p>立</p>
-                <p>即</p>
-                <p>使</p>
-                <p>用</p>
-              </div>
-            </div> -->
+            <a class="coupon_receive_btn" href="{:U('couponReceive')}" data-no-cache="true">我要领券</a>
             
-          
+            <input type="hidden" name="coupon_img_used" value="__PUBLIC__/wx/img/coupon_img_used.png"/>
+            <input type="hidden" name="coupon_img_expired" value="__PUBLIC__/wx/img/coupon_img_expired.png"/>
 
         </div>
     </div>

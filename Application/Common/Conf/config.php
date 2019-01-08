@@ -2,7 +2,7 @@
 $db = require __DIR__.'/config_db.php';
 
 return array_merge($db, array(
-    'PAGESIZEADMIN'  => 10, // 后台分页大小 
+    'PAGESIZEADMIN'  => 15, // 后台分页大小 
 
     'LOG_RECORD'            =>   true, // 开启日志记录
     'LOG_LEVEL'             =>   'EMERG,ALERT,CRIT,ERR', // 只记录EMERG ALERT CRIT ERR 错误
@@ -15,6 +15,7 @@ return array_merge($db, array(
         10003   => '用户名已存在',
         10004   => '该优惠券无法核销',
         10005   => '金额不足',
+        10006   => '优惠券前缀已存在',
 
         20001 => '余额不足，请充值！',
         20002 => '您的等级已经大于当前等级',
@@ -38,6 +39,8 @@ return array_merge($db, array(
     'coupon_type' => [
         'minus' => '优惠券',
         'discount' => '折扣券',
+        'cash' => '代金券',
+        'gift' => '礼品券',
     ],
 
     'order_status' => [
@@ -51,5 +54,5 @@ return array_merge($db, array(
 
     'index_tips' => '',
 
-    'version' => 'v1.0.4',
+    'version' => time(),
 ));

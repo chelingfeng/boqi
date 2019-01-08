@@ -131,7 +131,7 @@
                                                 <tr>
                                                     <td class="require">颜色代码</td>
                                                     <td>
-                                                        <input type="text" name="color" value="">
+                                                        <input class="colorpicker" type="text" name="color" value="">
                                                     </td>
                                                 </tr>
                                                 <tr style="display:none">
@@ -147,13 +147,54 @@
                                                     <td class="require">赠送</td>
                                                     <td>
                                                         余额：<input type="number" style="width: 60px" name="balance_amount" value="0"> 元 <br /><br />
-                                                        朋友的券： <input type="number" style="width: 60px" name="coupon_friend_num" value="0"> 张 每张价值 <input type="number"
-                                                           style="width: 60px" name="coupon_friend_amount" value="0"> 元 开始时间 <input class="datetime" type="text"
-                                                            style="width: 150px" name="coupon_friend_start_time" value=""> 结束时间 <input class="datetime" type="text" style="width: 150px"
-                                                            name="coupon_friend_end_time" value=""><br /><br />
-                                                        普通券： <input type="number" style="width: 60px" name="coupon_num" value="0"> 每张价值 <input type="number" style="width: 60px"
-                                                            name="coupon_amount" value="0"> 元 开始时间 <input class="datetime" type="text" style="width: 150px" name="coupon_start_time"
-                                                            value=""> 结束时间 <input class="datetime" type="text" style="width: 150px" name="coupon_end_time" value="">
+                                                        券：
+                                                        <select name="coupon_batch[]">
+                                                            <option value="">请选择</option>
+                                                            <?php foreach ($couponBatch as $batch) {?>
+                                                            <option value="<?=$batch['id'];?>"><?=$batch['title'];?></option>
+                                                            <?php } ?>
+                                                        </select> 
+                                                        <input type="number" name="coupon_number[]" style="width: 60px" value="0"> 张<br /><br />
+                                                        券：
+                                                        <select name="coupon_batch[]">
+                                                            <option value="">请选择</option>
+                                                            <?php foreach ($couponBatch as $batch) {?>
+                                                            <option value="<?=$batch['id'];?>"><?=$batch['title'];?></option>
+                                                            <?php } ?>
+                                                        </select> 
+                                                        <input type="number" name="coupon_number[]" style="width: 60px" value="0"> 张<br /><br />
+                                                        券：
+                                                        <select name="coupon_batch[]">
+                                                            <option value="">请选择</option>
+                                                            <?php foreach ($couponBatch as $batch) {?>
+                                                            <option value="<?=$batch['id'];?>"><?=$batch['title'];?></option>
+                                                            <?php } ?>
+                                                        </select> 
+                                                        <input type="number" name="coupon_number[]" style="width: 60px" value="0"> 张<br /><br />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">生日特权</td>
+                                                    <td>
+                                                        <textarea name="birthday_remark" style="width: 50%" rows="5"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">积分特权</td>
+                                                    <td>
+                                                        <textarea name="integral_remark" style="width: 50%" rows="5"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">佣金特权</td>
+                                                    <td>
+                                                        <textarea name="income_remark" style="width: 50%" rows="5"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">邀请特权</td>
+                                                    <td>
+                                                        <textarea name="invitation_remark" style="width: 50%" rows="5"></textarea>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -224,7 +265,7 @@
                                                 <tr>
                                                     <td class="require">颜色代码</td>
                                                     <td>
-                                                        <input type="text" name="color" value="">
+                                                        <input class="colorpicker" type="text" name="color" value="">
                                                     </td>
                                                 </tr>
                                                 <tr style="display:none">
@@ -240,8 +281,60 @@
                                                     <td class="require">赠送</td>
                                                     <td>
                                                         余额：<input type="number" style="width: 60px" name="balance_amount" value="0"> 元 <br /><br />
-                                                        朋友的券： <input type="number" style="width: 60px" name="coupon_friend_num" value="0"> 张 每张价值 <input type="number" style="width: 60px" name="coupon_friend_amount"  value="0"> 元 开始时间 <input class="datetime" type="text" style="width: 150px" name="coupon_friend_start_time" value=""> 结束时间 <input class="datetime" type="text" style="width: 150px" name="coupon_friend_end_time" value=""><br /><br />
-                                                        普通券： <input type="number" style="width: 60px" name="coupon_num" value="0"> 每张价值 <input type="number" style="width: 60px" name="coupon_amount" value="0"> 元 开始时间 <input class="datetime" type="text" style="width: 150px" name="coupon_start_time" value=""> 结束时间 <input class="datetime" type="text" style="width: 150px" name="coupon_end_time" value="">
+                                                        券：
+                                                        <select name="coupon_batch[]">
+                                                            <option value="">请选择</option>
+                                                            <?php foreach ($couponBatch as $batch) {?>
+                                                            <option value="<?=$batch['id'];?>">
+                                                                <?=$batch['title'];?>
+                                                            </option>
+                                                            <?php } ?>
+                                                        </select>
+                                                        <input type="number" name="coupon_number[]" style="width: 60px" value="0"> 张<br /><br />
+                                                        券：
+                                                        <select name="coupon_batch[]">
+                                                            <option value="">请选择</option>
+                                                            <?php foreach ($couponBatch as $batch) {?>
+                                                            <option value="<?=$batch['id'];?>">
+                                                                <?=$batch['title'];?>
+                                                            </option>
+                                                            <?php } ?>
+                                                        </select>
+                                                        <input type="number" name="coupon_number[]" style="width: 60px" value="0"> 张<br /><br />
+                                                        券：
+                                                        <select name="coupon_batch[]">
+                                                            <option value="">请选择</option>
+                                                            <?php foreach ($couponBatch as $batch) {?>
+                                                            <option value="<?=$batch['id'];?>">
+                                                                <?=$batch['title'];?>
+                                                            </option>
+                                                            <?php } ?>
+                                                        </select>
+                                                        <input type="number" name="coupon_number[]" style="width: 60px" value="0"> 张<br /><br />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">生日特权</td>
+                                                    <td>
+                                                        <textarea name="birthday_remark" style="width: 50%" rows="5"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">积分特权</td>
+                                                    <td>
+                                                        <textarea name="integral_remark" style="width: 50%" rows="5"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">佣金特权</td>
+                                                    <td>
+                                                        <textarea name="income_remark" style="width: 50%" rows="5"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">邀请特权</td>
+                                                    <td>
+                                                        <textarea name="invitation_remark" style="width: 50%" rows="5"></textarea>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -322,6 +415,10 @@
                     data: {id:id},
                     success:function(data){
                         if(data.code == 0){
+                            $("#edit_card [name='birthday_remark']").val(data.data.birthday_remark);
+                            $("#edit_card [name='integral_remark']").val(data.data.integral_remark);
+                            $("#edit_card [name='income_remark']").val(data.data.income_remark);
+                            $("#edit_card [name='invitation_remark']").val(data.data.invitation_remark);
                             $("#edit_card [name='id']").val(data.data.id);
                             $("#edit_card [name='title']").val(data.data.title);
                             $("#edit_card [name='seq']").val(data.data.seq);
@@ -332,16 +429,23 @@
                             $("#edit_card [name='amount']").val(data.data.amount / 100);
                             $("#edit_card [name='discount']").val(data.data.discount);
                             $("#edit_card [name='color']").val(data.data.color);
+                            $("#edit_card [name='color']").trigger('change');
                             var give = JSON.parse(data.data.give);
                             $("#edit_card [name='balance_amount']").val(give.balance.amount);
-                            $("#edit_card [name='coupon_friend_num']").val(give.coupon_friend.number);
-                            $("#edit_card [name='coupon_friend_amount']").val(give.coupon_friend.amount);
-                            $("#edit_card [name='coupon_friend_start_time']").val(give.coupon_friend.start_time);
-                            $("#edit_card [name='coupon_friend_end_time']").val(give.coupon_friend.end_time);
-                            $("#edit_card [name='coupon_num']").val(give.coupon.number);
-                            $("#edit_card [name='coupon_amount']").val(give.coupon.amount);
-                            $("#edit_card [name='coupon_start_time']").val(give.coupon.start_time);
-                            $("#edit_card [name='coupon_end_time']").val(give.coupon.end_time);
+                            $("#edit_card [name='coupon_batch[]']").val('');
+                            $("#edit_card [name='coupon_number[]']").val('0');
+                            give.coupon.forEach(function(item, index){
+                                $("#edit_card [name='coupon_batch[]']:eq(" + index + ")").val(item.id);
+                                $("#edit_card [name='coupon_number[]']:eq(" + index + ")").val(item.number);
+                            });
+                            // $("#edit_card [name='coupon_friend_num']").val(give.coupon_friend.number);
+                            // $("#edit_card [name='coupon_friend_amount']").val(give.coupon_friend.amount);
+                            // $("#edit_card [name='coupon_friend_start_time']").val(give.coupon_friend.start_time);
+                            // $("#edit_card [name='coupon_friend_end_time']").val(give.coupon_friend.end_time);
+                            // $("#edit_card [name='coupon_num']").val(give.coupon.number);
+                            // $("#edit_card [name='coupon_amount']").val(give.coupon.amount);
+                            // $("#edit_card [name='coupon_start_time']").val(give.coupon.start_time);
+                            // $("#edit_card [name='coupon_end_time']").val(give.coupon.end_time);
                             $("#edit_card").addClass('show');
                         }else{
                             swal("提示", data.msg, "warning");
@@ -361,6 +465,10 @@
                     background: $("#add_card [name='background']:eq(0)").val(),
                     open_background: $("#add_card [name='background']:eq(1)").val(),
                     color: $("#add_card [name='color']").val(),
+                    invitation_remark: $("#add_card [name='invitation_remark']").val(),
+                    income_remark: $("#add_card [name='income_remark']").val(),
+                    integral_remark: $("#add_card [name='integral_remark']").val(),
+                    birthday_remark: $("#add_card [name='birthday_remark']").val(),
                 };
                 if(data.title == ''){
                     swal({title: "提示", text: "等级名称不能为空", type: "warning"}, function(){
@@ -405,21 +513,21 @@
                 //     return false;
                 // }
                 var give = {
-                    balance: {'amount':$("#add_card [name='balance_amount']").val()},
-                    coupon_friend: {
-                        number:$("#add_card [name='coupon_friend_num']").val(), 
-                        amount:$("#add_card [name='coupon_friend_amount']").val(),
-                        start_time: $("#add_card [name='coupon_friend_start_time']").val(),
-                        end_time: $("#add_card [name='coupon_friend_end_time']").val(),
-                    },
-                    coupon: {
-                        number:$("#add_card [name='coupon_num']").val(), 
-                        amount: $("#add_card [name='coupon_amount']").val(),
-                        start_time: $("#add_card [name='coupon_start_time']").val(),
-                        end_time: $("#add_card [name='coupon_end_time']").val(),
-                    },
+                    balance: { 'amount': $("#add_card [name='balance_amount']").val() },
+                    coupon: []
                 };
-
+                var i = 0;
+                $("#add_card [name='coupon_batch[]']").each(function (index) {
+                    var id = $(this).val();
+                    var number = $("#add_card [name='coupon_number[]']:eq(" + index + ")").val();
+                    if (id != '' && number > 0) {
+                        give.coupon[i] = {
+                            id: id,
+                            number: number
+                        }
+                        i++;
+                    }
+                });
                 data.give = JSON.stringify(give);
                 $(".loading").show();
                 $.ajax({
@@ -480,6 +588,10 @@
                     background: $("#edit_card [name='background']:eq(0)").val(),
                     open_background: $("#edit_card [name='background']:eq(1)").val(),
                     color: $("#edit_card [name='color']").val(),
+                    invitation_remark: $("#edit_card [name='invitation_remark']").val(),
+                    income_remark: $("#edit_card [name='income_remark']").val(),
+                    integral_remark: $("#edit_card [name='integral_remark']").val(),
+                    birthday_remark: $("#edit_card [name='birthday_remark']").val(),
                 };
                 if(data.title == ''){
                     swal({title: "提示", text: "等级名称不能为空", type: "warning"}, function(){
@@ -525,19 +637,20 @@
                 // }
                var give = {
                     balance: { 'amount': $("#edit_card [name='balance_amount']").val() },
-                    coupon_friend: {
-                        number: $("#edit_card [name='coupon_friend_num']").val(),
-                        amount: $("#edit_card [name='coupon_friend_amount']").val(),
-                        start_time: $("#edit_card [name='coupon_friend_start_time']").val(),
-                        end_time: $("#edit_card [name='coupon_friend_end_time']").val(),
-                    },
-                    coupon: {
-                        number: $("#edit_card [name='coupon_num']").val(),
-                        amount: $("#edit_card [name='coupon_amount']").val(),
-                        start_time: $("#edit_card [name='coupon_start_time']").val(),
-                        end_time: $("#edit_card [name='coupon_end_time']").val(),
-                    },
+                    coupon: []
                 };
+                var i = 0;
+                $("#edit_card [name='coupon_batch[]']").each(function (index) {
+                    var id = $(this).val();
+                    var number = $("#edit_card [name='coupon_number[]']:eq(" + index + ")").val();
+                    if (id != '' && number > 0) {
+                        give.coupon[i] = {
+                            id: id,
+                            number: number
+                        }
+                        i++;
+                    }
+                });
 
                 data.give = JSON.stringify(give);
                 $(".loading").show();

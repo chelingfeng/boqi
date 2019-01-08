@@ -67,7 +67,7 @@
                             <?php foreach($users as $v){ ?>
                             <tr>
                                 <td>{$v.id}</td>
-                                <td>{$v.nickname}</td>
+                                <td>{:urldecode($v['nickname'])}</td>
                                 <td>
                                     {$v.mobile|default='-'}
                                 </td>

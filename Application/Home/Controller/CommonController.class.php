@@ -30,6 +30,7 @@ class CommonController extends Controller {
 		if ($user['vip_level_id']) {
 			$user['vip_level'] = M('vip_level')->where(['id' => $user['vip_level_id']])->find();
 		}
+		$user['nickname'] = urldecode($user['nickname']);
 		return $user;
 	}
 }

@@ -2,16 +2,16 @@
 
 use Phpmig\Migration\Migration;
 
-class CreateTableTest extends Migration
+class AddIndexCouponCode extends Migration
 {
     /**
      * Do the migration
      */
     public function up()
     {
-        // $this->getContainer()['db']->exec("
-            
-        // ");
+        $this->getContainer()['db']->exec("
+            ALTER TABLE `a_coupon` ADD INDEX(`code`);
+        ");
     }
 
     /**
@@ -19,8 +19,6 @@ class CreateTableTest extends Migration
      */
     public function down()
     {
-        // $this->getContainer()['db']->exec("
-            
-        // ");
+
     }
 }

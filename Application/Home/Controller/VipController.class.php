@@ -52,8 +52,16 @@ class VipController extends CommonController {
     	$this->display();
     }
 
+    public function findCoupon()
+    {
+        $coupon = M('coupon')->where(['id' => $_GET['id']])->find();
+        $coupon['typeName'] = C('coupon_type')[$coupon['type']];
+        $this->ajaxReturn(codeReturn(0, $coupon));
+    }
+
     public function coupon()
     {
+        $this->assign('config', setting('system'));
     	$this->display();
     }
 
@@ -62,7 +70,7 @@ class VipController extends CommonController {
         $type = $_GET['type'];
         $status = $_GET['status'];
         if ($type == 'my') {
-            $w['is_friend'] = 0;
+            // $w['is_friend'] = 0;
             $w['status'] = $_GET['status'];
             $w['user_id'] = session('user.id');
             $coupons = M('coupon')->where($w)->order('receivetime DESC')->select();
@@ -71,6 +79,9 @@ class VipController extends CommonController {
             $w['status'] = $_GET['status'];
             $w['user_id'] = session('user.id');
             $coupons = M('coupon')->where($w)->order('receivetime DESC')->select();
+        }
+        foreach ($coupons as &$coupon) {
+            $coupon['typeName'] = C('coupon_type')[$coupon['type']];
         }
         $this->ajaxReturn(codeReturn(0, $coupons));
     }
@@ -92,6 +103,28 @@ class VipController extends CommonController {
     	$this->display();
     }
 
+    public function recharge()
+    {
+        $user = $this->getUserInfo();
+        if ($user['vip_level_id'] > 0) {
+            $seq = M('vip_level')->where(['id' => $user['vip_level_id']])->getField('seq');
+        } else {
+            $seq = -1;
+        }
+        $card = M('vip_level')->where('amount > 0 AND del = 0 AND seq > ' . $seq)->order('seq, id DESC')->select();
+        foreach ($card as &$v) {
+            $v['give'] = json_decode($v['give'], true);
+            $giveCouponNumber = 0;
+            foreach ($v['give']['coupon'] as $coupon) {
+                $giveCouponNumber += $coupon['number'];
+            }
+            $v['giveCouponNumber'] = $giveCouponNumber;
+        }
+        $this->assign('user', $user);
+        $this->assign('card', $card);
+        $this->display();
+    }
+
     public function openVip()
     {
         $level = M('vip_level')->where(['id' => $_POST['id']])->find();
@@ -99,7 +132,7 @@ class VipController extends CommonController {
         if (!$level) {
             $this->ajaxReturn(codeReturn(10001));
         }
-        if ($userInfo['vip_level_id'] > 0 && $level['amount'] == 0) {
+        if ($userInfo['vip_level_id'] > 0 && $userInfo['vip_level']['seq'] >= $level['seq']) {
             $this->ajaxReturn(codeReturn(20009));
         }
         $data = [
@@ -190,12 +223,12 @@ class VipController extends CommonController {
         $user = $this->getUserInfo();
         $data['index_tips'] = C('index_tips');
         $data['user'] = $user;
-        // if ($user['vip_level_id'] > 0) {
-        //     $seq = M('vip_level')->where(['id' => $user['vip_level_id']])->getField('seq');
-        // } else {
-        //     $seq = 0;
-        // }
-        $data['card'] = M('vip_level')->where('del = 0')->order('seq, id DESC')->select();
+        if ($user['vip_level_id'] > 0) {
+            $seq = M('vip_level')->where(['id' => $user['vip_level_id']])->getField('seq');
+        } else {
+            $seq = -1;
+        }
+        $data['card'] = M('vip_level')->where('del = 0 AND seq > '.$seq)->order('seq, id DESC')->select();
         $this->ajaxReturn(codeReturn(0, $data));
     }
 
@@ -244,12 +277,12 @@ class VipController extends CommonController {
                 'end_time' => ['gt', date('Y-m-d H:i:s')],
             ])->order('id DESC')->select();
             foreach ($coupons as $key => $coupon) {
-                $a = M('coupon')->where(['status' => ['neq', 'unreceive'], 'batch_id' => $coupon['id']])->count();
-                if ($a >= $coupon['number']) {
+                $coupons[$key]['typeName'] = C('coupon_type')[$coupon['type']];
+                if ($coupon['number'] <= $coupon['receive_num']) {
                     unset($coupons[$key]);
                 }
-                $b = M('coupon')->where(['user_id' => session('user.id'), 'batch_id' => $coupon['id']])->find();
-                if ($b) {
+                $b = M('coupon')->where(['user_id' => session('user.id'), 'batch_id' => $coupon['id']])->count();
+                if ($b >= $coupon['num_limit']) {
                     unset($coupons[$key]);
                 }
             }
@@ -282,22 +315,8 @@ class VipController extends CommonController {
 
     public function receive()
     {
-        $batch = M('coupon_batch')->where(['id' => $_GET['id']])->find();
-        $a = M('coupon')->where(['status' => ['neq', 'unreceive'], 'batch_id' => $coupon['id']])->count();
-        if ($a >= $batch['number']) {
-            $this->ajaxReturn(codeReturn(20007));
-        }
-        $b = M('coupon')->where(['user_id' => session('user.id'), 'batch_id' => $batch['id']])->find();
-        if ($b) {
-            $this->ajaxReturn(codeReturn(20008));
-        }
-        $coupon = M('coupon')->where(['status' => 'unreceive', 'batch_id' => $batch['id']])->find();
-        M('coupon')->where(['id' => $coupon['id']])->save([
-            'status' => 'receive',
-            'user_id' => session('user.id'),
-            'receivetime' => date('Y-m-d H:i:s')
-        ]);
-        $this->ajaxReturn(codeReturn(0));
+        $result = receiveCoupon($_GET['id'], session('user.id'));
+        $this->ajaxReturn($result);
     }
 
     public function getMessage()
@@ -307,6 +326,11 @@ class VipController extends CommonController {
 
     public function equity()
     {
+        $vipLevels = ArrayToolkit::index(M('vip_level')->where('del = 0')->order('seq, id DESC')->select(), 'id');
+        $vip = isset($_GET['id']) ? $vipLevels[$_GET['id']] : current($vipLevels);
+        $this->assign('vipLevels', $vipLevels);
+        $this->assign('current_vip', $vip);
+        $this->assign('user', $this->getUserInfo());
         $this->display();
     }
 }

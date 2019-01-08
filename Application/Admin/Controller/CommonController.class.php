@@ -8,7 +8,7 @@ class CommonController extends Controller {
 
     function __construct(){
 		parent::__construct();
-		
+		$_GET['epage'] || $_GET['epage'] = 1;
 		if(!session('account')){
 			$this->error('请先登陆', U('Admin/Login/index'));
 		}

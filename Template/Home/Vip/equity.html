@@ -7,43 +7,55 @@
             </div>
             <div class="swiper-container">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="vip-list" style="background:url(/Public/Uploads/5c1f2cbaa9276.png) 0 0 no-repeat;background-size:100% 100%;">
-                            <img src="https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoohsg50vH92YNib7knlicwiaiaLw0r4LbOwGmcDFcUSZI8aIT9TJHZ2BiaIlKxbw5IFjhshWUYicUIIJdw/132"
+                    <?php foreach ($vipLevels as $vip){ ?>
+                    <div class="swiper-slide" data-id="{$vip.id}" data-data='{:json_encode($vip)}'>
+                        <div class="vip-list" style="background:url({$vip.background}) 0 0 no-repeat;background-size:100% 100%;">
+                            <img src="{$user.avatar}"
                                 class="headimg">
-                            <span class="vip-level">美食家</span>
-                            <span class="name">车凌锋</span>
-                            <p class="bottom-right">ID:20181213001127213</p>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="vip-list" style="background:url(/Public/Uploads/5c1f2cbaa9276.png) 0 0 no-repeat;background-size:100% 100%;">
-                            <span class="vip-none-level">美食家</span>
+                            <?php if($user['vip_level_id'] == $vip['id']){ ?>
+                            <span class="vip-level">{$vip.title}</span>
+                            <span class="name">{$user.nickname}</span>
+                            <p class="bottom-right">ID:{$user.card_sn}</p>
+                            <?php } else { ?>
+                            <span class="vip-none-level">{$vip.title}</span>
                             <p class="bottom-left">尚未开通</p>
+                            <?php } ?>
                         </div>
                     </div>
+                    <?php } ?>
                 </div>
             </div>
-            <p class="ftitle">尊敬的<span>v2会员</span>，您享有以下权益</p>
+            <p class="ftitle">尊敬的<span></span>，您享有以下权益</p>
             <div class="equity-swiper-container">
-                <div class="equity">
-                    <div class="kuang"><span class="iconfont icon-qianbao1"></span></div>
+                <div class="equity" data-type="birthday">
+                    <div class="kuang"><span class="iconfont icon-shengrilijin"></span></div>
                     <p class="equity-title">生日特权</p>
                 </div>
-                <div class="equity">
-                    <div class="kuang"><span class="iconfont icon-qianbao1"></span></div>
-                    <p class="equity-title">生日特权</p>
+                <div class="equity" data-type="integral">
+                    <div class="kuang"><span class="iconfont icon-liwu"></span></div>
+                    <p class="equity-title">积分特权</p>
                 </div>
-                <div class="equity">
-                    <div class="kuang"><span class="iconfont icon-qianbao1"></span></div>
-                    <p class="equity-title">生日特权</p>
+                <div class="equity" data-type="income">
+                    <div class="kuang"><span class="iconfont icon-qian"></span></div>
+                    <p class="equity-title">佣金特权</p>
                 </div>
-                <div class="equity">
-                    <div class="kuang"><span class="iconfont icon-qianbao1"></span></div>
-                    <p class="equity-title">生日特权</p>
+                <div class="equity" data-type="invitation">
+                    <div class="kuang"><span class="iconfont icon-yaoqinghaoyou"></span></div>
+                    <p class="equity-title">邀请特权</p>
                 </div>
             </div>
-            <div class="equity-open">立即开通</div>
+            <a class="equity-open" href="{:U('card')}" data-no-cache="true" style="display:none">立即开通</a>
+
+            <input type="hidden" name="user_vip_level" value='{:json_encode($user['vip_level'])}' />
+            <input type="hidden" name="vip" value='{:json_encode($current_vip)}'/>
+
+            <div class="mask"></div>
+            <div class="equity-detail">
+                <p class="tt">邀请特权</p>
+                <div class="equity-detail-remark"></div>
+                <div class="close iconfont icon-guanbi"></div>
+            </div>
+
         </div>
     </div>
 </block>

@@ -25,14 +25,14 @@ class ApiController extends Controller {
 			$user = M('user')->where(['openid' => $openid])->find();
 			if ($user) {
 				M('user')->where(['id' => $user['id']])->save([
-					'nickname' => $this->post['nickName'],
+					'nickname' => urlencode($this->post['nickName']),
 					'avatar' => $this->post['avatarUrl'],
 					'update_time' => date('Y-m-d H:i:s'),
 				]);
 			} else {
 				M('user')->add([
 					'openid' => $openid,
-					'nickname' => $this->post['nickName'],
+					'nickname' => urlencode($this->post['nickName']),
 					'avatar' => $this->post['avatarUrl'],
 					'update_time' => date('Y-m-d H:i:s'),
 					'create_time' => date('Y-m-d H:i:s'),

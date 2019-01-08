@@ -1,0 +1,45 @@
+<extend name="Common/__base" />
+<block name="body">
+    <div class="page-group">
+        <div class="page page-current" style="background: #fff" id="page-vip-recharge">
+            <div class="content" id="recharge">
+                <div class="recharge-top">
+                    <div class="recharge-top-left">
+                        <p class="recharge-top-title">当前等级</p>
+                        <p class="recharge-top-value">{$user.vip_level.title|default='无'}</p>
+                        <div class="recharge-top-line"></div>
+                    </div>
+                    <div class="recharge-top-right">
+                        <p class="recharge-top-title">当前余额</p>
+                        <p class="recharge-top-value"><?=sprintf("%.2f", $user['balance'] / 100);?><span class="money-span"> 元</span></p>
+                    </div>
+                </div>
+                <div class="recharge-content">
+                    <p class="recharge-content-title">会员充值</p>
+                    <div class="recharge-content-amount-content">
+                        <input type="text" class="recharge-content-amount" placeholder="请输入充值金额" id="amount"/>
+                        <span class="recharge-content-amount-money">元</span>
+                    </div>
+                    <?php foreach ($card as $v){ ?>
+                    <div class="recharge-card-list" data-amount="<?=$v['amount'] / 100;?>">
+                        <div class="xianshi"></div>
+                        <div class="xianshi_text">限时</div>
+                        <p class="p1">充值</p>
+                        <p class="p2"><?=$v['amount'] / 100;?><span> 元</span></p>
+                        <p class="p3">
+                            <?php if ($v['give']['balance']['amount']) { ?>
+                            送{$v['give']['balance']['amount']}元<br />
+                            <?php } ?>
+                            <?php if ($v['giveCouponNumber']) { ?>
+                            送{$v['giveCouponNumber']}张券
+                            <?php } ?>
+                        </p>
+                        <p class="p4">获取<span> {$v.title} </span>特权</p>
+                    </div>
+                    <?php } ?>
+                </div>
+                <div class="btn" id="recharge_action">立即充值</div>
+            </div>
+        </div>
+    </div>
+</block>

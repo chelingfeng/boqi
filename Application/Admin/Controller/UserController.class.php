@@ -37,13 +37,16 @@ class UserController extends CommonController
         $data = M('user')->where($_POST)->find();
         $vipLevel = M('vip_level')->where(['id' => $data['vip_level_id']])->find();
         $data['vipLevel'] = $vipLevel;
+        $data['nickname'] = urldecode($data['nickname']);
         $this->ajaxReturn(codeReturn(0, $data));
     }
 
     public function vipLevel()
     {
+        $couponBatch = M('coupon_batch')->where($where)->order('id DESC')->select();
         $vipLevels = $this->getVipLevels();
         $this->assign('vipLevels', $vipLevels);
+        $this->assign('couponBatch', $couponBatch);
         $this->display();
     }
 
@@ -86,6 +89,12 @@ class UserController extends CommonController
     public function openVip()
     {
         if (IS_AJAX) {
+            $user = M('user')->where(['id' => $_POST['id']])->find();
+            $userVip = M('vip_level')->where(['id' => $user['vip_level_id']])->find();
+            $vip = M('vip_level')->where(['id' => $_POST['vip_id']])->find();
+            if ($user['vip_level_id'] > 0 && $userVip['seq'] >= $vip['seq']) {
+                $this->ajaxReturn(codeReturn(20009));
+            }
             openVip($_POST['id'], $_POST['vip_id'], 1, $_POST['remark']);
             $this->ajaxReturn(codeReturn(0));
         }

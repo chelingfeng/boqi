@@ -8,6 +8,7 @@
    <link rel="stylesheet" href="__PUBLIC__/css/app.css">
    <link rel="stylesheet" href="__PUBLIC__/css/sweetalert.css">
    <link rel="stylesheet" href="__PUBLIC__/css/bootstrap-select.css">
+   <link rel="stylesheet" href="__PUBLIC__/lib/colorpicker/css/bootstrap-colorpicker.css">
    <link rel="stylesheet" href="__PUBLIC__/css/css.css">
    <link rel="stylesheet" href="__PUBLIC__/css/iconfont-1.4.css" />
    <link rel="stylesheet" href="//at.alicdn.com/t/font_957376_7qt4o1lwdf6.css" />
@@ -17,6 +18,7 @@
    <script type="text/javascript" src="__PUBLIC__/js/bootstrap.select.min.js"></script>
    <script src="__PUBLIC__/js/echarts.common.min.js"></script>
    <script src="__PUBLIC__/js/bootstrap-datetimepicker.js"></script>
+   <script src="__PUBLIC__/lib/colorpicker/js/bootstrap-colorpicker.js"></script>
    <script src="__PUBLIC__/js/bootstrap-datetimepicker.zh-CN.js"></script>
    <script src="__PUBLIC__/js/jquery.jqprint-0.3.js"></script>
    <script src="__PUBLIC__/js/jquery-migrate-1.2.1.min.js"></script>
@@ -112,6 +114,7 @@
 </html>
 <script type="text/javascript">
    $(function(){
+       $('.colorpicker').colorpicker();
       //关闭弹窗
       $('.info-card-close').click(function(event){
          var a = event.target;
