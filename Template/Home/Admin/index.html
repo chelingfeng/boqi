@@ -1,0 +1,93 @@
+<extend name="Admin/__base" />
+<block name="body">
+    <div class="page-group">
+        <div class="page page-current" style="background: #fafafa" id="page-admin-index">
+            <!-- <nav class="bar bar-tab">
+                <a class="tab-item active">
+                    <span class="icon icon-home"></span>
+                    <span class="tab-label">首页</span>
+                </a>
+                <a class="tab-item">
+                    <span class="icon icon-me"></span>
+                    <span class="tab-label">我的</span>
+                </a>
+            </nav> -->
+            <div class="content">
+                <div class="index-top">
+                    <img src="{$config.logo}" />
+                    <div class="index-title">
+                        {$config.title}
+                    </div>
+                    <!-- <div class="change">切换门店</div> -->
+                </div>
+
+                <div class="index-message">
+                    <div class="index-message-one">
+                        <p>今日收益（元）</p>
+                        <p class="money">¥0</p>
+                    </div>
+                    <div class="index-message-tow">
+                        <div class="detail-list">
+                            <p class="t1">今日订单</p>
+                            <p class="t2">0</p>
+                            <p class="t3">昨天订单0</p>
+                        </div>
+                        <div class="detail-list">
+                            <p class="t1">本月收益</p>
+                            <p class="t2">0</p>
+                            <p class="t3"></p>
+                        </div>
+                        <div class="detail-list" style="border:none">
+                            <p class="t1">昨日浏览</p>
+                            <p class="t2">0</p>
+                            <p class="t3">上周浏览0</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="list-block contacts-block index-order">
+                    <div class="list-group">
+                        <ul>
+                            <li>
+                                <div class="item-content item-link">
+                                    <div class="item-inner">
+                                        <div class="item-title">待处理订单</div>
+                                        <div class="yuan">0</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="equity-swiper-container">
+                    <a href="{:U('vip')}">
+                        <div class="equity">
+                            <div class="kuang"><span class="iconfont icon-huiyuan" style="color:#ec4b03"></span></div>
+                            <p class="equity-title">会员管理</p>
+                        </div>
+                    </a>
+                    <a href="{:U('cash')}">
+                        <div class="equity">
+                            <div class="kuang"><span class="iconfont icon-shouzhimingxicaifuhongbaoyue" style="color:#ffa008"></span></div>
+                            <p class="equity-title">营收明细</p>
+                        </div>
+                    </a>
+                    <a href="{:U('data')}">
+                        <div class="equity">
+                            <div class="kuang"><span class="iconfont icon-shuju" style="color:#00aad8"></span></div>
+                            <p class="equity-title">经营数据</p>
+                        </div>
+                    </a>
+                    <a class="saoma">
+                        <div class="equity">
+                            <div class="kuang"><span class="iconfont icon-saoma" style="color:#858585"></span></div>
+                            <p class="equity-title">扫码核销</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

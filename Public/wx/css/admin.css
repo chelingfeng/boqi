@@ -1,0 +1,304 @@
+.empty {
+    display: none;
+	text-align:center;
+	margin-top:3rem;
+}
+.empty p {
+	margin: 0px;
+	color: #8e8e8e;
+}
+.empty span {
+	font-size: 3rem;
+	color:#8e8e8e;
+}
+.more {
+    text-align: center;
+    display: none;
+}
+.bar-tab .tab-item.active {
+	color: #f9bf1f;
+	border-bottom: 2px solid #f9bf1f;
+}
+#page-admin-login .logo {
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 3rem;
+}
+
+#page-admin-login .login-title {
+    text-align: center;
+    font-size: 1rem;
+    color:#121212;
+    margin: 0.5rem 0;
+    margin-bottom: 3rem;
+}
+
+#page-admin-login .login-btn {
+    width: 75%;
+    margin-left: 12.5%;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    border-radius: 2rem;
+    background: #f9bf1f;
+    color: #fff;
+    text-align: center;
+    font-size: 1rem;
+    margin-top: 2rem;
+}
+
+#page-admin-login .login-input {
+    box-shadow:0 -5px 8px -7px rgba(81, 81,81,0.1), -2px 11px 8px -7px rgba(81, 81,81,0.1), -6px 1px 8px -1px rgba(81, 81,81,0.1), 7px -2px 8px -1px rgba(81, 81,81,0.1);
+    width: 75%;
+    margin-left: 12.5%;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    border-radius: 2rem; 
+    margin-bottom: 1rem;
+}
+
+#page-admin-login .login-input span {
+    font-size: 1.3rem;
+    color: #dedede;
+    margin-left: 1rem;
+    position: absolute;
+}
+
+#page-admin-login .login-input input {
+    margin-left: 2.5rem;
+}
+
+#page-admin-login .login-input input::-webkit-input-placeholder{
+	color:#dedede;
+}
+
+#page-admin-index .index-top {
+    height: 3rem;
+    padding: 0 5%;
+    width: 100%;
+    background:#fff;
+    margin: 0.5rem 0;
+}
+#page-admin-index .index-top img {
+    width: 2rem;
+    border-radius: 50%;
+    position: absolute;
+    margin-top:0.5rem;
+}
+#page-admin-index .index-title {
+    float: left;
+    margin-left: 2.5rem;
+    line-height: 3rem;
+}
+#page-admin-index .change {
+    float: right;
+    border: 1px solid #f9bf1f;
+    margin-top: 0.7rem;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.3rem;
+}   
+
+#page-admin-index .index-message {
+    background: #fff;
+    height: 11.5rem;
+}
+
+#page-admin-index .index-message-one {
+    padding: 1.5rem 0;
+}
+#page-admin-index .index-message-one p {
+    text-align: center;
+    margin: 0;
+}
+#page-admin-index .money {
+    font-size: 1.5rem;
+    color: red;
+}
+#page-admin-index .index-message-tow {
+    width: 100%;
+}
+#page-admin-index .detail-list {
+    width: 33.3%;
+    float: left;
+    border-right: 1px solid #e5e5e5;
+}
+#page-admin-index .detail-list p {
+    margin: 0;
+    text-align: center;
+    padding: 0.1rem 0;
+}
+#page-admin-index .detail-list .t1 {
+    font-size: 0.7rem;
+}
+#page-admin-index .detail-list .t2 {
+    font-size: 0.7rem;
+    color: red;
+}
+#page-admin-index .detail-list .t3 {
+    font-size: 0.6rem;
+}
+#page-admin-index .index-order {
+    margin: 0.5rem 0px;
+}
+
+#page-admin-index .equity-swiper-container {
+    width: 100%;
+    background: #fff;
+    float: left;
+    padding-top: 0.6rem;
+}
+
+#page-admin-index .equity-swiper-container .equity {
+	width: 25%;
+	float: left;
+	margin-bottom: 1rem;
+}
+
+#page-admin-index .equity-swiper-container .kuang {
+	text-align: center;
+	color: #f9bf1f;
+	margin: 0 auto;
+}
+
+#page-admin-index .equity-swiper-container .kuang span {
+	font-size: 1.5rem;
+}
+
+#page-admin-index .equity-swiper-container .equity-title {
+	font-size: 0.7rem;
+	color: #1b1b1b;
+    text-align: center;
+    margin: 0;
+}
+
+#page-admin-index .yuan {
+    background:red;
+    border-radius: 50%;
+    width: 1.2rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    text-align: center;
+    color: #fff;
+    font-size: 0.7rem;
+}
+
+#page-admin-index .list-block ul:after {
+    background-color:#fff;
+}
+
+#page-admin-index .list-block ul::before {
+    background-color:#fff;
+}
+
+#cash-list {
+    margin: 0px;
+}
+
+#cash-list.list-block .item-subtitle {
+    font-size: 0.65rem;
+    color:#787878;
+}
+
+#cash-list.list-block .item-subtitle {
+    font-size: 0.65rem;
+    color:#787878;
+}
+
+#cash-list .cash-right {
+    position: absolute;
+    right: 0.5rem;
+}
+
+#cash-list .inflow .cash-right{
+    color: #f17f03;
+}
+
+#cash-list .outflow .cash-right{
+    color: #17a829;
+}
+
+#page-admin-vip .searchbar .search-input {
+    width: 60%;
+}
+
+#page-admin-vip .searchbar .search-input input{
+    background: #eee;
+}
+
+#page-admin-vip .vip-number {
+    position: absolute;
+    right: 0.8rem;
+    top: 0;
+    line-height: 2.2rem;
+    font-size: 0.75rem;
+}
+
+#page-admin-vip .vip-number span{
+   color: red;
+}
+
+#page-admin-vip .bar .searchbar {
+    position: relative;
+    background: #fff;
+}
+
+
+.buttons-list {
+	padding: 0.7rem 0;
+	width: 100%;
+	height: 3.1rem;
+	padding-left:17%;
+}
+
+.buttons-list .button {
+	width: 40%;
+	float: left;
+	line-height: 1.7rem;
+	height: 1.7rem;
+	border: 1px solid #f9bf1f;
+	color: #f9bf1f;
+	border-radius:0.35rem;
+	font-size: .7rem;
+}
+
+.buttons-list .button:nth-of-type(1) {
+	border-right: none;
+	border-top-right-radius:0px;
+	border-bottom-right-radius: 0px;
+}
+
+.buttons-list .button:nth-of-type(2) {
+	border-left: none;
+	border-top-left-radius:0px;
+	border-bottom-left-radius: 0px;
+}
+
+.buttons-list .button.active {
+	background: #f9bf1f;
+    color: #fff;
+    border: 1px solid #f9bf1f;
+}
+
+.coupon-tab .button.active{
+	border-bottom-color:#f9bf1f;
+	color: #f9bf1f;
+}
+
+.search-input .icon2 {
+    position: absolute;
+    font-size: .9rem;
+    color: #b4b4b4;
+    top: 50%;
+    left: .3rem;
+    -webkit-transform: translate3D(0,-50%,0);
+    transform: translate3D(0,-50%,0);
+}
+
+.bar-tab .tab-item .icon {
+    background-image:none;
+    margin-right: 0px;
+    width: auto
+}
+
+.bar-tab .tab-item .icon::after {
+    width: 0px;
+}
