@@ -65,6 +65,11 @@
 
 #page-admin-login .login-input input {
     margin-left: 2.5rem;
+    border: 0px;
+}
+
+input[type="button"], input[type="submit"], input[type="reset"] {
+    -webkit-appearance: none;
 }
 
 #page-admin-login .login-input input::-webkit-input-placeholder{
