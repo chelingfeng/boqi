@@ -68,7 +68,7 @@
     border: 0px;
 }
 
-input[type="button"], input[type="submit"], input[type="reset"] {
+input[type="button"], input[type="submit"], input[type="reset"], input[type="text"]{
     -webkit-appearance: none;
 }
 
