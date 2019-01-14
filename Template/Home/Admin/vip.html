@@ -6,50 +6,70 @@
                 <div class="searchbar">
                     <div class="search-input">
                         <label class="icon2 iconfont icon-sousuo"></label>
-                        <input type="text" placeholder='昵称/姓名/手机号' />
+                        <input type="text" placeholder='姓名/手机号' id="keyword"/>
                     </div>
-                    <div class="vip-number">会员总数 <span>50</span></div>
+                    <div class="vip-number">会员总数 <span>{$vipNum}</span></div>
                 </div>
             </div>
-            <div class="content" style="top:2.2rem">
-                <div class="content-block-title">用户id:3333</div>
+
+            <div class="mask"></div>
+            <div class="vip_manage">
+                <p class="tt">会员余额</p>
+                <p class="tips"></p>
+                <input type="number" class="code" placeholder="请输入金额" name="amount" />
+                <input type="text" class="code" placeholder="请输入备注" name="remark" />
+                <div class="btn" id="bill">确认扣款</div>
+                <div class="btn" id="recharge">充值</div>
+                <input type="hidden" name="id" />
+                <div class="close iconfont icon-guanbi"></div>
+            </div>
+
+            <div class="content" style="top:2.2rem" id="vip-list">
+                <!-- <div class="content-block-title">用户id:3333</div>
                 <div class="list-block">
                     <ul>
                         <li class="item-content">
                             <div class="item-inner">
-                                <div class="item-title">商品名称</div>
-                                <div class="item-after">杜蕾斯</div>
+                                <div class="item-title">姓名</div>
+                                <div class="item-after">车凌锋</div>
                             </div>
                         </li>
                         <li class="item-content">
                             <div class="item-inner">
-                                <div class="item-title">型号</div>
-                                <div class="item-after">极致超薄型</div>
+                                <div class="item-title">会员等级</div>
+                                <div class="item-after">vip3</div>
                             </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">手机号</div>
+                                <div class="item-after">13486543696</div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">联系地址</div>
+                                <div class="item-input">
+                                    浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">余额</div>
+                                <div class="item-after">11.3</div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="vip-action" data-id="1">操作</div>
                         </li>
                     </ul>
-                </div>
-                <div class="content-block-title">用户id:3333</div>
-                <div class="list-block">
-                    <ul>
-                        <li class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title">商品名称</div>
-                                <div class="item-after">杜蕾斯</div>
-                            </div>
-                        </li>
-                        <li class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title">型号</div>
-                                <div class="item-after">极致超薄型</div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="empty">
-                    <span class="iconfont icon-ico_meiyoushuju"></span>
-                    <p>没有检索到相关数据</p>
-                </div>
+                </div> -->
+               
+            </div> 
+            <div class="empty" style="display:block">
+                <span class="iconfont icon-ico_meiyoushuju"></span>
+                <p>没有检索到相关数据</p>
             </div>
 
         </div>

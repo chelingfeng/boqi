@@ -617,6 +617,30 @@ $(function () {
         }
         showBtn();
 
+        $(".equity-open").click(function(){
+            var vip = JSON.parse($("[name='vip']").val());
+            $.showIndicator()
+            $.ajax({
+                type: 'POST',
+                data: { id: vip.id },
+                url: 'index.php?m=Home&c=Vip&a=openVip',
+                success: function (res) {
+                    if (res.code == 0) {
+                        if (res.data.amount == 0) {
+                            $.alert('开通成功', '提示', function () {
+                                window.location.href = $("[name='callback']").val();
+                            });
+                        } else {
+                            pay(res.data.id, $("[name='callback']").val());
+                        }
+                    } else {
+                        $.alert(res.msg, '提示');
+                    }
+                    $.hideIndicator();
+                }
+            })
+        });
+
 
         var swiper = new Swiper('.swiper-container', {
             slidesPerView: 'auto',

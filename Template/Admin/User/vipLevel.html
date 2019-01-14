@@ -377,7 +377,7 @@
             });
 
             var index;
-            $("input[name='img']").change(function(){
+            $(".fileform input[name='img']").change(function(){
                 if($(this).val() == '') return false;
                 $(".loading").show();
                 $.ajax({
@@ -401,7 +401,7 @@
 
             $(".upload_action").click(function(){
                 index = $('.upload_action').index(this);
-                $("input[name='img']").trigger('click');
+                $(".fileform input[name='img']").trigger('click');
             });
 
 

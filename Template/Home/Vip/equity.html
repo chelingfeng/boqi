@@ -44,7 +44,7 @@
                     <p class="equity-title">邀请特权</p>
                 </div>
             </div>
-            <a class="equity-open" href="{:U('card')}" data-no-cache="true" style="display:none">立即开通</a>
+            <a class="equity-open" data-no-cache="true" style="display:none">立即开通</a>
 
             <input type="hidden" name="user_vip_level" value='{:json_encode($user['vip_level'])}' />
             <input type="hidden" name="vip" value='{:json_encode($current_vip)}'/>
@@ -55,6 +55,8 @@
                 <div class="equity-detail-remark"></div>
                 <div class="close iconfont icon-guanbi"></div>
             </div>
+
+            <input type="hidden" name="callback" value="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['HTTP_HOST']}{:U('Vip/index')}" />
 
         </div>
     </div>

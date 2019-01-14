@@ -252,3 +252,73 @@ function getClientIp($type = 0)
     $ip = $long ? array($ip, $long) : array('0.0.0.0', 0);
     return $ip[$type];
 }
+
+function curPageURL()
+{
+    $pageURL = 'http';
+    if (!empty($_SERVER['HTTPS'])) {
+        $pageURL .= "s";
+    }
+    $pageURL .= "://";
+    if ($_SERVER["SERVER_PORT"] != "80") {
+        $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
+    } else {
+        $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
+    }
+    return $pageURL;
+}
+
+
+function countData()
+{
+    $data = [
+        'thisDayRevenue' => sprintf("%.2f", (M('cash_flow')->where("category IN (4) AND create_time > '".date('Y-m-d 00:00:00'). "' AND create_time < '". date('Y-m-d 23:59:59') ."'")->sum('amount') ?? 0) / 100), //今日营收 
+        'lastDayRevenue' => sprintf("%.2f", (M('cash_flow')->where("category IN (4) AND create_time > '" . date('Y-m-d 00:00:00', strtotime('-1 day')) . "' AND create_time < '" . date('Y-m-d 23:59:59', strtotime('-1 day')) . "'")->sum('amount') ?? 0) / 100), //昨日营收 
+        'thisDayRecharge' => sprintf("%.2f", (M('cash_flow')->where("category IN (1,2) AND create_time > '" . date('Y-m-d 00:00:00') . "' AND create_time < '" . date('Y-m-d 23:59:59') . "'")->sum('amount') ?? 0) / 100), //今日充值
+        'lastDayRecharge' => sprintf("%.2f", (M('cash_flow')->where("category IN (1,2) AND create_time > '" . date('Y-m-d 00:00:00', strtotime('-1 day')) . "' AND create_time < '" . date('Y-m-d 23:59:59', strtotime('-1 day')) . "'")->sum('amount') ?? 0) / 100), //昨日充值
+        'thisDayOrderNum' => 0, //今日订单
+        'lastDayOrderNum' => 0, //昨日订单
+        'thisDayVipNum' => M('vip_history')->where("last_vip_level_id = 0 AND create_time > '" . date('Y-m-d 00:00:00') . "' AND create_time < '" . date('Y-m-d 23:59:59') . "'")->count() ?? 0, //今日新增会员
+        'lastDayVipNum'  => M('vip_history')->where("last_vip_level_id = 0 AND create_time > '" . date('Y-m-d 00:00:00', strtotime('-1 day')) . "' AND create_time < '" . date('Y-m-d 23:59:59', strtotime('-1 day')) . "'")->count() ?? 0, //昨日新增会员
+    ];
+    
+    return $data;
+}
+
+//每日营收统计
+function countRevenue($startDay, $endDay)
+{
+    $days = [];
+    $data = [];
+    $startDay = strtotime($startDay);
+    $endDay = strtotime($endDay);
+    for ($i = 0; $i <= ($endDay - $startDay) / 86400; $i++) {
+        $days[] = date('Y-m-d', $startDay + (86400 * $i));
+    }
+    foreach ($days as $key => $day) {
+        $data[] = [
+            'date' => $day,
+            'value' => sprintf("%.2f", (M('cash_flow')->where("category IN (4) AND create_time > '" . $day . " 00:00:00' AND create_time < '" . $day . " 23:59:59'")->sum('amount') ?? 0) / 100),
+        ];
+    }
+    return $data;
+}
+
+//每日订单数统计
+function countOrderNum($startDay, $endDay)
+{
+    $days = [];
+    $data = [];
+    $startDay = strtotime($startDay);
+    $endDay = strtotime($endDay);
+    for ($i = 0; $i <= ($endDay - $startDay) / 86400; $i++) {
+        $days[] = date('Y-m-d', $startDay + (86400 * $i));
+    }
+    foreach ($days as $key => $day) {
+        $data[] = [
+            'date' => $day,
+            'value' => 0,
+        ];
+    }
+    return $data;
+}

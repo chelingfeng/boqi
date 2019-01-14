@@ -23,24 +23,24 @@
 
                 <div class="index-message">
                     <div class="index-message-one">
-                        <p>今日收益（元）</p>
-                        <p class="money">¥0</p>
+                        <p>今日营收（元）</p>
+                        <p class="money" id="thisDayRevenue">¥{$data.thisDayRevenue}</p>
                     </div>
                     <div class="index-message-tow">
+                        <div class="detail-list" style="border:none">
+                            <p class="t1">今日充值</p>
+                            <p class="t2" id="thisDayRecharge">{$data.thisDayRecharge}</p>
+                            <p class="t3">昨日<span id="lastDayRecharge">{$data.lastDayRecharge}</span></p>
+                        </div>
                         <div class="detail-list">
                             <p class="t1">今日订单</p>
-                            <p class="t2">0</p>
-                            <p class="t3">昨天订单0</p>
+                            <p class="t2" id="thisDayOrderNum">{$data.thisDayOrderNum}</p>
+                            <p class="t3">昨天<span id="lastDayOrderNum">{$data.lastDayOrderNum}</span></p>
                         </div>
                         <div class="detail-list">
-                            <p class="t1">本月收益</p>
-                            <p class="t2">0</p>
-                            <p class="t3"></p>
-                        </div>
-                        <div class="detail-list" style="border:none">
-                            <p class="t1">昨日浏览</p>
-                            <p class="t2">0</p>
-                            <p class="t3">上周浏览0</p>
+                            <p class="t1">新增会员</p>
+                            <p class="t2" id="thisDayVipNum">{$data.thisDayVipNum}</p>
+                            <p class="t3">昨日<span id="lastDayVipNum">{$data.lastDayVipNum}</span></p>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                 </div>
 
                 <div class="equity-swiper-container">
-                    <a href="{:U('vip')}">
+                    <a href="{:U('vip')}" data-no-cache="true">
                         <div class="equity">
                             <div class="kuang"><span class="iconfont icon-huiyuan" style="color:#ec4b03"></span></div>
                             <p class="equity-title">会员管理</p>

@@ -110,6 +110,10 @@
 <block name="body"></block>
 <div class="loading ng-hide" style="display: none;"> <div class="windows8"> <div class="wBall" id="wBall_1"> <div class="wInnerBall"></div> </div> <div class="wBall" id="wBall_2"> <div class="wInnerBall"></div> </div> <div class="wBall" id="wBall_3"> <div class="wInnerBall"></div> </div> <div class="wBall" id="wBall_4"> <div class="wInnerBall"></div> </div> <div class="wBall" id="wBall_5"> <div class="wInnerBall"></div> </div> </div> </div>
  
+<form style="display: none;" enctype="multipart/form-data" class="fileform2">
+    <input type="file" name="img">
+</form>
+
 </body>
 </html>
 <script type="text/javascript">
@@ -127,6 +131,51 @@
          });
          return false;
       });
+
+      //显示删除按钮
+       $(document).on('mouseenter', '.album-plus', function () {
+           if ($(this).find('img').attr('src') != '') {
+               $(this).find('i').removeClass('hide');
+           }
+       });
+
+       $(document).on('mouseleave', '.album-plus', function(){
+           $(this).find('i').addClass('hide');
+       });
+       
+       $(document).on('click', '.icon-trash', function () {
+           $(this).parent("li").find('span').removeClass('hide');
+           $(this).parent("li").find('img').attr('src', '');
+           return false;
+       });
+
+       var index;
+       $(document).on('click', '.album-plus', function () {
+           index = $('.album-plus').index(this);
+           $(".fileform2 input[name='img2']").trigger('click');
+       });
+
+       $(".fileform2 input[name='img2']").change(function () {
+           if ($(this).val() == '') return false;
+           $(".loading").show();
+           $.ajax({
+               url: "{:U('Admin/Index/upload')}",
+               type: 'POST',
+               cache: false,
+               data: new FormData($('.fileform2')[0]),
+               processData: false,
+               contentType: false
+           }).done(function (res) {
+               if (res.code == 0) {
+                   $(".album-plus:eq(" + index + ") span").addClass('hide');
+                   $(".album-plus:eq(" + index + ") img").attr('src', res.data.imgurl);
+               } else {
+                   swal("提示", res.msg, "warning");
+               }
+               $(".loading").hide();
+           });
+       });
+
 
       $("#editPassword").click(function(){
          $("#password_info").addClass('show');

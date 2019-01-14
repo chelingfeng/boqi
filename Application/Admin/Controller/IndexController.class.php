@@ -14,6 +14,21 @@ class IndexController extends CommonController
         $this->display();
     }
 
+    public function index2()
+    {
+        $result = countRevenue(date('Y-m-d', strtotime('-30 day')), date('Y-m-d'));
+        $x = [];
+        $y = [];
+        foreach ($result as $d) {
+            $x[] = $d['date'];
+            $y[] = $d['value'];
+        }
+        $this->assign('x', $x);
+        $this->assign('y', $y);
+        $this->assign('data', countData());
+        $this->display();
+    }
+
     public function upload(){
         if(!empty($_FILES['img']['name'])){
             require ('ThinkPHP/Extend/Library/ORG/Util/UploadFile.class.php');

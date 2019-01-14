@@ -4,13 +4,13 @@
     <div class="page-group">
         <div class="page page-current" style="background: #fafafa" id="page-admin-data">
             <div class="buttons-tab buttons-list" id="type">
-                <a class="button active">订单</a>
-                <a class="button">营收</a>
+                <a class="button active" data-type="revenue">营收</a>
+                <a class="button" data-type="order_num">订单</a>
             </div>
-            <div class="buttons-tab coupon-tab" id="status">
-                <a class="tab-link button active">近7天</a>
-                <a class="tab-link button">近15天</a>
-                <a class="tab-link button">近30天</a>
+            <div class="buttons-tab coupon-tab" id="range">
+                <a class="tab-link button active" data-end="<?=date('Y-m-d');?>" data-start="<?=date('Y-m-d', strtotime('-6 day'));?>">近7天</a>
+                <a class="tab-link button" data-end="<?=date('Y-m-d');?>" data-start="<?=date('Y-m-d', strtotime('-14 day'));?>">近15天</a>
+                <a class="tab-link button" data-end="<?=date('Y-m-d');?>" data-start="<?=date('Y-m-d', strtotime('-29 day'));?>">近30天</a>
             </div>
             <div class="content" style="margin-top:5.3rem;">
                 <div class="chart-wrapper">

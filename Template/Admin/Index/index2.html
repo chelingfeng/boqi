@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="ie-stand">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>餐饮管理系统 - 博启信息科技有限公司</title>
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_957376_8lip5acfnga.css" />
+    <link rel="stylesheet" href="__PUBLIC__/login/bootstrap.css">
+    <link rel="stylesheet" href="__PUBLIC__/login/app.css">
+    <script src="__PUBLIC__/js/echarts.common.min.js"></script>
+    <script src="__PUBLIC__/js/macarons.js"></script>
+    <style>
+        .fa-3x {font-size: 3em;color:#fff;}
+    </style>
+</head>
+
+<body>
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <div class="panel widget bg-purple">
+                    <div class="row row-table">
+                        <div class="col-xs-4 text-center bg-purple-dark pv-lg">
+                            <em class="iconfont icon-qian fa-3x"></em>
+                        </div>
+                        <div class="col-xs-8 pv-lg">
+                            <div class="h2 mt0">{$data.thisDayRevenue}
+                            </div>
+                            <div class="text-uppercase">今日营收</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="panel widget bg-info">
+                    <div class="row row-table">
+                        <div class="col-xs-4 text-center bg-info-dark pv-lg">
+                            <em class="iconfont icon-income-o fa-3x"></em>
+                        </div>
+                        <div class="col-xs-8 pv-lg">
+                            <div class="h2 mt0">{$data.thisDayRecharge}</div>
+                            <div class="text-uppercase">今日充值</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="panel widget bg-primary">
+                    <div class="row row-table">
+                        <div class="col-xs-4 text-center bg-primary-dark pv-lg">
+                            <em class="iconfont icon-dingdanguanli fa-3x"></em>
+                        </div>
+                        <div class="col-xs-8 pv-lg">
+                            <div class="h2 mt0">{$data.thisDayOrderNum}</div>
+                            <div class="text-uppercase">今日订单</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="panel widget bg-green">
+                    <div class="row row-table">
+                        <div class="col-xs-4 text-center bg-green-dark pv-lg">
+                            <em class="iconfont icon-yonghu fa-3x"></em>
+                        </div>
+                        <div class="col-xs-8 pv-lg">
+                            <div class="h2 mt0">{$data.thisDayVipNum}</div>
+                            <div class="text-uppercase">今日新增会员</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="panelChart9" class="panel panel-default panel-demo">
+                            <div class="panel-heading">
+                                <div class="panel-title">每日营收统计</div>
+                            </div>
+                            <div class="panel-wrapper collapse in" aria-expanded="true" style="">
+                                <div class="panel-body" style="height:400px" id="mychart">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    resetChart();
+    function resetChart() {
+        var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: { show: true },
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    name: '',
+                    boundaryGap: false,
+                    data: {: json_encode($x) }
+                }
+            ],
+            legend: {
+            },
+            yAxis: [
+                {
+                    name: '金额',
+                    type: 'value',
+                }
+            ],
+            series: [{
+                data: {:json_encode($y)},
+                name: "金额",
+                smooth: false,
+                symbol: "rect",
+                symbolSize: 10,
+                type: "line"
+            }]
+        };
+        var myChart = echarts.init(document.getElementById("mychart"), 'macarons');
+        myChart.setOption(option);
+    }
+</script>

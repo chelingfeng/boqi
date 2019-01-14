@@ -59,9 +59,11 @@ class UserController extends CommonController
         M('user')->where(['id' => $_POST['id']])->setDec('balance', $_POST['amount'] * 100);
         M('cash_flow')->add([
             'type' => 'outflow',
-            'title' => '消费',
+            'title' => C('cash_flow_category')[4],
+            'category' => 4,
             'user_id' => $_POST['id'],
             'amount' => $_POST['amount'] * 100,
+            'remark' => $_POST['remark'],
             'balance' => M('user')->where(['id' => $_POST['id']])->getField('balance'),
             'create_time' => date('Y-m-d H:i:s'),
         ]);

@@ -88,7 +88,8 @@ function orderPaid($orderId)
             M('user')->where(['id' => $order['user_id']])->setInc('balance', $order['amount']);
             M('cash_flow')->add([
                 'type' => 'inflow',
-                'title' => '微信充值',
+                'title' => C('cash_flow_category')[1],
+                'category' => 1,
                 'user_id' => $order['user_id'],
                 'amount' => $order['amount'],
                 'balance' => M('user')->where(['id' => $order['user_id']])->getField('balance'),
@@ -126,9 +127,11 @@ function openVip($userId, $levelId, $isAdmin = 0, $remark = '', $recharge = true
 
     if ($recharge == true && $level['amount'] > 0) {
         M('user')->where(['id' => $userId])->setInc('balance', $level['amount']);
+        $category = $isAdmin == 1 ? 2 : 1;
         M('cash_flow')->add([
             'type' => 'inflow',
-            'title' => $isAdmin == 1 ? '线下充值' : '微信充值',
+            'title' => C('cash_flow_category')[$category],
+            'category' => $category,
             'user_id' => $userId,
             'amount' => $level['amount'],
             'balance' => M('user')->where(['id' => $userId])->getField('balance'),
@@ -139,6 +142,7 @@ function openVip($userId, $levelId, $isAdmin = 0, $remark = '', $recharge = true
     //插入记录表
     $vipHistoryId = M('vip_history')->add([
         'user_id' => $user['id'],
+        'last_vip_level_id' => $user['vip_level_id'],
         'vip_level_id' => $level['id'],
         'amount' => $level['amount'],
         'create_time' => date('Y-m-d H:i:s'),
@@ -154,7 +158,8 @@ function openVip($userId, $levelId, $isAdmin = 0, $remark = '', $recharge = true
         M('user')->where(['id' => $user['id']])->setInc('balance', $give['balance']['amount'] * 100);
         M('cash_flow')->add([
             'type' => 'inflow',
-            'title' => '系统赠送',
+            'title' => C('cash_flow_category')[3],
+            'category' => 3,
             'user_id' => $userId,
             'amount' => $give['balance']['amount'] * 100,
             'balance' => M('user')->where(['id' => $userId])->getField('balance'),

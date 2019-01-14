@@ -112,7 +112,7 @@
                                     <td>
                                         <?php
                                         if ($v['user_id']) {
-                                            echo $v['user']['nickname'].' ('.$v['receivetime'].')';
+                                            echo urldecode($v['user']['nickname']).' ('.$v['receivetime'].')';
                                         } else {
                                             echo '-';
                                         }

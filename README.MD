@@ -48,3 +48,12 @@ migration脚本命名规范
 * 删除字段 delete_filed_[table_name]_[field_name]
 * 新增索引 add_index_[table_name]_[index_name]
 * 删除索引 delete_index_[table_name]_[index_name]
+
+
+v1.0.5
+* 重构优惠券模块，包括样式
+* 重构会员模块
+* 增加会员权益界面
+* 后台增加店铺管理，菜品管理
+* 增加移动端管理能力
+* 增加扫码扣款，扫码核销二维码

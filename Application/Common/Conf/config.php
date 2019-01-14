@@ -26,6 +26,7 @@ return array_merge($db, array(
         20007 => '优惠券已领完',
         20008 => '已经领取过了',
         20009 => '您的会员等级高于或等于该等级',
+        20010 => '用户名密码错误',
     ),
 
     'coupon_status' => [
@@ -50,9 +51,26 @@ return array_merge($db, array(
         'paying' => '支付中',
     ],
 
+    'cash_flow_category' => [
+        1 => '微信充值',
+        2 => '线下充值',
+        3 => '系统赠送',
+        4 => '到店消费',
+    ],
+
+    'shop_status' => [
+        'normal' => '营业中',
+        'closed' => '休息中',
+    ],
+
+    'goods_status' => [
+        'up' => '上架',
+        'down' => '下架',
+    ],
+
     'week' => ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
 
     'index_tips' => '',
 
-    'version' => time(),
+    'version' => 'v1.0.5',
 ));
