@@ -25,7 +25,11 @@ class AdminController extends Controller
                         setcookie("mobile_admin_password", $_COOKIE['mobile_admin_password'], time() + 365 * 24 * 60 * 60);
                     } else {
                         $this->redirect('login', ['callback' => urlencode(curPageURL())]);
+                        exit();
                     }
+                } else {
+                    $this->redirect('login', ['callback' => urlencode(curPageURL())]);
+                    exit();
                 }
             }
         }
