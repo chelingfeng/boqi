@@ -298,7 +298,7 @@ function countRevenue($startDay, $endDay)
     foreach ($days as $key => $day) {
         $data[] = [
             'date' => $day,
-            'value' => sprintf("%.2f", (M('cash_flow')->where("category IN (4) AND create_time > '" . $day . " 00:00:00' AND create_time < '" . $day . " 23:59:59'")->sum('amount') ?? 0) / 100),
+            'value' => floatval(sprintf("%.2f", (M('cash_flow')->where("category IN (4) AND create_time > '" . $day . " 00:00:00' AND create_time < '" . $day . " 23:59:59'")->sum('amount') ?? 0) / 100)),
         ];
     }
     return $data;
