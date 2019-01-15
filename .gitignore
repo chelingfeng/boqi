@@ -4,3 +4,4 @@
 /Runtime
 /web
 /Application/Common/Conf/config_db.php
+composer.lock
