@@ -1,3 +1,7 @@
+input[type="button"], input[type="submit"], input[type="reset"], input[type="text"], input[type="number"]{
+    -webkit-appearance: none;
+}
+
 .bar-tab .tab-item.active {
 	color: #f9bf1f;
 	border-bottom: 2px solid #f9bf1f;
