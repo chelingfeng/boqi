@@ -12,6 +12,37 @@
                     <span class="tab-label">我的</span>
                 </a>
             </nav> -->
+
+            <div class="mask"></div>
+
+            <div class="coupon_manage">
+                <div class="coupon-list">
+                    <div class="left" style="background:#f17f05;">
+                        <p class="money">¥ <span>1</span></p>
+                        <p><span>优惠券</span></p>
+                    </div>
+                    <div class="middle">
+                        <p class="tt">测试满足30</p>
+                        <p class="condition_amount">满1可用</p>
+                        <p class="time">2019-01-17 - 2019-01-27</p>
+                    </div>
+                </div>
+                <div class="btn" id="coupon" style="width:71%">确认核销</div>
+                <input type="hidden" name="code" />
+                <div class="close iconfont icon-guanbi"></div>
+            </div>
+
+            <div class="vip_manage">
+                <p class="tt">会员余额</p>
+                <p class="tips"></p>
+                <input type="number" class="code" placeholder="请输入金额" name="amount" />
+                <input type="text" class="code" placeholder="请输入备注" name="remark" />
+                <div class="btn" id="bill" style="width:71%">确认扣款</div>
+                <!-- <div class="btn" id="recharge">充值</div> -->
+                <input type="hidden" name="id" />
+                <div class="close iconfont icon-guanbi"></div>
+            </div>
+
             <div class="content">
                 <div class="index-top">
                     <img src="{$config.logo}" />
@@ -83,7 +114,7 @@
                     <a class="saoma">
                         <div class="equity">
                             <div class="kuang"><span class="iconfont icon-saoma" style="color:#858585"></span></div>
-                            <p class="equity-title">扫码核销</p>
+                            <p class="equity-title scan_tip">扫码核销</p>
                         </div>
                     </a>
                 </div>

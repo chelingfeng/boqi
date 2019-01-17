@@ -399,3 +399,156 @@ input[type="button"], input[type="submit"], input[type="reset"], input[type="tex
 	opacity: 1;
 	display: none;
 }
+
+.coupon_manage {
+    padding-top: 1rem;
+	display: none;
+	position: absolute;
+	width: 92%;
+	left:4%;
+	top:23%;
+	background: #fff;
+	z-index: 10601;
+	height: 12.5rem;
+	border-radius: 0.8rem;
+}
+
+.coupon_manage .btn {
+    height: 1.5rem;
+    line-height: 1.5rem;
+    border-radius: 0.45rem;
+    text-align: center;
+    background: #f9bf1f;
+    font-size: 0.7rem;
+    color: #fff;
+    margin-top: 2rem;
+    width: 28%;
+    float: left;
+    margin-left: 15%;
+    margin-top: 2rem;
+}
+
+.coupon_manage .close  {
+    position: absolute;
+    color: #fff;
+    font-size: 1.5rem;
+    bottom: -20%;
+    left: 45%;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    background: #ccc;
+}
+
+.coupon-list {
+	margin-top: 0.7rem;
+	width: 92%;
+	margin-left:4%;
+	height: 5rem;
+	border-radius: 0.4rem;
+	border: 1px solid #a2a2a2;
+	color:#525252;
+	font-size: .7rem;
+	position: relative;
+}
+.coupon-list p {
+	margin: 0
+}
+
+.coupon-list .left {
+	width: 25%;
+	float: left;
+	text-align: center;
+	height: 100%;
+	border-right: 1px dashed #d4d4e4;
+	border-top-left-radius: 0.4rem;
+	border-bottom-left-radius: 0.4rem;
+	color: #fff;
+}
+
+.coupon-list .left .money {
+    padding-top: 0.6rem;
+	font-size: 0.7rem !important;
+	color: #fff !important;
+}
+
+.coupon-list .left .money span {
+	font-size: 1.6rem;
+}
+
+.coupon-list .right {
+	width: 15%;
+	float: left;
+	margin-right: 0px;
+	background: #f9bf1f;
+	color: #fff;
+	border-top-right-radius: 0.4rem;
+	border-bottom-right-radius: 0.4rem;
+	text-align: center;
+	height: 100%;
+	padding: 10px 0;
+}
+
+.coupon-list .middle {
+	width: 60%;
+	float: left;
+	padding-left: 15px;
+}
+
+.coupon-list .middle .tt {
+	color:#8d8d8d;
+	margin-top: 0.4rem;
+	color: #3b3b3b;
+	font-size: 0.9rem;
+}
+
+.coupon-list .type {
+	font-size: 0.9rem;
+	line-height: 5rem;
+}
+
+.coupon-list .coupon_detail {
+	border: 1px solid #a3a3a3;
+	color: #a3a3a3;
+	position: absolute;
+	right: 0.4rem;
+	padding: 3px 10px;
+	border-radius: 0.5rem;
+	font-size: 0.6rem;
+	bottom: 0.5rem;
+}
+
+.coupon-list .condition_amount {
+	margin-top: 0.8rem;
+	color: #a3a3a3;
+	font-size: .65rem;
+	font-weight: 300;
+}
+
+.coupon-list .middle .time {
+	font-size: .65rem;
+	color: #a3a3a3;
+	font-weight: 300;
+}
+
+.coupon-list .right p {
+	line-height: 20px;
+	font-size: 0.8rem;
+}
+
+.coupon-list .zuanfa {
+	position: absolute;
+	right: 0.4rem;
+	top:0.3rem;
+	color: #1591f1;
+}
+
+.coupon-list .coupon_img {
+	width: 3.5rem;
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+}

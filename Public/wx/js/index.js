@@ -26,46 +26,62 @@ $(function () {
         }
 
         $(".close").click(function () {
-            $(".mask, .coupon_success").hide();
+            $(".mask, .coupon_success, .open-qrcode").hide();
         });
 
-        $.ajax({
-            type: 'GET',
-            data: {},
-            url: 'index.php?m=Home&c=Vip&a=user',
-            success: function (res) {
-                if (res.code == 0) {
-                    $("#balance").html(res.data.balance);
-                    $("#profit").html(res.data.profit);
-                    $("#integral").html(res.data.integral);
-                    $("#couponNum").html(res.data.couponNum);
+       
+        loadInitData();
+        function loadInitData()
+        {
+            $.ajax({
+                type: 'GET',
+                data: {},
+                url: 'index.php?m=Home&c=Vip&a=user',
+                success: function (res) {
+                    if (res.code == 0) {
+                        $("#balance").html(res.data.balance);
+                        $("#profit").html(res.data.profit);
+                        $("#integral").html(res.data.integral);
+                        $("#couponNum").html(res.data.couponNum);
+                    }
                 }
-            }
-        });
+            });
+        }
 
-        var timeFlag = 0;
-        var freeTime = 60;
+        var freeTime = 120;
         var time = freeTime;
+        var code = '';
 
         setInterval(function () {
-            if (timeFlag == 1) {
+            if ($(".open-qrcode").css("display") != 'none' && typeof ($(".open-qrcode").css("display")) != 'undefined') {
                 time = time - 1;
                 if (time <= 0) {
                     time = freeTime;
                     getQr();
                 }
                 $(".open-qrcode .shuaxin span").html(time);
+                if (code != '') {
+                    $.ajax({
+                        type: 'GET',
+                        data: {code:code},
+                        url: 'index.php?m=Home&c=Vip&a=getToken',
+                        success: function (res) {
+                            if (res.code == 0) {
+                                if (res.data.result && res.data.result.status == 'success') {
+                                    loadInitData();
+                                    $("#cash_window, .mask").show();
+                                    $(".open-qrcode").hide();
+                                }
+                            }
+                        }
+                    });
+                }
             }
         }, 1000);
 
         $(".qrcode_img").click(function () {
             getQr();
             $(".mask, .open-qrcode").show();
-        });
-
-        $(".open-qrcode .close").click(function () {
-            timeFlag = 0;
-            $(".mask, .open-qrcode").hide();
         });
 
         $(".shuaxin").click(function(){
@@ -81,8 +97,8 @@ $(function () {
                 url: 'index.php?m=Home&c=Vip&a=getQrcode',
                 success: function (res) {
                     if (res.code == 0) {
-                        timeFlag = 1;
                         time = freeTime;
+                        code = res.data.qrcodeToken;
                         $('.open-qrcode .barcode').attr('src', res.data.code1);
                         $('.open-qrcode .qr').attr('src', res.data.code2);
                     } else {
@@ -413,7 +429,12 @@ $(function () {
             $(".mask, .coupon_detail_card").hide();
         });
 
-        $(".coupon_detail").die("click").live('click', function () {
+        $(".coupon_detail_card .close").click(function(){
+            $(".mask, .coupon_detail_card").hide();
+        });
+
+        $(".coupon-list").die("click").live('click', function () {
+            if (index_flag > 0) return;
             var id = $(this).data('id');
             $.showIndicator()
             $.ajax({
@@ -422,16 +443,23 @@ $(function () {
                 url: 'index.php?m=Home&c=Vip&a=findCoupon',
                 success: function (res) {
                     if (res.code == 0) {
-                        $('.detail_card_ct').css('background', res.data.color);
-                        $('.detail_card_ct_coupon_name').html(res.data.title);
-                        $('.detail_card_remark').html(res.data.remark);
-                        $('.detail_card_bottom_friend').attr('data-code', res.data.code);
-                        if (res.data.is_friend == 1) {
+                        if (res.data.status == 'receive') {
+                            $('.detail_card_ct').css('background', res.data.color);
+                            $('.detail_card_ct_coupon_name').html(res.data.title);
+                            $('.detail_card_remark').html(res.data.remark);
+                            $('.detail_card_bottom_friend').attr('data-code', res.data.code);
                             $('.detail_card_bottom').show();
-                        } else {
-                            $('.detail_card_bottom').hide();
+                            $('.coupon_use .code img').attr('src', res.data.qrcode);
+                            if (res.data.is_friend == 1) {
+                                $('#use_coupon').hide();
+                                $('.detail_card_bottom_friend').show();
+                            } else {
+                                $('#use_coupon').show();
+                                $('#use_coupon').attr('data-code', res.data.code);
+                                $('.detail_card_bottom_friend').hide();
+                            }
+                            $(".mask, .coupon_detail_card").show();
                         }
-                        $(".mask, .coupon_detail_card").show();
                     }
                     $.hideIndicator();
                 }
@@ -440,22 +468,17 @@ $(function () {
             setTimeout(function () {
                 index_flag = 0;
             }, 1000)
+           
         });
-
-        $(".coupon_detail_card .close").click(function(){
-            $(".mask, .coupon_detail_card").hide();
-        });
-
-        $(".coupon-list").die("click").live('click', function () {
-            if (index_flag > 0) return;
-            if ($(this).data('status') == 'receive') {
-                var code = $(this).data('code');
-                $(".coupon_use .code").html(code);
-                $(".mask, .coupon_use").show();
-            }
+        
+        $("#use_coupon").click(function(){
+            var code = $(this).data('code');
+            $(".coupon_detail_card").hide();
+            $(".coupon_use").show();
         });
 
         $(".coupon_use .btn").die("click").live('click', function () {
+            loadData();
             $(".mask, .coupon_use").hide();
         });
 
@@ -474,7 +497,7 @@ $(function () {
                         if (item.status != 'receive') {
                             item.color = '#cbcbcb';
                         }
-                        html += '<div class="coupon-list" data-status="'+item.status+'" data-code="' + item.code +'">';
+                        html += '<div class="coupon-list" data-id="'+item.id+'" data-status="'+item.status+'" data-code="' + item.code +'">';
                             html += '<div class="left" style="background:'+item.color+';">';
                                 if (item.rate > 0) {
                                     if (item.type == 'discount') {

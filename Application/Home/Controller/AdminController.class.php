@@ -43,6 +43,18 @@ class AdminController extends Controller
         $this->display();
     }
 
+    public function getToken()
+    {
+        $token = getToken($_GET['code']);
+        if (!empty($token['content']['user_id'])) {
+            $user = M('user')->where(['id' => $token['content']['user_id']])->find();
+        }
+        $this->ajaxReturn(codeReturn(0, [
+            'token' => $token,
+            'user' => $user ?? []
+        ]));
+    }
+
     public function indexData()
     {
         $data = countData();
@@ -77,7 +89,7 @@ class AdminController extends Controller
             $this->ajaxReturn(codeReturn(10005));
         }
         M('user')->where(['id' => $_POST['id']])->setDec('balance', $_POST['amount'] * 100);
-        M('cash_flow')->add([
+        $cashFlowId = M('cash_flow')->add([
             'type' => 'outflow',
             'title' => C('cash_flow_category')[4],
             'category' => 4,
@@ -87,6 +99,9 @@ class AdminController extends Controller
             'balance' => M('user')->where(['id' => $_POST['id']])->getField('balance'),
             'create_time' => date('Y-m-d H:i:s'),
         ]);
+        if ($_POST['code']) {
+            verifyToken($_POST['code'], ['status' => 'success', 'cash_flow_id' => $cashFlowId, 'amount' => $_POST['amount']]);
+        }
         $this->ajaxReturn(codeReturn(0));
     }
 
@@ -174,5 +189,27 @@ class AdminController extends Controller
             $data = countOrderNum($_POST['startDay'], $_POST['endDay']);
         }
         $this->ajaxReturn(codeReturn(0, $data ?? []));
+    }
+
+    public function getCoupon()
+    {
+        $coupon = M('coupon')->where(['id' => $_GET['id']])->find();
+        if (empty($coupon)) {
+            $this->ajaxReturn(codeReturn(10001));
+        }
+        if ($coupon['status'] != 'receive') {
+            $this->ajaxReturn(codeReturn(10004));
+        }
+        if (time() < strtotime(date('Y-m-d 00:00:00', strtotime($coupon['start_time']))) || time() > strtotime(date('Y-m-d 23:59:59', strtotime($coupon['end_time'])))) {
+            return codeReturn(10004);
+        }
+        $coupon['typeName'] = C('coupon_type')[$coupon['type']];
+        $this->ajaxReturn(codeReturn(0, $coupon));
+    }
+
+    public function useCoupon()
+    {
+        $result = useCoupon($_POST['code']);
+        $this->ajaxReturn($result);
     }
 }

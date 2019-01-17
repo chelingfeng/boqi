@@ -2,7 +2,9 @@ $(function () {
     'use strict';
 
     $(document).on("pageInit", "", function (e, id, page) {
-
+        $(".scan_tip").click(function(){
+            $.alert('请手动打开扫一扫', '提示');
+        });
     });
 
     //登录
@@ -89,6 +91,123 @@ $(function () {
 
     //首页
     $(document).on("pageInit", "#page-admin-index", function (e, id, page) {
+        var code = $_GET['code'];
+        if ($_GET['action'] == 'scan') {
+            $.ajax({
+                type: 'GET',
+                data: { code: code },
+                url: 'index.php?m=Home&c=Admin&a=getToken',
+                success: function (res) {
+                    if (res.code == 0) {
+                        if (res.data.token.type == 'cash' && res.data.token.result.length == 0) {
+                            $(".vip_manage .tips").html(res.data.user.balance/100);
+                            $(".vip_manage [name='id']").val(res.data.user.id);
+                            $(".vip_manage, .mask").show();
+                        }
+                    }
+                }
+            });
+        }
+
+        if ($_GET['action'] == 'coupon') {
+            var couponId = $_GET['couponId'];
+            $.ajax({
+                type: 'GET',
+                data: { id: couponId },
+                url: 'index.php?m=Home&c=Admin&a=getCoupon',
+                success: function (res) {
+                    if (res.code == 0) {
+                        var html = '';
+                        html += '<div class="left" style="background:' + res.data.color +';">';
+                            if (res.data.rate > 0) {
+                                if (res.data.type == 'discount') {
+                                    if (res.data.rate % 10 == 0) {
+                                        res.data.rate = res.data.rate / 10;
+                                    }
+                                    html += '<p class="money"><span>' + res.data.rate + '</span> 折</p>';
+                                } else {
+                                    html += '<p class="money">¥ <span>' + res.data.rate + '</span></p>';
+                                }
+                                html += '<p><span>' + res.data.typeName + '</span></p>';
+                            } else {
+                                html += '<p class="type">' + res.data.typeName + '</p>';
+                            }
+                        html += '</div>';
+                        html += '<div class="middle">';
+                            html += '<p class="tt">'+res.data.title+'</p>';
+                            if (res.data.condition_amount > 0) {
+                                html += '<p class="condition_amount">满' + res.data.condition_amount + '可用</p>';
+                            } else {
+                                html += '<p class="condition_amount">&nbsp;</p>';
+                            }
+                            html += '<p class="time">'+res.data.start_time.substring(0, 10)+' - '+res.data.end_time.substring(0, 10)+'</p>';
+                        html += '</div>';
+                        $(".coupon_manage .coupon-list").html(html);
+                        $(".coupon_manage [name='code']").val(res.data.code);
+                        $(".coupon_manage, .mask").show();
+                    } else {
+                        $.alert(res.msg, '提示');
+                    }
+                }
+            });
+        }
+
+        $("#coupon").click(function () {
+            var code = $(".coupon_manage [name='code']").val();
+            $.confirm('确定要核销吗?', function () {
+                $.showIndicator()
+                $.ajax({
+                    type: 'POST',
+                    data: { code: code },
+                    url: 'index.php?m=Home&c=Admin&a=useCoupon',
+                    success: function (res) {
+                        if (res.code == 0) {
+                            $.alert('核销成功', '提示', function () {
+                                $(".mask, .coupon_manage").hide();
+                            });
+                        } else {
+                            $.alert(res.msg, '提示');
+                        }
+                        $.hideIndicator();
+                    }
+                });
+            });
+        });
+
+        $("#bill").click(function () {
+            var id = $(".vip_manage [name='id']").val();
+            var amount = $(".vip_manage [name='amount']").val();
+            var remark = $(".vip_manage [name='remark']").val();
+            if (!isNaN(amount) != '' && amount != '' && amount > 0) {
+                $.confirm('确定要扣款?', function () {
+                    $.showIndicator()
+                    $.ajax({
+                        type: 'POST',
+                        data: { code:code, id: id, amount: amount, remark: remark },
+                        url: 'index.php?m=Home&c=Admin&a=outflow',
+                        success: function (res) {
+                            if (res.code == 0) {
+                                $.alert('扣款成功', '提示', function () {
+                                    $(".mask, .vip_manage").hide();
+                                    $(".vip_manage [name='amount']").val('');
+                                    $(".vip_manage [name='remark']").val('');
+                                });
+                            } else {
+                                $.alert(res.msg, '提示');
+                            }
+                            $.hideIndicator();
+                        }
+                    });
+                });
+            } else {
+                $.alert('金额必须为大小0的数字')
+            }
+        });
+
+        $(".close").click(function () {
+            $(".vip_manage, .coupon_manage, .mask").hide();
+        });
+
         $.showIndicator()
         $.ajax({
             type: 'POST',

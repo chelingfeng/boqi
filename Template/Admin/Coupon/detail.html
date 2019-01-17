@@ -309,6 +309,10 @@
                 return false;
             });
 
+            $("#type, #status").change(function () {
+                $('#formsubmit').submit();
+            });
+
             $(".delete").click(function () {
                 var id = $(this).attr('data-id');
                 swal({

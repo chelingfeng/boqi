@@ -22,13 +22,22 @@ class VipController extends CommonController {
         $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
         $code1 = 'data:image/png;base64,' . base64_encode($generator->getBarcode(time(), $generator::TYPE_CODE_128));
 
-        $qrCode = new QrCode(time());
+        $token = generateToken('cash', ['user_id' => session('user.id')], 60);
+        $qrcodeUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/'.U('Home/Admin/index', ['action' => 'scan', 'code' => $token['code']]);
+        $qrCode = new QrCode($qrcodeUrl);
         $code2 = 'data:image/png;base64,'. base64_encode($qrCode->writeString());
 
         $this->ajaxReturn(codeReturn(0, [
             'code1' => $code1,
             'code2' => $code2,
+            'qrcodeUrl' => $qrcodeUrl,
+            'qrcodeToken' => $token['code'],
         ]));
+    }
+
+    public function getToken()
+    {
+        $this->ajaxReturn(codeReturn(0, getToken($_GET['code'])));
     }
 
     public function user()
@@ -56,6 +65,11 @@ class VipController extends CommonController {
     {
         $coupon = M('coupon')->where(['id' => $_GET['id']])->find();
         $coupon['typeName'] = C('coupon_type')[$coupon['type']];
+
+        $qrcodeUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/' . U('Home/Admin/index', ['action' => 'coupon', 'couponId' => $coupon['id']]);
+        $qrCode = new QrCode($qrcodeUrl);
+        $qrCode = 'data:image/png;base64,' . base64_encode($qrCode->writeString());
+        $coupon['qrcode'] = $qrCode;
         $this->ajaxReturn(codeReturn(0, $coupon));
     }
 
