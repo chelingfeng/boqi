@@ -2,9 +2,15 @@ $(function () {
     'use strict';
 
     $(document).on("pageInit", "", function (e, id, page) {
-        $(".scan_tip").click(function(){
-            $.alert('请手动打开扫一扫', '提示');
-        });
+        $.ajax({
+            type: 'GET',
+            data: {url:location.href},
+            url: 'index.php?m=Home&c=Admin&a=getJsSign',
+            success: function (res) {
+                wx.config(res);
+            }
+        })
+        
     });
 
     //登录
@@ -91,6 +97,14 @@ $(function () {
 
     //首页
     $(document).on("pageInit", "#page-admin-index", function (e, id, page) {
+        $(".scan").click(function(){
+            wx.scanQRCode({
+                needResult: 0,
+                scanType: ["qrCode", "barCode"],
+                success: function (res) {
+                }
+            });
+        });
         var code = $_GET['code'];
         if ($_GET['action'] == 'scan') {
             $.ajax({
@@ -368,7 +382,7 @@ $(function () {
             });
         }
 
-        $("#keyword").blur(function(){
+        $("#search").click(function(){
             loadData();
         });
     });

@@ -4,6 +4,7 @@ namespace Home\Controller;
 
 use Think\Controller;
 use Codeages\Biz\Framework\Util\ArrayToolkit;
+use WeChat\Script;
 
 class AdminController extends Controller
 {
@@ -41,6 +42,16 @@ class AdminController extends Controller
         $this->assign('data', countData());
         $this->assign('config', $config);
         $this->display();
+    }
+
+    public function getJsSign()
+    {
+        try {
+            $wx_script = new Script(['appid' => C('mp_app_id'), 'appsecret' => C('mp_app_secret')]);
+            $this->ajaxReturn($wx_script->getJsSign($_GET['url']));
+        } catch (\Exception $e) {
+            return $this->ajaxReturn(['error' => $e->getMessage()]);
+        }
     }
 
     public function getToken()
@@ -139,6 +150,7 @@ class AdminController extends Controller
     {
         $vipNum = M('user')->where('vip_level_id > 0')->count() ?? 0;
         $this->assign('vipNum', $vipNum);
+        $this->assign('data', countData());
         $this->display();
     }
 

@@ -5,7 +5,8 @@
         "lokielse/omnipay-wechatpay": "^3.0",
         "picqer/php-barcode-generator": "^0.2.2",
         "endroid/qrcode": "^3.5",
-        "davedevelopment/phpmig": "^1.5"
+        "davedevelopment/phpmig": "^1.5",
+        "zoujingli/wechat-developer": "^1.2"
     },
     "config": {
         "bin-dir": "bin"

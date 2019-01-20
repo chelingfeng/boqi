@@ -2,7 +2,7 @@
 <block name="body">
     <div class="page-group">
         <div class="page page-current" style="background: #fafafa" id="page-admin-vip">
-            <div class="bar bar-header-secondary" style="top:0">
+            <!-- <div class="bar bar-header-secondary" style="top:0">
                 <div class="searchbar">
                     <div class="search-input">
                         <label class="icon2 iconfont icon-sousuo"></label>
@@ -10,7 +10,7 @@
                     </div>
                     <div class="vip-number">会员总数 <span>{$vipNum}</span></div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="mask"></div>
             <div class="vip_manage">
@@ -24,7 +24,28 @@
                 <div class="close iconfont icon-guanbi"></div>
             </div>
 
-            <div class="content" style="top:2.2rem" id="vip-list">
+            <div id="recharge">
+                <div class="recharge-top">
+                    <div class="recharge-top-left">
+                        <p class="recharge-top-title">今日新增</p>
+                        <p class="recharge-top-value">{$data.lastDayVipNum}<span class="money-span"> 人</span></p>
+                        <div class="recharge-top-line"></div>
+                    </div>
+                    <div class="recharge-top-right">
+                        <p class="recharge-top-title">总会员</p>
+                        <p class="recharge-top-value">{$vipNum}<span class="money-span"> 人</span></p>
+                    </div>
+                </div>
+                <div class="recharge-content">
+                    <div class="recharge-content-amount-content" style="margin-top:1.5rem;">
+                        <span class="iconfont icon-sousuo"></span>
+                        <input type="text" class="recharge-content-amount" placeholder="搜索会员" id="keyword" />
+                    </div>
+                    <div class="btn" id="search">搜索</div>
+                </div>
+                
+            </div>
+            <div class="content" style="top:15rem" id="vip-list">
                 <!-- <div class="content-block-title">用户id:3333</div>
                 <div class="list-block">
                     <ul>
@@ -67,7 +88,7 @@
                 </div> -->
                
             </div> 
-            <div class="empty" style="display:block">
+            <div class="empty">
                 <span class="iconfont icon-ico_meiyoushuju"></span>
                 <p>没有检索到相关数据</p>
             </div>
