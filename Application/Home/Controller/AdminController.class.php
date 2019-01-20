@@ -47,7 +47,7 @@ class AdminController extends Controller
     public function getJsSign()
     {
         try {
-            $wx_script = new Script(['appid' => C('mp_app_id'), 'appsecret' => C('mp_app_secret')]);
+            $wx_script = new Script(['cache_path' => $_SERVER['DOCUMENT_ROOT'].'/Runtime', 'appid' => C('mp_app_id'), 'appsecret' => C('mp_app_secret')]);
             $this->ajaxReturn($wx_script->getJsSign($_GET['url']));
         } catch (\Exception $e) {
             return $this->ajaxReturn(['error' => $e->getMessage()]);
