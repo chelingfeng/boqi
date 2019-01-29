@@ -35,7 +35,9 @@ class VipController extends CommonController {
         $response = $request->send();
 
         if ($response->isSuccessful()) {
-            $this->assign('qrcode', $response->getCodeUrl());
+            $qrCode = new QrCode($response->getCodeUrl());
+            $code2 = 'data:image/png;base64,' . base64_encode($qrCode->writeString());
+            $this->assign('qrcode', $code2);
         } 
 
         $this->assign('user', $this->getUserInfo());
