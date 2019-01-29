@@ -3,6 +3,7 @@
 namespace Home\Controller;
 use Codeages\Biz\Framework\Util\ArrayToolkit;
 use Endroid\QrCode\QrCode;
+use Omnipay\Omnipay;
 
 class VipController extends CommonController {
     
@@ -13,6 +14,30 @@ class VipController extends CommonController {
     }
 
     public function index(){
+
+        $gateway = Omnipay::create('WechatPay_Native');
+        $gateway->setAppId('wx715e00492f730031');
+        $gateway->setMchId('1259173301');
+        $gateway->setApiKey('c5ee22c6221f58019fce2de933c72927');
+
+        $out_trade_no = generateSn();
+        $payOrder = [
+            'body' => '扫码测试',
+            'out_trade_no' => $out_trade_no,
+            'total_fee' => 1,
+            'spbill_create_ip' => getClientIp(),
+            'fee_type' => 'CNY',
+            'notify_url' => "http://" . $_SERVER['HTTP_HOST'] . '/Home/Api/wechatCallback2',
+            'open_id' => 'ok-7RvqYs59HK9t6C0RPwW6g62n8',
+        ];
+
+        $request = $gateway->purchase($payOrder);
+        $response = $request->send();
+
+        if ($response->isSuccessful()) {
+            $this->assign('qrcode', $response->getCodeUrl());
+        } 
+
         $this->assign('user', $this->getUserInfo());
        	$this->display();
     }
