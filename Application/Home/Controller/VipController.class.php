@@ -16,9 +16,13 @@ class VipController extends CommonController {
     public function index(){
 
         $gateway = Omnipay::create('WechatPay_Native');
-        $gateway->setAppId('wx715e00492f730031');
-        $gateway->setMchId('1259173301');
-        $gateway->setApiKey('c5ee22c6221f58019fce2de933c72927');
+        // $gateway->setAppId('wx715e00492f730031');
+        // $gateway->setMchId('1259173301');
+        // $gateway->setApiKey('c5ee22c6221f58019fce2de933c72927');
+
+        $gateway->setAppId('wx8ae09c824855fac0');
+        $gateway->setMchId('1384218402');
+        $gateway->setApiKey('874629bc92085542282fe31295d90182');
 
         $out_trade_no = generateSn();
         $payOrder = [
@@ -28,7 +32,7 @@ class VipController extends CommonController {
             'spbill_create_ip' => getClientIp(),
             'fee_type' => 'CNY',
             'notify_url' => "http://" . $_SERVER['HTTP_HOST'] . '/Home/Api/wechatCallback2',
-            'open_id' => 'ok-7RvqYs59HK9t6C0RPwW6g62n8',
+            'open_id' => 'ozQqSwi-NheRsvIg3ps5tLTqlNls',
         ];
 
         $request = $gateway->purchase($payOrder);
@@ -38,7 +42,10 @@ class VipController extends CommonController {
             $qrCode = new QrCode($response->getCodeUrl());
             $code2 = 'data:image/png;base64,' . base64_encode($qrCode->writeString());
             $this->assign('qrcode', $code2);
-        } 
+        } else {
+            print_r($response->getData());
+            exit();
+        }
 
         $this->assign('user', $this->getUserInfo());
        	$this->display();
