@@ -788,7 +788,7 @@ $(function () {
         $(".change-shop").click(function(){
             $("#picker").picker("open");
         });
-        // $('.menu-content').css('height', 'calc(100% - ' + ($('.menu-content').offset().top) + 'px)')
+        $('.menu-content').css('height', 'calc(100% - ' + ($('.menu-content').offset().top) + 'px)')
         var swiper = new Swiper('#menu-index-swiper-container', {
             loop: true,
             pagination: {
