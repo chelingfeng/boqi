@@ -764,42 +764,42 @@ $(function () {
 
     //菜单首页
     $(document).on("pageInit", "#page-menu-index", function (e, id, page) {
-        // $("#picker").picker({
-        //     formatValue: function (picker, value, displayValue) {
-        //         return picker.cols[0].activeIndex;
-        //     },
-        //     toolbarTemplate: '<header class="bar bar-nav">\
-        //   <button class="button button-link pull-right close-picker">确定</button>\
-        //   <h1 class="title">切换门店</h1>\
-        //   </header>',
-        //     cols: [
-        //         {
-        //             textAlign: 'center',
-        //             values: ['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3'],
-        //         }
-        //     ],
-        //     onClose: function (picker) {
+        $("#picker").picker({
+            formatValue: function (picker, value, displayValue) {
+                return picker.cols[0].activeIndex;
+            },
+            toolbarTemplate: '<header class="bar bar-nav">\
+          <button class="button button-link pull-right close-picker">确定</button>\
+          <h1 class="title">切换门店</h1>\
+          </header>',
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: ['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3'],
+                }
+            ],
+            onClose: function (picker) {
                 
-        //     },
-        //     onOpen: function () {
+            },
+            onOpen: function () {
                 
-        //     }
-        // });
-        // $(".change-shop").click(function(){
-        //     $("#picker").picker("open");
-        // });
+            }
+        });
+        $(".change-shop").click(function(){
+            $("#picker").picker("open");
+        });
         // $('.menu-content').css('height', 'calc(100% - ' + ($('.menu-content').offset().top) + 'px)')
-        // var swiper = new Swiper('#menu-index-swiper-container', {
-        //     loop: true,
-        //     pagination: {
-        //         el: '.swiper-pagination',
-        //     },
-        //     autoplay: {
-        //         delay: 3000,
-        //         stopOnLastSlide: false,
-        //         disableOnInteraction: false,
-        //     },
-        // });
+        var swiper = new Swiper('#menu-index-swiper-container', {
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+            },
+            autoplay: {
+                delay: 3000,
+                stopOnLastSlide: false,
+                disableOnInteraction: false,
+            },
+        });
 
         $(".menu-menu-content p").click(function(){
             var index = $(".menu-menu-content p").index(this);
