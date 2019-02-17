@@ -2,6 +2,7 @@
     margin: 0.5rem 0;
     padding: 0 1rem;
     color: #101010;
+    line-height: 1.3rem;
 }
 .menu-index-message .change-shop {
     color: #f9bf1f;
@@ -13,6 +14,7 @@
     font-size: 0.6rem;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid #eeeeee;
+    line-height: 0.7rem;
 }
 #menu-index-swiper-container {
     height: 6rem;
@@ -29,8 +31,7 @@
 }
 .menu-content {
     width: 100%;
-    /* height: calc(100% - 9.7rem); */
-    height: 100%;
+    height: calc(100% - 3.6rem);
 }
 .menu-content .menu-menu-content {
     width: 22%;
