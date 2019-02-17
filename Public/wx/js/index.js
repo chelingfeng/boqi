@@ -788,7 +788,7 @@ $(function () {
         // $(".change-shop").click(function(){
         //     $("#picker").picker("open");
         // });
-        $('.menu-content').css('height', 'calc(100% - ' + ($('.menu-content').offset().top) + 'px)')
+        // $('.menu-content').css('height', 'calc(100% - ' + ($('.menu-content').offset().top) + 'px)')
         // var swiper = new Swiper('#menu-index-swiper-container', {
         //     loop: true,
         //     pagination: {
@@ -801,30 +801,30 @@ $(function () {
         //     },
         // });
 
-        $(".menu-menu-content p").click(function(){
-            var index = $(".menu-menu-content p").index(this);
-            var contentHeight = parseInt($('.menu-content').offset().top);
-            var thisHeight = $('.menu-goods-content .content-block-title').eq(index).offset().top;
-            $(".menu-menu-content p").removeClass('active');
-            $(this).addClass('active');
-            $(".menu-goods-content").scrollTop((thisHeight - contentHeight) - 20);
-        });
+        // $(".menu-menu-content p").click(function(){
+        //     var index = $(".menu-menu-content p").index(this);
+        //     var contentHeight = parseInt($('.menu-content').offset().top);
+        //     var thisHeight = $('.menu-goods-content .content-block-title').eq(index).offset().top;
+        //     $(".menu-menu-content p").removeClass('active');
+        //     $(this).addClass('active');
+        //     $(".menu-goods-content").scrollTop((thisHeight - contentHeight) - 20);
+        // });
 
-        $('.menu-goods-content').scroll(function(){
-            var height = $(window).height();
-            var i = 0;
-            $('.menu-goods-content .content-block-title').each(function(index){
-                if (height > ($(this).offset().top + 100)) {
-                    i = index;
-                }
-            });
-            $(".menu-menu-content p").removeClass('active');
-            $(".menu-menu-content p").eq(i).addClass('active');
-        });
+        // $('.menu-goods-content').scroll(function(){
+        //     var height = $(window).height();
+        //     var i = 0;
+        //     $('.menu-goods-content .content-block-title').each(function(index){
+        //         if (height > ($(this).offset().top + 100)) {
+        //             i = index;
+        //         }
+        //     });
+        //     $(".menu-menu-content p").removeClass('active');
+        //     $(".menu-menu-content p").eq(i).addClass('active');
+        // });
 
-        $(".menu-goods-detail .close").click(function(){
-            $('.menu-goods-detail, .mask').hide();
-        });
+        // $(".menu-goods-detail .close").click(function(){
+        //     $('.menu-goods-detail, .mask').hide();
+        // });
     });
 
     //菜单确认页
