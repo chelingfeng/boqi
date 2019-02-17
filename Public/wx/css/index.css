@@ -1362,3 +1362,33 @@ input[type="button"], input[type="submit"], input[type="reset"], input[type="tex
 	width: 80%;
 	padding: 0 10%;
 }
+.hall-order-list-time {
+	color: #838383;
+	padding: 0.5rem 1rem;
+	border-bottom: 1px solid #f6f6f6;
+}
+.hall-order-list {
+	border-bottom: 1px solid #f6f6f6;
+}
+.menu-order-goods-list-bottom1 {
+	width: 100%;
+    line-height: 1.2rem;
+    padding: 0 1rem;
+	text-align: right;
+	font-size: 0.75rem;
+	padding-top: 0.4rem;
+}
+.menu-order-goods-list-btn {
+	color: #fff;
+	background: #f9bf1f;
+	text-align: center;
+	float: right;
+	border-radius: 0.3rem;
+	margin-bottom: 0.5rem;
+	margin-right: 1rem;
+	padding: 0.2rem 1rem;
+    font-size: 0.7rem;
+}
+.vip-order-list-item-content {
+	max-height: 15rem !important;
+}

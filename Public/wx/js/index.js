@@ -762,6 +762,79 @@ $(function () {
         }
     });
 
+    //菜单首页
+    $(document).on("pageInit", "#page-menu-index", function (e, id, page) {
+        $("#picker").picker({
+            formatValue: function (picker, value, displayValue) {
+                return picker.cols[0].activeIndex;
+            },
+            toolbarTemplate: '<header class="bar bar-nav">\
+          <button class="button button-link pull-right close-picker">确定</button>\
+          <h1 class="title">切换门店</h1>\
+          </header>',
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: ['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3'],
+                }
+            ],
+            onClose: function (picker) {
+                
+            },
+            onOpen: function () {
+                
+            }
+        });
+        $(".change-shop").click(function(){
+            $("#picker").picker("open");
+        });
+        $('.menu-content').css('height', 'calc(100% - ' + ($('.menu-content').offset().top) + 'px)')
+        var swiper = new Swiper('#menu-index-swiper-container', {
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+            },
+            autoplay: {
+                delay: 3000,
+                stopOnLastSlide: false,
+                disableOnInteraction: false,
+            },
+        });
+
+        $(".menu-menu-content p").click(function(){
+            var index = $(".menu-menu-content p").index(this);
+            var contentHeight = parseInt($('.menu-content').offset().top);
+            var thisHeight = $('.menu-goods-content .content-block-title').eq(index).offset().top;
+            $(".menu-menu-content p").removeClass('active');
+            $(this).addClass('active');
+            $(".menu-goods-content").scrollTop((thisHeight - contentHeight) - 20);
+        });
+
+        $('.menu-goods-content').scroll(function(){
+            var height = $(window).height();
+            var i = 0;
+            $('.menu-goods-content .content-block-title').each(function(index){
+                if (height > ($(this).offset().top + 100)) {
+                    i = index;
+                }
+            });
+            $(".menu-menu-content p").removeClass('active');
+            $(".menu-menu-content p").eq(i).addClass('active');
+        });
+
+        $(".menu-goods-detail .close").click(function(){
+            $('.menu-goods-detail, .mask').hide();
+        });
+    });
+
+    //菜单确认页
+    $(document).on("pageInit", "#page-menu-order", function (e, id, page) {
+        var otherHeight = $('.menu-order-youhui').height() + $('.menu-order-bottom').height() + $('.menu-order-vip-title').height() + 15;
+        $('.menu-order-goods-list').css('height', 'calc(100% - '+otherHeight+'px)');
+
+
+    });
+
 
     $.init();
 });

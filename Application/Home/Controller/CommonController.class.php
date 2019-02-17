@@ -18,6 +18,7 @@ class CommonController extends Controller {
 		session('user', $user);
 		expiredCoupon();
 		parent::__construct();
+		$this->assign('system_config', json_encode(setting('system')));
 	}
 
 	public function getUserInfo()

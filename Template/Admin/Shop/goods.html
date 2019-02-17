@@ -54,8 +54,8 @@
                             <thead>
                                 <tr>
                                     <th>序号</th>
-                                    <th>分类</th>
                                     <th>菜品名称</th>
+                                    <th>分类</th>
                                     <th>售价</th>
                                     <th>状态</th>
                                     <th>总销量</th>
@@ -66,8 +66,8 @@
                                 <?php foreach($data as $v){ ?>
                                 <tr>
                                     <td>{$v.sort}</td>
-                                    <td>{$goodsType[$v['goods_type_id']]['title']}</td>
                                     <td>{$v.title}</td>
+                                    <td>{$goodsType[$v['goods_type_id']]['title']}</td>
                                     <td><?=sprintf("%.2f", $v['price'] / 100);?></td>
                                     <td>
                                         {:C('goods_status')[$v['status']]}
@@ -150,7 +150,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="">封面图</td>
+                                                    <td class="">封面图(300*300)</td>
                                                     <td>
                                                         <div class="album" style="min-height:0px">
                                                             <ul>
@@ -164,7 +164,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="">轮播图</td>
+                                                    <td class="">轮播图(500*165)</td>
                                                     <td>
                                                         <div class="album" style="min-height:0px">
                                                             <ul>
@@ -190,6 +190,51 @@
                                                                 </li>
                                                             </ul>
                                                         </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">相关推荐1</td>
+                                                    <td>
+                                                        <select name="tuijian" class="selectpicker" data-live-search="true">
+                                                            <option value="">请选择</option>
+                                                            <?php foreach($goodsType as $type){ ?>
+                                                            <optgroup label="{$type.title}">
+                                                                <?php foreach($type['goods'] as $goods) { ?>
+                                                                <option value="{$goods.id}">{$goods.title}</option>
+                                                                <?php }?>
+                                                            </optgroup>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">相关推荐2</td>
+                                                    <td>
+                                                        <select name="tuijian" class="selectpicker" data-live-search="true">
+                                                            <option value="">请选择</option>
+                                                            <?php foreach($goodsType as $type){ ?>
+                                                            <optgroup label="{$type.title}">
+                                                                <?php foreach($type['goods'] as $goods) { ?>
+                                                                <option value="{$goods.id}">{$goods.title}</option>
+                                                                <?php }?>
+                                                            </optgroup>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">相关推荐3</td>
+                                                    <td>
+                                                        <select name="tuijian" class="selectpicker" data-live-search="true">
+                                                            <option value="">请选择</option>
+                                                            <?php foreach($goodsType as $type){ ?>
+                                                            <optgroup label="{$type.title}">
+                                                                <?php foreach($type['goods'] as $goods) { ?>
+                                                                <option value="{$goods.id}">{$goods.title}</option>
+                                                                <?php }?>
+                                                            </optgroup>
+                                                            <?php } ?>
+                                                        </select>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -265,7 +310,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="">封面图</td>
+                                                    <td class="">封面图封面图(300*300)</td>
                                                     <td>
                                                         <div class="album" style="min-height:0px">
                                                             <ul>
@@ -279,7 +324,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="">轮播图</td>
+                                                    <td class="">轮播图(500*165)</td>
                                                     <td>
                                                         <div class="album" style="min-height:0px">
                                                             <ul>
@@ -305,6 +350,51 @@
                                                                 </li>
                                                             </ul>
                                                         </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">相关推荐1</td>
+                                                    <td>
+                                                        <select name="tuijian" class="selectpicker" data-live-search="true">
+                                                            <option value="">请选择</option>
+                                                            <?php foreach($goodsType as $type){ ?>
+                                                            <optgroup label="{$type.title}">
+                                                                <?php foreach($type['goods'] as $goods) { ?>
+                                                                <option value="{$goods.id}">{$goods.title}</option>
+                                                                <?php }?>
+                                                            </optgroup>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">相关推荐2</td>
+                                                    <td>
+                                                        <select name="tuijian" class="selectpicker" data-live-search="true">
+                                                            <option value="">请选择</option>
+                                                            <?php foreach($goodsType as $type){ ?>
+                                                            <optgroup label="{$type.title}">
+                                                                <?php foreach($type['goods'] as $goods) { ?>
+                                                                <option value="{$goods.id}">{$goods.title}</option>
+                                                                <?php }?>
+                                                            </optgroup>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">相关推荐3</td>
+                                                    <td>
+                                                        <select name="tuijian" class="selectpicker" data-live-search="true">
+                                                            <option value="">请选择</option>
+                                                            <?php foreach($goodsType as $type){ ?>
+                                                            <optgroup label="{$type.title}">
+                                                                <?php foreach($type['goods'] as $goods) { ?>
+                                                                <option value="{$goods.id}">{$goods.title}</option>
+                                                                <?php }?>
+                                                            </optgroup>
+                                                            <?php } ?>
+                                                        </select>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -380,6 +470,15 @@
                                 $("#edit_card [name='carousel']:eq("+index+")").attr('src', item);
                                 $("#edit_card [name='carousel']:eq("+index+")").parent('li').find('.icon-plus3').addClass('hide');
                             })
+                            if (data.data.tuijian == '') {
+                                var tuijian = [];
+                            } else {
+                                var tuijian = JSON.parse(data.data.tuijian);
+                            }
+                            $("#edit_card [name='tuijian']").val('');
+                            tuijian.forEach(function(val, index){
+                                $("#edit_card [name='tuijian']:eq("+index+")").selectpicker('val', val);
+                            });
                             $("#edit_card").addClass('show');
                         } else {
                             swal("提示", data.msg, "warning");
@@ -393,7 +492,7 @@
                 var id = $(this).attr('data-id');
                 swal({
                     title: "提示",
-                    text: "确定要开始营业吗？",
+                    text: "确定要上架吗？",
                     type: "warning",
                     showCancelButton: true,
                     closeOnConfirm: false,
@@ -491,6 +590,7 @@
                     thumb: $("#add_card [name='thumb']").attr('src'),
                     options: $("#add_card [name='options']").val(),
                     carousel: [],
+                    tuijian: [],
                 };
                 if (data.sort == '') {
                     swal({ title: "提示", text: "排序不能为空", type: "warning" }, function () {
@@ -530,6 +630,16 @@
                     }
                 });
                 data.carousel = JSON.stringify(data.carousel);
+
+                var i = 0;
+                $("#add_card [name='tuijian']").each(function () {
+                    if ($(this).val() != '') {
+                        data.tuijian[i] = $(this).val();
+                        i++;
+                    }
+                });
+                data.tuijian = JSON.stringify(data.tuijian);
+
                 $(".loading").show();
                 $.ajax({
                     type: 'POST',
@@ -561,6 +671,7 @@
                     thumb: $("#edit_card [name='thumb']").attr('src'),
                     options: $("#edit_card [name='options']").val(),
                     carousel: [],
+                    tuijian: [],
                 };
                 if (data.sort == '') {
                     swal({ title: "提示", text: "排序不能为空", type: "warning" }, function () {
@@ -600,6 +711,16 @@
                     }
                 });
                 data.carousel = JSON.stringify(data.carousel);
+
+                var i = 0;
+                $("#edit_card [name='tuijian']").each(function () {
+                    if ($(this).val() != '') {
+                        data.tuijian[i] = $(this).val();
+                        i++;
+                    }
+                });
+                data.tuijian = JSON.stringify(data.tuijian);
+
                 $(".loading").show();
                 $.ajax({
                     type: 'POST',

@@ -64,6 +64,9 @@ class ShopController extends CommonController
         $count = M('shop_goods')->where($where)->count();
         $shop = M('shop')->where(['id' => $_GET['id']])->find();
         $goodsType = ArrayToolkit::index(M('shop_goods_type')->where(['shop_id' => $_GET['id']])->order('sort ASC, id DESC')->select(), 'id');
+        foreach ($goodsType as &$type) {
+            $type['goods'] = M('shop_goods')->where(['goods_type_id' => $type['id'], 'del' => '0', 'shop_id' => $_GET['id']])->order('sort ASC, id DESC')->select();
+        }
         $this->assign('goodsType', $goodsType);
         $this->assign('data', $data);
         $this->assign('page', page($count));

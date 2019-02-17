@@ -9,7 +9,6 @@ class VipController extends CommonController {
     public function __construct()
     {
         parent::__construct();
-        $this->assign('system_config', json_encode(setting('system')));
     }
 
     public function index(){
