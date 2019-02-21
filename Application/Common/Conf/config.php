@@ -58,6 +58,7 @@ return array_merge($db, array(
         2 => '线下充值',
         3 => '系统赠送',
         4 => '到店消费',
+        5 => '在线堂食下单',
     ],
 
     'shop_status' => [

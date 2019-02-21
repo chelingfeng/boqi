@@ -119,8 +119,8 @@ function orderPaid($orderId)
                 M('user')->where(['id' => $order['user_id']])->setDec('balance', $order['amount']);
                 M('cash_flow')->add([
                     'type' => 'outflow',
-                    'title' => C('cash_flow_category')[4],
-                    'category' => 4,
+                    'title' => C('cash_flow_category')[5],
+                    'category' => 5,
                     'user_id' => $order['user_id'],
                     'amount' => $order['amount'],
                     'balance' => M('user')->where(['id' => $order['user_id']])->getField('balance'),
@@ -129,8 +129,8 @@ function orderPaid($orderId)
             } elseif ($order['payment'] == 'wechat') {
                 M('cash_flow')->add([
                     'type' => 'outflow',
-                    'title' => C('cash_flow_category')[4],
-                    'category' => 4,
+                    'title' => C('cash_flow_category')[5],
+                    'category' => 5,
                     'user_id' => $order['user_id'],
                     'amount' => $order['amount'],
                     'balance' => M('user')->where(['id' => $order['user_id']])->getField('balance'),
