@@ -1,16 +1,16 @@
 <extend name="Common/__base" />
 <block name="body">
     <div class="page-group">
-        <div class="page page-current" style="background: #fff" id="page-vip-order">
+        <div class="page page-current" style="background: #fff" id="page-order-index">
 
             <div class="buttons-tab buttons-list" id="type">
                 <a class="button active" data-type="hall">堂食</a>
                 <a class="button" data-type="takeout">外卖</a>
             </div>
             <div class="buttons-tab coupon-tab" id="status">
-                <a class="tab-link button active" data-status="receive">待付款</a>
-                <a class="tab-link button" data-status="used">已付款</a>
-                <a class="tab-link button" data-status="expired">已完成</a>
+                <a class="tab-link button active" data-status="created">待付款</a>
+                <a class="tab-link button" data-status="paid">已付款</a>
+                <a class="tab-link button" data-status="success">已完成</a>
             </div>
 
             <div class="content native-scroll" style="margin-top:5.2rem;">

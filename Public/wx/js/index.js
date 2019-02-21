@@ -764,7 +764,86 @@ $(function () {
 
     //菜单首页
     $(document).on("pageInit", "#page-menu-index", function (e, id, page) {
-        $("#picker").picker({
+        var buycarId = 'buycar'+$("[name='shop_id']").val();
+        var shop = JSON.parse($("[name='shop']").val());
+        if ($.fn.cookie(buycarId) == null) {
+            $.fn.cookie(buycarId, '[]', { expires: 365 }); 
+        }
+        var shops = JSON.parse($("[name='shops']").val());
+        var shopTitles = [];
+        shops.forEach(function(item, index){
+            shopTitles[index] = item.title;
+        });
+
+        showBuyCarNumber();
+
+        function showDetail(id){
+            $.showIndicator()
+            $.ajax({
+                type: 'POST',
+                data: { id: id },
+                url: 'index.php?m=Home&c=Menu&a=findGoods',
+                success: function (res) {
+                    if (res.code == 0) {
+                        $(".menu-goods-detail .price-price").html('¥' + res.data.price);
+                        $(".menu-goods-detail [name='goods_id']").val(res.data.id);
+                        $(".menu-goods-detail [name='goods_title']").val(res.data.title);
+                        $(".menu-goods-detail [name='goods_carousel']").val(res.data.carousel[0]);
+                        $(".menu-goods-detail [name='goods_price']").val(res.data.price * 100);
+                        $('.menu-goods-detail-img').attr('src', res.data.carousel[0]);
+                        var guige = '';
+                        res.data.options.forEach(function (item, index) {
+                            guige += '<div class="menu-goods-detail-guige">';
+                            guige += '<div class="menu-goods-detail-guige-tt">' + item.key + '</div>';
+                            item.val.forEach(function (item, index) {
+                                if (index == 0) {
+                                    guige += '<div class="menu-goods-detail-guige-list active">' + item + '</div>';
+                                } else {
+                                    guige += '<div class="menu-goods-detail-guige-list">' + item + '</div>';
+                                }
+                            });
+                            guige += '<div class="both"></div>';
+                            guige += '</div>';
+                        })
+                        if (res.data.tuijian.length == 0) {
+                            $(".menu-goods-detail .close").css('bottom', '-3rem');
+                            $(".menu-goods-detail-tuijian-list").html('');
+                        } else {
+                            var tuijian = '';
+                            res.data.tuijian.forEach(function (item, index) {
+                                tuijian += '<img src="' + item.carousel[0] + '" data-id="' + item.id + '"/>';
+                            })
+                            $(".menu-goods-detail-tuijian-list").html(tuijian);
+                            $(".menu-goods-detail .close").css('bottom', '-7.5rem');
+                        }
+                        $(".menu-goods-detail .menu-goods-detail-guige-content").html(guige);
+                        $('.mask,.menu-goods-detail').show();
+                    } else {
+                        $.alert(res.msg, '提示');
+                    }
+                    $.hideIndicator();
+                }
+            });
+        }
+
+        $(document).on('click', '.menu-goods-detail-guige-list', function(){
+            $(this).parent().find('.menu-goods-detail-guige-list').removeClass('active');
+            $(this).addClass('active');
+        })
+
+        //商品详情
+        $(".menu-goods-content li").click(function(){
+            var id = $(this).attr('data-id');
+            showDetail(id);
+        });
+
+        //推荐
+        $(document).on('click', ".menu-goods-detail-tuijian-list img", function () {
+            var id = $(this).attr('data-id');
+            showDetail(id);
+        });
+
+        $("#change-shop-id").picker({
             formatValue: function (picker, value, displayValue) {
                 return picker.cols[0].activeIndex;
             },
@@ -775,18 +854,15 @@ $(function () {
             cols: [
                 {
                     textAlign: 'center',
-                    values: ['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3'],
+                    values: shopTitles,
                 }
             ],
-            onClose: function (picker) {
-                
-            },
-            onOpen: function () {
-                
+            onClose: function () {
+                location.href = 'index.php?m=Home&c=Menu&a=index&id=' + shops[$("#change-shop-id").val()].id;
             }
         });
         $(".change-shop").click(function(){
-            $("#picker").picker("open");
+            $("#change-shop-id").picker("open");
         });
         var swiper = new Swiper('#menu-index-swiper-container', {
             loop: true,
@@ -798,6 +874,124 @@ $(function () {
                 stopOnLastSlide: false,
                 disableOnInteraction: false,
             },
+        });
+
+        $(".ok-ok").click(function(){
+            var goods_id = $(".menu-goods-detail [name='goods_id']").val();
+            var options = [];
+            var buycar = JSON.parse($.fn.cookie(buycarId));
+            $(".menu-goods-detail-guige .active").each(function(index){
+                options[index] = $(this).html();
+            });
+            var flag = 1;
+            buycar.forEach(function(item, index){
+                if (item.id == goods_id && item.options.join(',') == options.join(',')) {
+                    item.number = item.number + 1;
+                    flag = 0;
+                }
+            });
+            if (flag == 1) {
+                buycar.push({
+                    id: $(".menu-goods-detail [name='goods_id']").val(),
+                    title: $(".menu-goods-detail [name='goods_title']").val(),
+                    carousel: $(".menu-goods-detail [name='goods_carousel']").val(),
+                    number: 1,
+                    options: options,
+                    price: parseInt($(".menu-goods-detail [name='goods_price']").val()),
+                });
+            }
+            $.fn.cookie(buycarId, JSON.stringify(buycar), { expires: 365 }); 
+            $(".menu-goods-detail,.mask").hide();
+            showBuyCarNumber();
+            console.log(buycar);
+        });
+
+        function showBuyCarNumber()
+        {
+            var buycar = JSON.parse($.fn.cookie(buycarId));
+            var number = 0;
+            var price  = 0;
+            buycar.forEach(function (item, index) {
+                number += item.number;
+                price += item.price * item.number
+            });
+            $('.menu-car-gouwuche .point').html(number);
+            $('.menu-car-money').html('¥' + (price / 100).toFixed(2));
+        }
+
+        //下单
+        $(".menu-car-btn").click(function(){
+            //判断是否可以下单
+            if (shop.status != 'normal') {
+                $.alert('店铺已关闭，暂时无法下单', '提示');
+                return;
+            }
+            var buycar = JSON.parse($.fn.cookie(buycarId));
+            if (buycar.length > 0) {
+                $.router.load("index.php?m=Home&c=Menu&a=order&id=" + $("[name='shop_id']").val())
+            }
+        });
+
+        //显示购物车详情
+        $(".menu-car-gouwuche").click(function() {
+            $('.new_mask, .menu-car-detail').toggle();
+            if($('.menu-car-gouwuche .point').html() != 0) {
+                showCarDetail();   
+            }
+        });
+
+        //减
+        $(document).on('click', '.jian', function(){
+            var buycar = JSON.parse($.fn.cookie(buycarId));
+            var index = $(this).parent().parent().attr('data-index');
+            buycar[index].number = buycar[index].number - 1;
+            if (buycar[index].number <= 0 ) {
+                buycar.splice(index);
+            }
+            $.fn.cookie(buycarId, JSON.stringify(buycar), { expires: 365 }); 
+            showCarDetail();
+        })
+
+        $(document).on('click', '.jia', function () {
+            var buycar = JSON.parse($.fn.cookie(buycarId));
+            var index = $(this).parent().parent().attr('data-index');
+            buycar[index].number = buycar[index].number + 1;
+            $.fn.cookie(buycarId, JSON.stringify(buycar), { expires: 365 });
+            showCarDetail();
+        })
+
+        function showCarDetail()
+        {
+            showBuyCarNumber();
+            var html = '';
+            var buycar = JSON.parse($.fn.cookie(buycarId));
+            buycar.forEach(function (item, index) {
+                html += '<div class="menu-car-detail-list" data-index='+index+'>';
+                    html += '<div class="menu-car-detail-list-left">';
+                        html += '<p class="tt">'+item.title+'</p>';
+                        html += '<p class="ftt">'+item.options.join('+')+'</p>';
+                    html += '</div>';
+                    html += '<div class="menu-car-detail-list-m">¥'+(item.price * item.number / 100).toFixed(2)+'</div>';
+                    html += '<div class="menu-car-detail-list-right">';
+                        html += '<span class="iconfont icon-jian jian"></span>';
+                        html += '<span class="number">'+item.number+'</span>';
+                        html += '<span class="iconfont icon-jia jia"></span>';
+                    html += '</div>';
+                    html += '<div class="both"></div>';
+                html += '</div>';
+            });
+            $(".menu-car-detail-list").remove();
+            $('.menu-car-detail').append(html);
+        }
+
+        //清空购物车
+        $(".menu-car-detail-title .right").click(function(){
+            $.confirm('确定要清空购物车吗?', '提示', function () {
+                $.fn.cookie(buycarId, '[]', { expires: 365 }); 
+                showBuyCarNumber();
+                $(".menu-car-detail-list").remove();
+                $('.new_mask, .menu-car-detail').hide();
+            });
         });
 
         $(".menu-menu-content p").click(function(){
@@ -831,7 +1025,133 @@ $(function () {
         var otherHeight = $('.menu-order-youhui').height() + $('.menu-order-bottom').height() + $('.menu-order-vip-title').height() + 15;
         $('.menu-order-goods-list').css('height', 'calc(100% - '+otherHeight+'px)');
 
+        $("#submit_order").click(function(){
+            $(".menu-order-pay, .mask").show();
+        });
 
+        $(".menu-order-pay .close").click(function(){
+            $(".menu-order-pay, .mask").hide();
+        });
+
+        $(".menu-order-pay-list.balance").click(function(){
+            var userBalance = $('.menu-order-pay-list-p2 b').html();
+            var amount = $('.mm2 span').html();
+            if (parseFloat(userBalance) < parseFloat(amount)) {
+                $.alert('余额不足', '提示');
+                return;
+            }
+            addOrder('balance');
+        });
+
+        $(".menu-order-pay-list.wechat").click(function () {
+            addOrder('wechat');
+        });
+
+        function addOrder(payment)
+        {
+            var shopId = $_GET['id'];
+            $.confirm('确定支付吗?', '提示', function () {
+                $.showIndicator()
+                $.ajax({
+                    type: 'GET',
+                    data: { payment:payment, shopId: shopId},
+                    async: false,
+                    url: 'index.php?m=Home&c=Menu&a=addOrder',
+                    success: function (res) {
+                        if (res.code == 0) {
+                            if (payment == 'balance') {
+                                location.href = 'index.php?m=Home&c=Menu&a=paySuccess&id='+res.data.id;
+                            } else if (payment == 'wechat') {
+                                pay(res.data.id, location.origin +'/index.php?m=Home&c=Menu&a=paySuccess&id='+res.data.id);
+                            }
+                        } else {
+                            $.alert(res.msg, '提示', function (){
+                                location.href = 'index.php?m=Home&c=Menu&a=index&id=' + shopId
+                            });
+                        }
+                        $.hideIndicator();
+                    }
+                });
+            });
+        }
+
+    });
+
+    $(document).on("pageInit", "#page-order-index", function (e, id, page) {
+        getData();
+        $("#type .button").click(function(){
+            $("#type .button").removeClass('active');
+            $(this).addClass('active');
+            getData();
+        });
+        $("#status .button").click(function () {
+            $("#status .button").removeClass('active');
+            $(this).addClass('active');
+            getData();
+        });
+        function getData()
+        {
+            var type = $("#type .active").attr('data-type');
+            var status = $("#status .active").attr('data-status');
+            $.showIndicator()
+            $.ajax({
+                type: 'GET',
+                data: { type: type, status: status },
+                async: false,
+                url: 'index.php?m=Home&c=Menu&a=getOrder',
+                success: function (res) {
+                    if (res.code == 0) {
+                        var html = '';
+
+                        res.data.forEach(function (item, index) {
+                            var num = 0;
+                            html += '<div class="hall-order-list">';
+                                html += '<div class="hall-order-list-time">'+item.create_time+'</div>';
+                                html += '<div class="menu-order-goods-list-item-content vip-order-list-item-content">';
+                                    item.detail.forEach(function(g, i){
+                                        num += g.number;
+                                        html += '<div class="menu-order-goods-list-item">';
+                                            html += '<img src="'+g.carousel+'">';
+                                            html += '<div class="menu-order-goods-list-m">';
+                                                html += '<p class="p1">'+g.title+'</p>';
+                                                html += '<p class="p2">'+g.options.join('+')+'</p>';
+                                            html += '</div>';
+                                            html += '<div class="menu-order-goods-list-right">';
+                                                html += '<p class="p1">¥'+(g.price * g.number / 100).toFixed(2)+'</p>';
+                                                html += '<p class="p3">× '+g.number+'</p>';
+                                            html += '</div>';
+                                        html += '</div>';
+                                    }) 
+                                html += '</div>';
+                                html += '<div class="menu-order-goods-list-bottom1">';
+                                    html += '共'+num+'个菜';
+                                html += '</div>';
+                                html += '<div class="menu-order-goods-list-bottom">';
+                                    html += '实付金额：¥'+(item.amount / 100).toFixed(2);
+                                html += '</div>';
+                                if (item.status == 'created') { 
+                                    html += '<div class="menu-order-goods-list-btn repay" data-id="'+item.id+'">支付</div>';
+                                }
+                                html += '<div class="both"></div>';
+                            html += '</div>';
+                        });
+                        $(".hall-order-list").remove();
+                        $(".content").prepend(html)
+                        if (html == '') {
+                            $(".empty").show();
+                        } else {
+                            $(".empty").hide();
+                        }
+                    }
+                    $.hideIndicator();
+                }
+            });
+
+            $(document).on('click', '.repay', function(){
+                var id = $(this).attr('data-id');
+                pay(id, location.origin + '/index.php?m=Home&c=Menu&a=paySuccess&id='+id);
+            })
+        }
     });
 
 

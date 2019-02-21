@@ -194,6 +194,8 @@
 .menu-car-detail-list .menu-car-detail-list-left {
     float: left;
     font-size: 0.8rem;
+    width: 30%;
+    overflow: hidden;
 }
 .menu-car-detail-list .menu-car-detail-list-left .tt {
     margin: 0px;
@@ -318,6 +320,9 @@
     height: 4rem;
     margin-right: 3%;
 }
+.menu-goods-detail-tuijian-list img:last-child {
+    margin-right: 0;
+}
 .menu-order-vip-title {
     width: 100%;
     line-height: 2.2rem;
@@ -366,6 +371,7 @@
 }
 .menu-order-goods-list-item .p1 {
     margin: 0.2rem 0;
+    text-align: right;
 }
 .menu-order-goods-list-item .p2 {
     margin: 0px;
@@ -377,6 +383,7 @@
     font-size: 0.8rem;
     color: #838383;
     margin-top: -0.3rem;
+    text-align: right;
 }
 .menu-order-goods-list-right {
     float: right;
@@ -475,7 +482,7 @@
 	position: absolute;
 	width: 90%;
 	left:5%;
-	top:3rem;
+	top:8rem;
 	z-index: 10601;
 	display: none;
 	background: #fff;
@@ -532,4 +539,37 @@
     margin-left: 10%;
     border-radius: 0.5rem;
     font-size: 0.75rem;
+}
+.menu-pay-success-img {
+    width: 100%;
+    text-align: center;
+    margin-top: 25%;
+}
+.menu-pay-success-img img {
+    height: 7rem;
+}
+.menu-pay-success-tip {
+    font-size: 1.7rem;
+    text-align: center;
+    color: #f9bf1f;
+    margin: 0;
+}
+
+.menu-pay-success-tip2 {
+    font-size: 0.8rem;
+    text-align: center;
+    color: #858585;
+    margin: 0;
+}
+
+.menu-pay-success-btn {
+    text-align: center;
+    line-height: 2.2rem;
+    width: 60%;
+    margin-left: 20%;
+    display: inline-block;
+    color: #fff;
+    background: #f9bf1f;
+    border-radius: 0.5rem;
+    margin-top: 5rem;
 }

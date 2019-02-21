@@ -39,7 +39,7 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>id</th>
+                                <th>排序</th>
                                 <th>店铺名称</th>
                                 <th>店铺电话</th>
                                 <th>支持外卖</th>
@@ -51,7 +51,7 @@
                         <tbody>
                             <?php foreach($data as $v){ ?>
                             <tr>
-                                <td>{$v.id}</td>
+                                <td>{$v.sort}</td>
                                 <td>{$v.title}</td>
                                 <td>{$v.phone}</td>
                                 <td>
@@ -271,10 +271,6 @@
     </div>
 </div>
 
-<form style="display: none;" enctype="multipart/form-data" class="fileform">
-    <input type="file" name="img">
-</form>
-
 <script type="text/javascript">
     $(function(){
         $("#add").click(function () {
@@ -328,29 +324,6 @@
                     $(".loading").hide();
                 }
             })
-        });
-
-        var index;
-        $(".fileform input[name='img']").change(function () {
-            if ($(this).val() == '') return false;
-            $(".loading").show();
-            $.ajax({
-                url: "{:U('Admin/Index/upload')}",
-                type: 'POST',
-                cache: false,
-                data: new FormData($('.fileform')[0]),
-                processData: false,
-                contentType: false
-            }).done(function (res) {
-                if (res.code == 0) {
-                    $("[name='background']:eq(" + index + ")").val(res.data.imgurl);
-                    $(".background:eq(" + index + ")").attr('src', res.data.imgurl);
-                    $(".background:eq(" + index + ")").show();
-                } else {
-                    swal("提示", res.msg, "warning");
-                }
-                $(".loading").hide();
-            });
         });
 
         $(".upload_action").click(function () {

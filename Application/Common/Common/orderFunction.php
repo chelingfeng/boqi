@@ -8,6 +8,7 @@ function createOrder($fields)
         'user_id' => $fields['user_id'],
         'type' => $fields['type'],
         'title' => $fields['title'],
+        'detail' => json_encode($fields['detail']),
         'order_sn' => generateSn(),
         'amount' => 0,
         'discount' => 0,
@@ -29,6 +30,7 @@ function createOrder($fields)
             'status' => 'created',
             'create_time' => date('Y-m-d H:i:s'),
             'amount' => $item['amount'],
+            'num' => $item['num'] ?? 1,
         ];
         M('order_item')->add($i);
     }
@@ -110,6 +112,31 @@ function orderPaid($orderId)
 
             openVip($order['user_id'], $items[0]['target_id']);
 
+        }
+
+        if ($order['type'] == 'hall') {
+            if ($order['payment'] == 'balance') {
+                M('user')->where(['id' => $order['user_id']])->setDec('balance', $order['amount']);
+                M('cash_flow')->add([
+                    'type' => 'outflow',
+                    'title' => C('cash_flow_category')[4],
+                    'category' => 4,
+                    'user_id' => $order['user_id'],
+                    'amount' => $order['amount'],
+                    'balance' => M('user')->where(['id' => $order['user_id']])->getField('balance'),
+                    'create_time' => date('Y-m-d H:i:s'),
+                ]);
+            } elseif ($order['payment'] == 'wechat') {
+                M('cash_flow')->add([
+                    'type' => 'outflow',
+                    'title' => C('cash_flow_category')[4],
+                    'category' => 4,
+                    'user_id' => $order['user_id'],
+                    'amount' => $order['amount'],
+                    'balance' => M('user')->where(['id' => $order['user_id']])->getField('balance'),
+                    'create_time' => date('Y-m-d H:i:s'),
+                ]);
+            }
         }
     }
 }

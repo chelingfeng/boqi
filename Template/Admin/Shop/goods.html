@@ -150,6 +150,12 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td class="">描述</td>
+                                                    <td>
+                                                        <textarea name="description" style="width:80%" rows="2"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td class="">封面图(300*300)</td>
                                                     <td>
                                                         <div class="album" style="min-height:0px">
@@ -310,6 +316,12 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td class="">描述</td>
+                                                    <td>
+                                                        <textarea name="description" style="width:80%" rows="2"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td class="">封面图封面图(300*300)</td>
                                                     <td>
                                                         <div class="album" style="min-height:0px">
@@ -462,6 +474,7 @@
                             $("#edit_card .icon-plus3").removeClass('hide');
                             $("#edit_card .album-plus img").attr('src', '');
                             $("#edit_card [name='options']").val(data.data.options);
+                            $("#edit_card [name='description']").val(data.data.description);
                             if (data.data.thumb != '') {
                                 $("#edit_card [name='thumb']").attr('src', data.data.thumb);
                                 $("#edit_card [name='thumb']").parent('li').find('.icon-plus3').addClass('hide');
@@ -589,6 +602,7 @@
                     shop_id: $("[name='shop_id']").val(),
                     thumb: $("#add_card [name='thumb']").attr('src'),
                     options: $("#add_card [name='options']").val(),
+                    description: $("#add_card [name='description']").val(),
                     carousel: [],
                     tuijian: [],
                 };
@@ -670,6 +684,7 @@
                     shop_id: $("[name='shop_id']").val(),
                     thumb: $("#edit_card [name='thumb']").attr('src'),
                     options: $("#edit_card [name='options']").val(),
+                    description: $("#edit_card [name='description']").val(),
                     carousel: [],
                     tuijian: [],
                 };

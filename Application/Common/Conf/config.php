@@ -27,6 +27,7 @@ return array_merge($db, array(
         20008 => '已经领取过了',
         20009 => '您的会员等级高于或等于该等级',
         20010 => '用户名密码错误',
+        20011 => '下单失败',
     ),
 
     'coupon_status' => [
@@ -49,6 +50,7 @@ return array_merge($db, array(
         'paid' => '已支付',
         'refund' => '已退款',
         'paying' => '支付中',
+        'success' => '已完成',
     ],
 
     'cash_flow_category' => [
@@ -75,5 +77,6 @@ return array_merge($db, array(
     'mp_app_id' => 'wx54a2c04e693639c3',
     'mp_app_secret' => '1ffdc0f531d9148f53504958ff6720ce',
 
+    // 'version' => 'v1.0.6',
     'version' => time(),
 ));

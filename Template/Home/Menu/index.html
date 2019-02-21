@@ -1,13 +1,16 @@
 <extend name="Common/__base" />
 <block name="body">
     <div class="page page-current" style="background: #fff" id="page-menu-index">
-        <input type="text" id='picker' style="display:none"/>
+        <input type="hidden" name="shop_id" value="{$shop.id}">
+        <input type="hidden" name="shops" value='{:json_encode($shops)}'>
+        <input type="hidden" name="shop" value='{:json_encode($shop)}'>
+        <input type="text" id='change-shop-id' style="display:none"/>
         <div class="content native-scroll">
             <p class="menu-index-message">
                 <span class="change-shop">[换门店]</span>
-                <span class="shop-name">嘉兴五郎 烧肉 酒场</span>
+                <span class="shop-name">{$shop.title}</span>
             </p>
-            <p class="menu-contact">联系电话：0573-88888888 浙江省嘉兴市南湖区210号</p>
+            <p class="menu-contact">联系电话：{$shop.phone} {$shop.address}</p>
             <!-- <div class="swiper-container" id="menu-index-swiper-container">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide"><img src="/Public/Uploads/5c1f2cc95e2fe.png" width="100%" height="100%"/></div>
@@ -32,7 +35,7 @@
                     <div class="left">菜单</div>
                     <div class="right"><span class="iconfont icon-shanchu"></span>清空购物车</div>
                 </div>
-                <div class="menu-car-detail-list">
+                <!-- <div class="menu-car-detail-list">
                     <div class="menu-car-detail-list-left">
                         <p class="tt">三文鱼寿司</p>
                         <p class="ftt">大份+辣</p>
@@ -57,158 +60,72 @@
                         <span class="iconfont icon-jia jia"></span>
                     </div>
                     <div class="both"></div>
-                </div>
+                </div> -->
             </div>
 
             <div class="mask" style=""></div>
             <div class="menu-goods-detail" style="">
-                <img src="/Public/Uploads/5c1f2cc95e2fe.png" class="menu-goods-detail-img">
-                <div class="menu-goods-detail-guige">
-                    <div class="menu-goods-detail-guige-tt">规格</div>
-                    <div class="menu-goods-detail-guige-list active">小份</div>
-                    <div class="menu-goods-detail-guige-list">大份</div>
-                    <div class="both"></div>
-                </div>
-                <div class="menu-goods-detail-guige">
-                    <div class="menu-goods-detail-guige-tt">规格</div>
-                    <div class="menu-goods-detail-guige-list">小份</div>
-                    <div class="menu-goods-detail-guige-list">大份</div>
-                    <div class="both"></div>
+                <input type="hidden" name="goods_id" />
+                <input type="hidden" name="goods_title" />
+                <input type="hidden" name="goods_price" />
+                <input type="hidden" name="goods_carousel" />
+                <img src="" class="menu-goods-detail-img">
+                <div class="menu-goods-detail-guige-content">
+                    <!-- <div class="menu-goods-detail-guige">
+                        <div class="menu-goods-detail-guige-tt">规格</div>
+                        <div class="menu-goods-detail-guige-list active">小份</div>
+                        <div class="menu-goods-detail-guige-list">大份</div>
+                        <div class="both"></div>
+                    </div> -->
                 </div>
                 <div class="menu-goods-detail-line"></div>
                 <div class="menu-goods-detail-price">
-                    <div class="menu-goods-detail-price-left">¥11</div>
-                    <div class="menu-goods-detail-price-right">选好了</div>
+                    <div class="menu-goods-detail-price-left price-price">¥11</div>
+                    <div class="menu-goods-detail-price-right ok-ok">选好了</div>
                     <div class="both"></div>
                 </div>
                 <div class="menu-goods-detail-tuijian-list">
+                    <!-- <img src="/Public/Uploads/5c1f2cc95e2fe.png" />
                     <img src="/Public/Uploads/5c1f2cc95e2fe.png" />
-                    <img src="/Public/Uploads/5c1f2cc95e2fe.png" />
-                    <img src="/Public/Uploads/5c1f2cc95e2fe.png" style="margin-right:0"/>
+                    <img src="/Public/Uploads/5c1f2cc95e2fe.png"/> -->
                 </div>
                 <div class="close iconfont icon-guanbi"></div>
             </div>
 
             <div class="menu-content">
                 <div class="menu-menu-content">
-                    <p class="active">寿司</p>
-                    <p>寿司2</p>
+                    <?php foreach($shop['goodsType'] as $key => $type){ ?>
+                    <p class="<?php if($key == 0){echo 'active';}?>">{$type.title}</p>
+                    <?php } ?>
                 </div>
                 <div class="menu-goods-content">
-                    <div class="content-block-title">寿司</div>
+                    <?php foreach($shop['goodsType'] as $key => $type){ ?>
+                    <div class="content-block-title">{$type.title}</div>
                     <div class="list-block media-list">
                         <ul>
-                            <li>
+                            <?php foreach($type['goods'] as $goods){ ?>
+                            <li data-id="{$goods.id}">
                                 <div class="item-content padding05">
+                                    <?php if($goods['thumb']){ ?>
                                     <div class="item-media">
-                                        <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg"
-                                            style='width: 4.5rem;'>
-                                        </div>
+                                        <img src="{$goods.thumb}" style='height:4.5rem; width: 4.5rem;'>
+                                    </div>
+                                    <?php } ?>
                                     <div class="item-inner">
                                         <div class="item-title-row">
-                                            <div class="item-title">三文鱼寿司</div>
+                                            <div class="item-title">{$goods.title}</div>
                                         </div>
-                                        <div class="item-subtitle">说明说明</div>
-                                        <div class="item-subtitle">月销111</div>
-                                        <div class="item-text">¥11</div>
-                                        <div class="item-btn">选规格</div>
+                                        <div class="item-subtitle">{$goods.description}</div>
+                                        <div class="item-subtitle">&nbsp;</div>
+                                        <div class="item-text">¥<?=sprintf("%.2f", $goods['price'] / 100);?></div>
+                                        <div class="item-btn guige">选规格</div>
                                     </div>
                                 </div>
                             </li>
-                            <li>
-                                <div class="item-content padding05">
-                                    <div class="item-media">
-                                        <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg"
-                                            style='width: 4.5rem;'>
-                                    </div>
-                                    <div class="item-inner">
-                                        <div class="item-title-row">
-                                            <div class="item-title">三文鱼寿司</div>
-                                        </div>
-                                        <div class="item-subtitle">说明说明</div>
-                                        <div class="item-subtitle">月销111</div>
-                                        <div class="item-text">¥11</div>
-                                        <div class="item-btn">选规格</div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="item-content padding05">
-                                    <div class="item-media">
-                                        <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg"
-                                            style='width: 4.5rem;'>
-                                    </div>
-                                    <div class="item-inner">
-                                        <div class="item-title-row">
-                                            <div class="item-title">三文鱼寿司</div>
-                                        </div>
-                                        <div class="item-subtitle">说明说明</div>
-                                        <div class="item-subtitle">月销111</div>
-                                        <div class="item-text">¥11</div>
-                                        <div class="item-btn">选规格</div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="item-content padding05">
-                                    <div class="item-media">
-                                        <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg"
-                                            style='width: 4.5rem;'>
-                                    </div>
-                                    <div class="item-inner">
-                                        <div class="item-title-row">
-                                            <div class="item-title">三文鱼寿司</div>
-                                        </div>
-                                        <div class="item-subtitle">说明说明</div>
-                                        <div class="item-subtitle">月销111</div>
-                                        <div class="item-text">¥11</div>
-                                        <div class="item-btn">选规格</div>
-                                    </div>
-                                </div>
-                            </li>
+                            <?php } ?>
                         </ul>
                     </div>
-
-
-                    <div class="content-block-title">寿司2</div>
-                    <div class="list-block media-list">
-                        <ul>
-                            <li>
-                                <div class="item-content padding05">
-                                    <div class="item-media">
-                                        <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg"
-                                            style='width: 4.5rem;'>
-                                    </div>
-                                    <div class="item-inner">
-                                        <div class="item-title-row">
-                                            <div class="item-title">三文鱼寿司</div>
-                                        </div>
-                                        <div class="item-subtitle">说明说明</div>
-                                        <div class="item-subtitle">月销111</div>
-                                        <div class="item-text">¥11</div>
-                                        <div class="item-btn">选规格</div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="item-content padding05">
-                                    <div class="item-media">
-                                        <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg"
-                                            style='width: 4.5rem;'>
-                                    </div>
-                                    <div class="item-inner">
-                                        <div class="item-title-row">
-                                            <div class="item-title">三文鱼寿司</div>
-                                        </div>
-                                        <div class="item-subtitle">说明说明</div>
-                                        <div class="item-subtitle">月销111</div>
-                                        <div class="item-text">¥11</div>
-                                        <div class="item-btn">选规格</div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>

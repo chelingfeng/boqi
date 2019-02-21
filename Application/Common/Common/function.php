@@ -392,3 +392,43 @@ function verifyToken($code, array $result = array())
     }
     return $token ?? [];
 }
+
+//是否允许堂食下单
+function canTaskOrder($shopId)
+{
+    $shop = M('shop')->where(['del' => 0, 'id' => $shopId])->find();
+    if (empty($shop)) {
+        return false;
+    }
+    if ($shop['status'] == 'normal') {
+        $startTime = strtotime(date('Y-m-d') . ' ' . $shop['start_time'] . ':00');
+        $endTime = strtotime(date('Y-m-d') . ' ' . $shop['end_time'] . ':00');
+        if (time() < $startTime || time() > $endTime) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function findGoods($id, $t = true)
+{
+    $data = M('shop_goods')->where(['id' => $id])->find();
+    $data['original_price'] = sprintf("%.2f", $data['original_price'] / 100);
+    $data['price'] = sprintf("%.2f", $data['price'] / 100);
+    $data['carousel'] = json_decode($data['carousel'], true);
+    if (!$data['carousel']) {
+        $data['carousel'][0] = setting('system')['menu_detail_default'];
+    }
+    if ($data['options']) {
+        $data['options'] = json_decode($data['options'], true);
+    } else {
+        $data['options'] = [];
+    }
+    $data['tuijian'] = json_decode($data['tuijian'], true);
+    foreach ($data['tuijian'] as $key => $tuijian) {
+        if ($t === true) {
+            $data['tuijian'][$key] = findGoods($tuijian, false);
+        }
+    }
+    return $data;
+}
