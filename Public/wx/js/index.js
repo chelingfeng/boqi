@@ -940,13 +940,17 @@ $(function () {
             }
         });
 
+        $(".new_mask").click(function(){
+            $('.new_mask, .menu-car-detail').hide();
+        });
+
         //减
         $(document).on('click', '.jian', function(){
             var buycar = JSON.parse($.fn.cookie(buycarId));
             var index = $(this).parent().parent().attr('data-index');
             buycar[index].number = buycar[index].number - 1;
             if (buycar[index].number <= 0 ) {
-                buycar.splice(index);
+                buycar.splice(index, index + 1);
             }
             $.fn.cookie(buycarId, JSON.stringify(buycar), { expires: 365 }); 
             showCarDetail();

@@ -1,0 +1,350 @@
+<extend name="Public/__base" />
+<block name="body">
+
+    <div class="page-main" style="left:170px;top:50px;">
+
+        <div class="history-container ng-scope">
+            <a class="return-btn" onclick="history.go(-1)">
+                <i class="ALiconfont icon-sortleft"></i> 返回
+            </a>
+            <ul class="history-list">
+                <li><a href="{:U('index')}">门店管理</a></li>
+                <li><a>{$shop.title}</a></li>
+                <li>餐桌管理</li>
+            </ul>
+        </div>
+
+        <input type="hidden" name="shop_id" value="{$Think.get.id}" />
+        <div class="page-tabs" style="top:50px;">
+            <form method="post" action="" id="formsubmit">
+                <div class="tool-bar ng-scope" style="background:#fff;border-bottom:1px solid #dfe0e0">
+                    <div class="bar-full">
+                        <a class="btn btn-addon btn-success ng-scope" id="add"><i
+                                class="glyphicon glyphicon-plus"></i>添加</a>
+                    </div>
+
+                    <div class="search-bool">
+                        <div class="input-group ng-pristine ng-valid">
+                            <input type="text" class="form-control ng-pristine ng-untouched ng-valid" placeholder="桌号"
+                                name="keyword" value="{$Think.post.keyword}">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-default" id="search_btn">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <ul class="page-tabs-container">
+                <li class="fadeIn animated active">
+                    <div class="table-container" style="top:10px;background:#fff">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>排序</th>
+                                    <th>名称</th>
+                                    <th>人数</th>
+                                    <th>备注</th>
+                                    <th>添加时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach($data as $v){ ?>
+                                <tr>
+                                    <td>{$v.sort}</td>
+                                    <td>{$v.title}</td>
+                                    <td>{$v.number}</td>
+                                    <td>{$v.remark|default='-'}</td>
+                                    <td>{$v.create_time}</td>
+                                    <td>
+                                        <a class="btn btn-info btn-xs edit" data-id="{$v.id}">修改</a>
+                                        <a class="btn btn-danger btn-xs delete" data-id="{$v.id}">删除</a>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+                                <?php if(count($data) == 0){ ?>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="20" class="empty">没有检索到相关数据</td>
+                                </tr>
+                            </tfoot>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    {$page}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="info-card fadeIn animated ng-scope" id="add_card">
+        <div class="info-card-wrapper">
+            <div class="info-card-dialog">
+                <div class="info-card-content">
+                    <div class="panel panel-info">
+                        <div class="panel-heading"> 添加
+                            <a class="info-card-close"><i class="ALiconfont icon-close"></i></a>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-tabs">
+                                <ul class="form-tabs-container">
+                                    <li class="fadeIn animated active">
+                                        <table class="table-bordered bg-white table-form">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="require" width="160">排序</td>
+                                                    <td>
+                                                        <input type="text" name="sort" value="1">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="require">桌号</td>
+                                                    <td>
+                                                        <input type="text" name="title">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="require">人数</td>
+                                                    <td>
+                                                        <input type="number" name="number">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">备注</td>
+                                                    <td>
+                                                        <input type="text" name="remark">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-btn-box" colspan="2">
+                                                        <a class="btn btn-success" id="add_action">确定</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-card fadeIn animated ng-scope" id="edit_card">
+        <div class="info-card-wrapper">
+            <div class="info-card-dialog">
+                <div class="info-card-content">
+                    <div class="panel panel-info">
+                        <div class="panel-heading"> 修改
+                            <a class="info-card-close"><i class="ALiconfont icon-close"></i></a>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-tabs">
+                                <ul class="form-tabs-container">
+                                    <li class="fadeIn animated active">
+                                        <table class="table-bordered bg-white table-form">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="require" width="160">排序</td>
+                                                    <td>
+                                                        <input type="text" name="sort" value="1">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="require">桌号</td>
+                                                    <td>
+                                                        <input type="text" name="title">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="require">人数</td>
+                                                    <td>
+                                                        <input type="number" name="number">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">备注</td>
+                                                    <td>
+                                                        <input type="text" name="remark">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-btn-box" colspan="2">
+                                                        <input type="hidden" name="id" />
+                                                        <a class="btn btn-info" id="edit_action">保存</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <script type="text/javascript">
+        $(function () {
+            $("#add").click(function () {
+                $("#add_card").addClass('show');
+                return false;
+            });
+
+            //修改
+            $(".edit").click(function () {
+                var id = $(this).attr('data-id');
+                $(".loading").show();
+                $.ajax({
+                    url: "{:U(findTable)}",
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (data) {
+                        if (data.code == 0) {
+                            $("#edit_card [name='sort']").val(data.data.sort);
+                            $("#edit_card [name='title']").val(data.data.title);
+                            $("#edit_card [name='number']").val(data.data.number);
+                            $("#edit_card [name='remark']").val(data.data.remark);
+                            $("#edit_card [name='id']").val(data.data.id);
+                            $("#edit_card").addClass('show');
+                        } else {
+                            swal("提示", data.msg, "warning");
+                        }
+                        $(".loading").hide();
+                    }
+                })
+            });
+
+          
+            $(".delete").click(function () {
+                var id = $(this).attr('data-id');
+                swal({
+                    title: "提示",
+                    text: "确定要删除这条记录吗？",
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    cancelButtonText: '取消',
+                    confirmButtonText: '确定'
+                }, function () {
+                    $(".loading").show();
+                    $.ajax({
+                        url: "{:U('delTable')}",
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (data) {
+                            if (data.code == 0) {
+                                swal({ title: "提示", text: "删除成功", type: "success", timer: 1500, }, function () {
+                                    window.location.reload();
+                                });
+                            } else {
+                                swal("提示", data.msg, "warning");
+                            }
+                            $(".loading").hide();
+                        }
+                    })
+                });
+            });
+
+            //点击确定
+            $("#add_action").click(function () {
+                var data = {
+                    shop_id: $("[name='shop_id']").val(),
+                    sort: $("#add_card [name='sort']").val(),
+                    title: $("#add_card [name='title']").val(),
+                    number: $("#add_card [name='number']").val(),
+                    remark: $("#add_card [name='remark']").val(),
+                };
+                if (data.sort == '') {
+                    swal({ title: "提示", text: "排序不能为空", type: "warning" }, function () {
+                        $("#add_card [name='sort']").focus();
+                    });
+                    return false;
+                }
+                if (data.title == '') {
+                    swal({ title: "提示", text: "桌号不能为空", type: "warning" }, function () {
+                        $("#add_card [name='title']").focus();
+                    });
+                    return false;
+                }
+                if (data.number == '') {
+                    swal({ title: "提示", text: "人数不能为空", type: "warning" }, function () {
+                        $("#add_card [name='number']").focus();
+                    });
+                    return false;
+                }
+                $(".loading").show();
+                $.ajax({
+                    type: 'POST',
+                    url: "{:U('addTable')}",
+                    data: data,
+                    success: function (data) {
+                        if (data.code == 0) {
+                            swal({ title: "提示", text: "添加成功", type: "success", timer: 1500, }, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            swal("提示", data.msg, "warning");
+                        }
+                        $(".loading").hide();
+                    }
+                });
+            });
+
+            //修改
+            $("#edit_action").click(function () {
+                var data = {
+                    id: $("#edit_card [name='id']").val(),
+                    sort: $("#edit_card [name='sort']").val(),
+                    title: $("#edit_card [name='title']").val(),
+                    number: $("#edit_card [name='number']").val(),
+                    remark: $("#edit_card [name='remark']").val(),
+                };
+                if (data.sort == '') {
+                    swal({ title: "提示", text: "排序不能为空", type: "warning" }, function () {
+                        $("#edit_card [name='sort']").focus();
+                    });
+                    return false;
+                }
+                if (data.title == '') {
+                    swal({ title: "提示", text: "桌号不能为空", type: "warning" }, function () {
+                        $("#edit_card [name='title']").focus();
+                    });
+                    return false;
+                }
+                if (data.number == '') {
+                    swal({ title: "提示", text: "人数不能为空", type: "warning" }, function () {
+                        $("#edit_card [name='number']").focus();
+                    });
+                    return false;
+                }
+                $(".loading").show();
+                $.ajax({
+                    type: 'POST',
+                    url: "{:U('updateTable')}",
+                    data: data,
+                    success: function (data) {
+                        if (data.code == 0) {
+                            swal({ title: "提示", text: "保存成功", type: "success", timer: 1500, }, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            swal("提示", data.msg, "warning");
+                        }
+                        $(".loading").hide();
+                    }
+                });
+            });
+
+        });
+    </script>
+</block>

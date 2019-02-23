@@ -59,6 +59,9 @@ class MenuController extends CommonController
         }
         $data = [
             'title' => '堂食订单',
+            'shop_id' => $shopId,
+            'people_number' => 4,
+            'table_number' => '1号桌',
             'detail' => $buycar,
             'type' => 'hall',
             'payment' => $_GET['payment'],

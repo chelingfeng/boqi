@@ -22,6 +22,47 @@ class ShopController extends CommonController
         $this->display();
     }
 
+    public function table()
+    {
+        $where = "id > 0";
+        if ($_POST['keyword']) {
+            $where .= " AND (title LIKE '%" . $_POST['keyword'] . "%')";
+        }
+        $data = M('shop_table')->where($where)->order('sort ASC, id DESC')->select();
+        $shop = M('shop')->where(['id' => $_GET['id']])->find();
+        $this->assign('data', $data);
+        $this->assign('shop', $shop);
+        $this->display();
+    }
+
+    public function delTable()
+    {
+        M('shop_table')->where(['id' => $_POST['id']])->delete();
+        $this->ajaxReturn(codeReturn(0));
+    }
+
+    public function findTable()
+    {
+        $data = M('shop_table')->where($_POST)->find();
+        $this->ajaxReturn(codeReturn(0, $data));
+    }
+
+    public function addTable()
+    {
+        $_POST['create_time'] = date('Y-m-d H:i:s');
+        $_POST['update_time'] = date('Y-m-d H:i:s');
+        M('shop_table')->add($_POST);
+        $this->ajaxReturn(codeReturn(0));
+    }
+
+    public function updateTable()
+    {
+        $_POST['update_time'] = date('Y-m-d H:i:s');
+        M('shop_table')->where(array('id' => $_POST['id']))->save($_POST);
+        $this->ajaxReturn(codeReturn(0));
+    }
+
+
     public function addShop()
     {
         $_POST['create_time'] = date('Y-m-d H:i:s');

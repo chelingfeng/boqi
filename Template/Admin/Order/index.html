@@ -15,70 +15,83 @@
 
 
     <div class="page-tabs" style="top:50px;">
-
         <ul class="page-tabs-nav" id="changeaction">
-            <li class="active" onclick="location.href='{:U('index')}'">外卖订单</li>
+            <li class="active" onclick="location.href='{:U('index')}'">堂食订单</li>
+            <li class="">外卖订单</li>
         </ul>
-
         <form method="post" action="" id="formsubmit">
-        <div class="tool-bar ng-scope" style="background:#fff;border-bottom:1px solid #dfe0e0">
-            <div class="bar-full">
-            </div>
-
-            <!-- <div class="search-bool">
-              
+            <div class="tool-bar ng-scope" style="background:#fff;border-bottom:1px solid #dfe0e0">
+                <div class="bar-full">
+                    <select name="shop_id" class="form-control" style="width:200px">
+                        <option value="">全部店铺</option>
+                        <?php foreach ($shops as $shop){ ?>
+                        <option value="{$shop.id}" <?php if ($_POST['shop_id'] == $shop['id']) {echo 'selected';}?>>{$shop.title}</option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <div>
+                    <select name="status" class="form-control" style="width:200px">
+                        <option value="">全部状态</option>
+                        <option value="created" <?php if ($_POST['status'] == 'created') {echo 'selected';}?>>未支付</option>
+                        <option value="paid" <?php if ($_POST['status'] == 'paid') {echo 'selected';}?>>已支付</option>
+                        <option value="success" <?php if ($_POST['status'] == 'success') {echo 'selected';}?>>已完成</option>
+                    </select>
+                </div>
+                下单时间：
+                <div><input type="text" class="datetime form-control" name="start_date" value="{$Think.post.start_date}"/></div>
+                <div>至</div>
+                <div><input type="text" class="datetime form-control" name="end_date" value="{$Think.post.end_date}"/></div>
+                <div class="search-bool">
                     <div class="input-group ng-pristine ng-valid">
-                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid" placeholder="姓名/手机号/昵称" name="keyword" value="{$Think.post.keyword}">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid" placeholder="桌号" name="keyword" value="{$Think.post.keyword}">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default" id="search_btn">
                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                             </button>
                         </span>
                     </div>
-               
-            </div> -->
-        </div>
+                </div>
+            </div>
         </form>
 
         <ul class="page-tabs-container">
             <li class="fadeIn animated active">
                 <div class="table-container" style="top:50px;background:#fff">
                     <table class="table table-striped table-hover">
-                        <!-- <thead>
+                        <thead>
                             <tr>
-                                <th>微信昵称</th>
-                                <th>手机号</th>
-                                <th>真实姓名</th>
-                                <th>会员等级</th>
-                                <th>账户余额</th>
-                                <th>注册时间</th>
+                                <th>桌号</th>
+                                <th>姓名</th>
+                                <th>就餐人数</th>
+                                <th>实付金额</th>
+                                <th>付款方式</th>
+                                <th>下单时间</th>
                                 <th>操作</th>
                             </tr> 
-                        </thead> -->
+                        </thead>
                         <tbody>
                             <?php foreach($data as $v){ ?>
                             <tr>
-                                <td>{$v.username}</td>
+                                <td>{$v.table_number}</td>
                                 <td>
-                                    <?php
-                                        echo C('roles')[$v['role']]['name'];
-                                    ?>
+                                    {$v['user']['name']}
                                 </td>
-                                <td>{$v.name}</td>
-                                <td>{$v.code}</td>
+                                <td>{$v.people_number}</td>
+                                <td><?=sprintf("%.2f", $v['amount'] / 100);?></td>
+                                <td><?=C('payment')[$v['payment']] ?></td>
                                 <td>{$v.create_time}</td>
-                                <td>{$v.remark}</td>
                                 <td>
-                                    <a class="btn btn-info btn-xs edit" data-id="{$v.adminid}">查看信息</a>
-                                    <a class="btn btn-info btn-xs edit" data-id="{$v.adminid}">消费查询</a>
-                                    <a class="btn btn-danger btn-xs delete" data-id="{$v.adminid}">删除</a>
+                                    <a class="btn btn-info btn-xs detail" data-id="{$v.id}">查看详情</a>
+                                    <?php if ($v['status'] == 'paid'){ ?>
+                                    <a class="btn btn-success btn-xs success" data-id="{$v.id}">完成</a>
+                                    <?php } ?>
                                 </td>
                             </tr> 
                             <?php } ?>
                             <?php if(count($data) == 0){ ?>
                             <tfoot>
                                 <tr>
-                                    <td colspan="20" class="empty">该功能即将开放，敬请期待。。。</td>
+                                    <td colspan="20" class="empty">没有检索到相关数据</td>
                                 </tr>
                             </tfoot> 
                             <?php } ?>
@@ -91,12 +104,12 @@
     </div>
 </div>
 
-<div class="info-card fadeIn animated ng-scope" id="add_card">
+<div class="info-card fadeIn animated ng-scope" id="detail_card">
     <div class="info-card-wrapper">
         <div class="info-card-dialog">
             <div class="info-card-content">
                 <div class="panel panel-info">
-                    <div class="panel-heading"> 添加
+                    <div class="panel-heading"> 订单详情
                         <a class="info-card-close"><i class="ALiconfont icon-close"></i></a>
                     </div>
                     <div class="panel-body">
@@ -106,55 +119,33 @@
                                     <table class="table-bordered bg-white table-form">
                                         <tbody>
                                             <tr>
-                                                <td class="require">账号</td>
-                                                <td>
-                                                    <input type="text" name="username">
+                                                <td>姓名</td>
+                                                <td id="name"></td>
+                                                <td>下单时间</td>
+                                                <td id="create_time"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>桌号</td>
+                                                <td id="table_number"></td>
+                                                <td>就餐人数</td>
+                                                <td id="people_number"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <table class="table-bordered bg-white goodslist" style="width:100%">
+                                                        <tr>
+                                                            <td>菜品名称</td>
+                                                            <td>数量</td>
+                                                            <td>金额</td>
+                                                        </tr>
+                                                    </table>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="require">类型</td>
-                                                <td>
-                                                    <select name="role">
-                                                        <?php foreach (C('roles') as $key => $role){ ?>
-                                                        <option value="<?=$key;?>"><?=$role['name'];?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="require">密码</td>
-                                                <td>
-                                                    <input type="password" name="password">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="require">重复密码</td>
-                                                <td>
-                                                    <input type="password" name="repassword">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="require">姓名</td>
-                                                <td>
-                                                    <input type="text" name="name">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="">工号</td>
-                                                <td>
-                                                    <input type="text" name="code">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="">备注</td>
-                                                <td>
-                                                    <input type="text" name="remark">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="td-btn-box" colspan="2">
-                                                    <a class="btn btn-success" id="add_action">确定</a>
-                                                </td>
+                                                <td>支付方式</td>
+                                                <td id="payment"></td>
+                                                <td>实付金额</td>
+                                                <td id="amount"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -171,7 +162,92 @@
 
 <script type="text/javascript">
     $(function(){
-        
+        $('.datetime').datetimepicker({
+            format: "yyyy-mm-dd",
+            language: 'zh-CN',
+            autoclose: true,
+            todayBtn: true,
+            minView: 'month',
+            pickerPosition: 'top-left'
+        });
+
+
+        $(".success").click(function () {
+            var id = $(this).data('id');
+            swal({
+                title: "提示",
+                text: "确定要完成吗？",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                cancelButtonText: '取消',
+                confirmButtonText: '确定'
+            }, function () {
+                $(".loading").show();
+                $.ajax({
+                    url: "{:U('successOrder')}",
+                    type: 'POST',
+                    data: { id: id},
+                    success: function (data) {
+                        if (data.code == 0) {
+                            swal({ title: "提示", text: "操作成功", type: "success", timer: 1500, }, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            swal("提示", data.msg, "warning");
+                        }
+                        $(".loading").hide();
+                    }
+                })
+            });
+        });
+
+        //点击页码
+        $(".pagination a").click(function () {
+            if (typeof ($(this).attr('href')) != 'undefined') {
+                $('#formsubmit').attr('action', $(this).attr('href')).submit();
+            }
+            return false;
+        });
+
+        $("[name='shop_id'], [name='status']").change(function(){
+            $('#formsubmit').submit();
+        });
+
+        //详情
+        $(".detail").click(function () {
+            var id = $(this).attr('data-id');
+            $(".loading").show();
+            $.ajax({
+                url: "{:U(findOrder)}",
+                type: 'POST',
+                data: { id: id },
+                success: function (data) {
+                    if (data.code == 0) {
+                        $("#detail_card #name").html(data.data.user.name);
+                        $("#detail_card #create_time").html(data.data.create_time);
+                        $("#detail_card #table_number").html(data.data.table_number);
+                        $("#detail_card #people_number").html(data.data.people_number);
+                        $("#detail_card #payment").html(data.data.payment);
+                        $("#detail_card #amount").html((data.data.amount / 100).toFixed(2));
+                        $(".goodslist .goods").remove();
+                        var html = '';
+                        data.data.detail.forEach(function(item, index){
+                            html += '<tr class="goods">';
+                                html += '<td>'+item.title+'</td>';
+                                html += '<td>' + item.number +'</td>';
+                                html += '<td>'+(item.number * item.price / 100).toFixed(2)+'</td>';
+                            html += '</tr>';
+                        });
+                        $(".goodslist").append(html)
+                        $("#detail_card").addClass('show');
+                    } else {
+                        swal("提示", data.msg, "warning");
+                    }
+                    $(".loading").hide();
+                }
+            })
+        });
     });
 </script>
 </block>

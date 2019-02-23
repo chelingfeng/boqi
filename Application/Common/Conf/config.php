@@ -71,6 +71,11 @@ return array_merge($db, array(
         'down' => '下架',
     ],
 
+    'payment' => [
+        'wechat' => '微信支付',
+        'balance' => '余额支付',
+    ],
+
     'week' => ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
 
     'index_tips' => '',

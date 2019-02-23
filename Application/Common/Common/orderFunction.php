@@ -15,6 +15,9 @@ function createOrder($fields)
         'original_amount' => 0,
         'status' => 'created',
         'payment' => $fields['payment'] ?? 'wechat',
+        'shop_id' => $fields['shop_id'] ?? 0,
+        'people_number' => $fields['people_number'] ?? 0,
+        'table_number' => $fields['table_number'] ?? '',
         'create_time' => date('Y-m-d H:i:s'),
         'update_time' => date('Y-m-d H:i:s'),
     ];
