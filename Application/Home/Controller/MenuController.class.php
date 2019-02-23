@@ -80,7 +80,7 @@ class MenuController extends CommonController
             $data['discounts'][] = [
                 'target_id' => $user['vip_level']['id'],
                 'target_type' => 'vip',
-                'amount' => (100 - $discount) * $amount / 100,
+                'amount' => intval((100 - $discount) * $amount / 100),
             ];
         }
 
