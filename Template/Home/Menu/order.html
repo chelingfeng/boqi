@@ -2,7 +2,7 @@
 <block name="body">
 <div class="page-group">
     <div class="page page-current" style="background: <?=$user['vip_level']['color'] ?? '#f3b405'; ?>" id="page-menu-order">
-
+        <input name="shop_id" type="hidden" value="{$Think.get.id}" />
         <div class="mask" style=""></div>
         <div class="menu-order-pay" style="">
             <div class="menu-order-pay-title">支付方式</div>

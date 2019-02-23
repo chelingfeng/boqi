@@ -1053,7 +1053,7 @@ $(function () {
 
         function addOrder(payment)
         {
-            var shopId = $_GET['id'];
+            var shopId = $("[name='shop_id']").val();
             $.confirm('确定支付吗?', '提示', function () {
                 $.showIndicator()
                 $.ajax({
