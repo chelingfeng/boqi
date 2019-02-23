@@ -1,5 +1,6 @@
 <extend name="Common/__base" />
 <block name="body">
+<div class="page-group">
     <div class="page page-current" style="background: #fff" id="page-menu-index">
         <input type="hidden" name="shop_id" value="{$shop.id}">
         <input type="hidden" name="shops" value='{:json_encode($shops)}'>
@@ -130,4 +131,5 @@
             </div>
         </div>
     </div>
+</div>
 </block>
