@@ -928,7 +928,7 @@ $(function () {
             }
             var buycar = JSON.parse($.fn.cookie(buycarId));
             if (buycar.length > 0) {
-                $.router.load("index.php?m=Home&c=Menu&a=order&id=" + $("[name='shop_id']").val())
+                $.router.load("index.php?m=Home&c=Menu&a=order&id=" + $("[name='shop_id']").val(), true)
             }
         });
 

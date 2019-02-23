@@ -49,6 +49,7 @@
         </div>
         <?php
             $discount = $user['vip_level']['discount'] ?? 100;
+            $discountAmount = intval((100 - $discount) * $amount / 100);
         ?>
         <div class="menu-order-youhui">
             <div class="menu-order-youhui-title">使用优惠</div>
@@ -78,7 +79,7 @@
         <div class="menu-order-bottom">
             <div class="menu-order-bottom-left">
                 <span class="mm1">实付</span>
-                <span class="mm2">¥<span><?=sprintf("%.2f", $amount / 100 * $discount / 100);?></span></span>
+                <span class="mm2">¥<span><?=sprintf("%.2f", ($amount - $discountAmount) / 100);?></span></span>
                 <s class="mm3">¥<?=sprintf("%.2f", $amount / 100);?></s>
             </div>
             <div class="menu-order-bottom-right" id="submit_order">提交</div>

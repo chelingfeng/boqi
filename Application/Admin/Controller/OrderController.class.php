@@ -38,6 +38,11 @@ class OrderController extends CommonController
             $d['user'] = M('user')->where(['id' => $d['user_id']])->find();
         }
         $this->assign('shops', $shops);
+        $this->assign('status', [
+            'created' => '未支付',
+            'paid' => '已支付',
+            'success' => '已完成',
+        ]);
         $this->assign('page', page($count));
         $this->assign('data', $data);
         $this->display();

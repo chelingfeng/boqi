@@ -32,9 +32,9 @@
                 <div>
                     <select name="status" class="form-control" style="width:200px">
                         <option value="">全部状态</option>
-                        <option value="created" <?php if ($_POST['status'] == 'created') {echo 'selected';}?>>未支付</option>
-                        <option value="paid" <?php if ($_POST['status'] == 'paid') {echo 'selected';}?>>已支付</option>
-                        <option value="success" <?php if ($_POST['status'] == 'success') {echo 'selected';}?>>已完成</option>
+                        <?php foreach ($status as $k => $c){ ?>
+                        <option value="{$k}" <?php if ($_POST['status'] == $k) {echo 'selected';}?>>{$c}</option>
+                        <?php } ?>
                     </select>
                 </div>
                 下单时间：
@@ -63,6 +63,7 @@
                                 <th>桌号</th>
                                 <th>姓名</th>
                                 <th>就餐人数</th>
+                                <th>状态</th>
                                 <th>实付金额</th>
                                 <th>付款方式</th>
                                 <th>下单时间</th>
@@ -77,6 +78,7 @@
                                     {$v['user']['name']}
                                 </td>
                                 <td>{$v.people_number}</td>
+                                <td>{$status[$v['status']]}</td>
                                 <td><?=sprintf("%.2f", $v['amount'] / 100);?></td>
                                 <td><?=C('payment')[$v['payment']] ?></td>
                                 <td>{$v.create_time}</td>
