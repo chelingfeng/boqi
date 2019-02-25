@@ -1419,3 +1419,8 @@ input[type="button"], input[type="submit"], input[type="reset"], input[type="tex
 	padding-top: 1.5rem;
 	font-size: 1rem;
 }
+select{
+	-webkit-appearance: none;/*兼容苹果手机*/
+	background: none;
+	border: none;
+}
