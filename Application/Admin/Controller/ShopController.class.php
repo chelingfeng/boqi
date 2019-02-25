@@ -24,7 +24,7 @@ class ShopController extends CommonController
 
     public function table()
     {
-        $where = "id > 0";
+        $where = "shop_id = ".$_GET['id'];
         if ($_POST['keyword']) {
             $where .= " AND (title LIKE '%" . $_POST['keyword'] . "%')";
         }

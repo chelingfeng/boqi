@@ -26,8 +26,11 @@
                 <span class="iconfont icon-renshu" style="color:#fc8c06"></span>
                 <div class="menu-order-confirm-list-p1">就餐人数</div>
                 <div class="menu-order-confirm-list-p2">
-                    <select>
+                    <select name="people_number">
                         <option value="">请选择</option>
+                        <?php for ($i = 1; $i <= 20; $i++) { ?>
+                        <option value="{$i}人">{$i}人</option>
+                        <?php } ?>
                     </select>
                 </div>
             </div>
@@ -35,9 +38,11 @@
                 <span class="iconfont icon-canzhuo" style="color:#2bae8f"></span>
                 <div class="menu-order-confirm-list-p1">桌号</div>
                 <div class="menu-order-confirm-list-p2">
-                    <select>
+                    <select name="table_number" <?php if($_GET['table_number_id']){echo 'disabled';}?>>
                         <option value="">请选择</option>
-                        <option value="1">1人</option>
+                        <?php foreach($tables as $table) { ?>
+                        <option value="{$table.title}" <?php if($_GET['table_number_id'] == $table['id']){echo 'selected';}?>>{$table.title}</option>
+                        <?php } ?>
                     </select>
                 </div>
             </div>
@@ -70,8 +75,6 @@
             <div class="menu-order-goods-list-bottom detail-message">
                 <span class="table_number"></span>
                 <span class="people_number"></span>
-                <input name="people_number" value="" type="hidden"/>
-                <input name="table_number" value="" type="hidden"/>
                 <span>共{$num}个菜</span>
             </div>
             <div class="menu-order-goods-list-bottom">

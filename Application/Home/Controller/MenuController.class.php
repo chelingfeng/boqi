@@ -42,6 +42,8 @@ class MenuController extends CommonController
             exit();
         }
         $buycar = $this->getBuyCar($shopId);
+        $tables = M('shop_table')->where(['shop_id' => $shopId])->order('sort ASC, id DESC')->select();
+        $this->assign( 'tables', $tables);
         $this->assign('buycar', $buycar);
         $this->assign('user', $this->getUserInfo());
         $this->display();
@@ -49,7 +51,7 @@ class MenuController extends CommonController
 
     public function addOrder()
     {
-        $shopId = $_GET['shopId'];
+        $shopId = $_POST['shopId'];
         if (!$shopId) {
             $this->ajaxReturn(codeReturn(10001));
         }
@@ -60,11 +62,11 @@ class MenuController extends CommonController
         $data = [
             'title' => '堂食订单',
             'shop_id' => $shopId,
-            'people_number' => 4,
-            'table_number' => '1号桌',
+            'people_number' => $_POST[ 'people_number'],
+            'table_number' => $_POST['table_number'],
             'detail' => $buycar,
             'type' => 'hall',
-            'payment' => $_GET['payment'],
+            'payment' => $_POST['payment'],
             'user_id' => session('user.id'),
             'items' => [],
             'discounts' => [],
@@ -86,7 +88,7 @@ class MenuController extends CommonController
 
         $order = createOrder($data);
         //余额不足
-        if ($_GET['payment'] == 'balance') {
+        if ($_POST['payment'] == 'balance') {
             if ($user['balance'] < ($discount * $amount / 100)) {
                 $this->ajaxReturn(codeReturn(20001));
             } else {

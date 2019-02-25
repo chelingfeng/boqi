@@ -963,7 +963,7 @@ $(function () {
             }
             var buycar = JSON.parse($.fn.cookie(buycarId));
             if (buycar.length > 0) {
-                $.router.load("index.php?m=Home&c=Menu&a=order&id=" + $("[name='shop_id']").val(), true)
+                $.router.load("index.php?m=Home&c=Menu&a=order&id=" + $("[name='shop_id']").val() + '&table_number_id=' + $("[name='table_number_id']").val(), true)
             }
         });
 
@@ -1086,14 +1086,36 @@ $(function () {
             addOrder('wechat');
         });
 
+        $(".menu-order-confirm-btn").click(function(){
+            var people_number = $("[name='people_number']").val();
+            var table_number = $("[name='table_number']").val();
+            if (people_number == '') {
+                $.alert('请选择就餐人数', '提示');
+                return;
+            }
+            if (table_number == '') {
+                $.alert('请选择餐桌', '提示');
+                return;
+            }
+            $(".table_number").html(table_number);
+            $(".people_number").html(people_number+'就餐');
+            $(".menu-order-confirm, .mask").hide();
+        });
+
+        $(".detail-message").click(function(){
+            $(".menu-order-confirm, .mask").show();
+        });
+
         function addOrder(payment)
         {
+            var people_number = $("[name='people_number']").val();
+            var table_number = $("[name='table_number']").val();
             var shopId = $("[name='shop_id']").val();
             $.confirm('确定支付吗?', '提示', function () {
                 $.showIndicator()
                 $.ajax({
-                    type: 'GET',
-                    data: { payment:payment, shopId: shopId},
+                    type: 'POST',
+                    data: { payment: payment, shopId: shopId, people_number: people_number, table_number: table_number},
                     async: false,
                     url: 'index.php?m=Home&c=Menu&a=addOrder',
                     success: function (res) {
