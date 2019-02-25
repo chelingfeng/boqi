@@ -246,23 +246,11 @@ $(function () {
 
     //会员信息页
     $(document).on("pageInit", "#page-vip-message", function (e, id, page) {
-        $("#sex").picker({
-            toolbarTemplate: '<header class="bar bar-nav">\
-  <button class="button button-link pull-right close-picker">确定</button>\
-  <h1 class="title">请选择性别</h1>\
-  </header>',
-            cols: [
-                {
-                    textAlign: 'center',
-                    values: ['其他', '男', '女']
-                }
-            ]
-        });
-
         $.showIndicator()
         $.ajax({
             type: 'GET',
             data: {},
+            async: false,
             url: 'index.php?m=Home&c=Vip&a=getMessage',
             success: function (res) {
                 $("[name='mobile']").val(res.data.mobile);
@@ -282,9 +270,25 @@ $(function () {
                 $("[name='address']").val(res.data.address);
                 $("[name='sex']").val(res.data.sex);
                 $("[name='birthday']").val(res.data.birthday);
+                $("#birthday").calendar({
+                    value: [res.data.birthday]
+                });
                 $.hideIndicator();
             }
         })
+
+        $("#sex").picker({
+            toolbarTemplate: '<header class="bar bar-nav">\
+  <button class="button button-link pull-right close-picker">确定</button>\
+  <h1 class="title">请选择性别</h1>\
+  </header>',
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: ['其他', '男', '女']
+                }
+            ]
+        });
 
         $("#submit").click(function(){
             var data = {};
@@ -327,7 +331,6 @@ $(function () {
                 success: function (res) {
                     if (res.code == 0) {
                         $.alert('保存成功', '提示', function(){
-                            history.go(-1);
                             $("[name='mobile']").attr('disabled', 'disabled');
                         })
                     } else {
