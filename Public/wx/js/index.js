@@ -246,6 +246,19 @@ $(function () {
 
     //会员信息页
     $(document).on("pageInit", "#page-vip-message", function (e, id, page) {
+        $("#sex").picker({
+            toolbarTemplate: '<header class="bar bar-nav">\
+  <button class="button button-link pull-right close-picker">确定</button>\
+  <h1 class="title">请选择性别</h1>\
+  </header>',
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: ['其他', '男', '女']
+                }
+            ]
+        });
+
         $.showIndicator()
         $.ajax({
             type: 'GET',
@@ -259,7 +272,16 @@ $(function () {
                     $("[name='mobile']").removeAttr('disabled');
                 }
                 $("[name='name']").val(res.data.name);
+                $(".vip-message-avatar").attr('src', res.data.avatar);
+                $(".vip-message-nickname").html(res.data.nickname);
+                if (res.data.vip_level_id != '0') {
+                    $(".vip-message-level").html(res.data.vip_level.title);
+                } else {
+                    $(".vip-message-level").html('');
+                }
                 $("[name='address']").val(res.data.address);
+                $("[name='sex']").val(res.data.sex);
+                $("[name='birthday']").val(res.data.birthday);
                 $.hideIndicator();
             }
         })
@@ -269,6 +291,8 @@ $(function () {
             data.name = $("[name='name']").val();
             data.mobile = $("[name='mobile']").val();
             data.address = $("[name='address']").val();
+            data.sex = $("[name='sex']").val();
+            data.birthday = $("[name='birthday']").val();
             if (data.mobile == '') {
                 $.alert('手机号不能为空', '提示');
                 return false;
@@ -281,6 +305,14 @@ $(function () {
             }
             if (data.name == '') {
                 $.alert('姓名不能为空', '提示');
+                return false;
+            }
+            if (data.sex == '') {
+                $.alert('请选择性别', '提示');
+                return false;
+            }
+            if (data.birthday == '') {
+                $.alert('请选择生日', '提示');
                 return false;
             }
             if (data.address == '') {

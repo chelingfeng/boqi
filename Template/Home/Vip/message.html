@@ -1,9 +1,16 @@
 <extend name="Common/__base" />
 <block name="body">
     <div class="page-group">
-        <div class="page page-current" id="page-vip-message">
+        <div class="page page-current" id="page-vip-message" style="background:#fafafa">
             <div class="content native-scroll">
-                <div class="list-block">
+                <div class="vip-message-header">
+                    <img src="" class="vip-message-avatar"/>
+                    <div class="vip-message-right">
+                        <p class="vip-message-nickname"></p>
+                        <p class="vip-message-level"></p>
+                    </div>
+                </div>
+                <div class="list-block" style="margin-top:0.5rem;">
                     <ul>
                         <li>
                             <div class="item-content">
@@ -25,12 +32,32 @@
                                 </div>
                             </div>
                         </li>
+                        <li>
+                            <div class="item-content item-link">
+                                <div class="item-inner">
+                                    <div class="item-title label">性别</div>
+                                    <div class="item-input">
+                                        <input type="text" name="sex" placeholder="请选择" id="sex">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content item-link">
+                                <div class="item-inner">
+                                    <div class="item-title label">生日</div>
+                                    <div class="item-input">
+                                        <input type="text" name="birthday" placeholder="请选择" data-toggle='date'>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
                         <li class="align-top">
                             <div class="item-content">
                                 <div class="item-inner">
-                                    <div class="item-title label">联系地址</div>
+                                    <div class="item-title label">联系地`址</div>
                                     <div class="item-input">
-                                        <textarea name="address"></textarea>
+                                        <input type="text" name="address" placeholder="请输入">
                                     </div>
                                 </div>
                             </div>
@@ -39,7 +66,7 @@
                 </div>
                 <div class="content-block">
                     <div class="row">
-                        <div class="col-100"><a style="background:#f9bf1f" class="button button-big button-fill button-success" id="submit">提交</a></div>
+                        <div class="col-100"><a style="background:#f9bf1f;width: 70%;margin-left: 15%;" class="button button-big button-fill button-success" id="submit">提交</a></div>
                     </div>
                 </div>
             </div>

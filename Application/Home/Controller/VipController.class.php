@@ -250,6 +250,8 @@ class VipController extends CommonController {
         if (IS_POST) {
             M('user')->where(['id' => session('user.id')])->save([
                 'mobile' => $_POST['mobile'],
+                'sex' => $_POST['sex'],
+                'birthday' => $_POST['birthday'],
                 'name' => $_POST['name'],
                 'address' => $_POST['address'],
                 'update_time' => date('Y-m-d H:i:s'),
