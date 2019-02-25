@@ -475,7 +475,7 @@
     display: none;
 }
 .menu-order-goods-list-item-content {
-    height: calc(100% - 4rem);
+    height: calc(100% - 5.5rem);
     overflow: auto;
 }
 .menu-order-pay {
@@ -572,4 +572,75 @@
     background: #f9bf1f;
     border-radius: 0.5rem;
     margin-top: 5rem;
+}
+.detail-message {
+    font-size:0.8rem;
+    line-height: 1.5rem;
+}
+.detail-message span {
+    color: #3d4145;
+    margin-left:0.5rem;
+}
+
+.menu-order-confirm {
+	position: absolute;
+	width: 90%;
+	left:5%;
+	top:8rem;
+	z-index: 10601;
+	display: none;
+	background: #fff;
+    border-radius: 0.8rem;
+}
+.menu-order-confirm .close {
+	position: absolute;
+    color: #fff;
+    font-size: 1.5rem;
+    bottom: -3rem;
+	left: 45%;
+	border: 1px solid #ccc;
+	border-radius: 50%;
+	width: 2rem;
+	height: 2rem;
+	line-height: 2rem;
+	text-align: center;
+	background: #ccc;
+}
+.menu-order-confirm-title {
+    text-align: center;
+    color: #f9bf1f;
+    font-size: 1rem;
+    border-bottom: 1px solid #dcdcdc;
+    padding: 0.5rem 0;
+    width: 100%;
+}
+.menu-order-confirm-list {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    height: 2.2rem;
+    border-bottom: 1px solid #dcdcdc;
+}
+.menu-order-confirm-list span {
+    font-size: 1.3rem;
+    float: left;
+    margin-top: -0.4rem;
+}
+.menu-order-confirm-list-p1 {
+    float: left;
+    margin-left: 0.8rem;
+}
+.menu-order-confirm-list-p2 {
+    float: right;
+    color: #d9d9d9;
+}
+.menu-order-confirm-btn {
+    line-height: 2.2rem;
+    text-align: center;
+    color: #fff;
+    background: #f9bf1f;
+    width: 80%;
+    margin: 1rem 0;
+    margin-left: 10%;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
 }

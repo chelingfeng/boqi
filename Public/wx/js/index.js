@@ -1163,7 +1163,7 @@ $(function () {
                                     }) 
                                 html += '</div>';
                                 html += '<div class="menu-order-goods-list-bottom1">';
-                                    html += '共'+num+'个菜';
+                                    html += item.table_number+' '+item.people_number+'人就餐 共'+num+'个菜';
                                 html += '</div>';
                                 html += '<div class="menu-order-goods-list-bottom">';
                                     html += '实付金额：¥'+(item.amount / 100).toFixed(2);

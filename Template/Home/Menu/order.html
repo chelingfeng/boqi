@@ -3,7 +3,7 @@
 <div class="page-group">
     <div class="page page-current" style="background: <?=$user['vip_level']['color'] ?? '#f3b405'; ?>" id="page-menu-order">
         <input name="shop_id" type="hidden" value="{$Think.get.id}" />
-        <div class="mask" style=""></div>
+        <div class="mask" style="display: block;"></div>
         <div class="menu-order-pay" style="">
             <div class="menu-order-pay-title">支付方式</div>
             <div class="menu-order-pay-list balance">
@@ -20,6 +20,31 @@
         </div>
 
 
+        <div class="menu-order-confirm" style="display: block;">
+            <div class="menu-order-confirm-title">信息确认</div>
+            <div class="menu-order-confirm-list balance">
+                <span class="iconfont icon-renshu" style="color:#fc8c06"></span>
+                <div class="menu-order-confirm-list-p1">就餐人数</div>
+                <div class="menu-order-confirm-list-p2">
+                    <select>
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <div class="menu-order-confirm-list wechat">
+                <span class="iconfont icon-canzhuo" style="color:#2bae8f"></span>
+                <div class="menu-order-confirm-list-p1">桌号</div>
+                <div class="menu-order-confirm-list-p2">
+                    <select>
+                        <option value="">请选择</option>
+                        <option value="1">1人</option>
+                    </select>
+                </div>
+            </div>
+            <div class="menu-order-confirm-btn">确定</div>
+        </div>
+
+
         <?php if ($user['vip_level']){ ?>
         <div class="menu-order-vip-title">欢迎就餐{$user['vip_level']['title']}</div>
         <?php } else { ?>
@@ -28,7 +53,7 @@
         <div class="menu-order-goods-list">
             <div class="menu-order-goods-list-title">所有菜品</div>
             <div class="menu-order-goods-list-item-content">
-                <?php $amount = 0; foreach ($buycar as $goods){ $amount += $goods['price'] * $goods['number'];?>
+                <?php $amount = 0; $num = 0; foreach ($buycar as $goods){ $amount += $goods['price'] * $goods['number']; $num += $goods['number']; ?>
                 <div class="menu-order-goods-list-item">
                     <img src="{$goods.carousel}" />
                     <div class="menu-order-goods-list-m">
@@ -41,6 +66,13 @@
                     </div>
                 </div>
                 <?php } ?>
+            </div>
+            <div class="menu-order-goods-list-bottom detail-message">
+                <span class="table_number"></span>
+                <span class="people_number"></span>
+                <input name="people_number" value="" type="hidden"/>
+                <input name="table_number" value="" type="hidden"/>
+                <span>共{$num}个菜</span>
             </div>
             <div class="menu-order-goods-list-bottom">
                 小计 
