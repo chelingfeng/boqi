@@ -1,0 +1,131 @@
+<extend name="Common/__base" />
+<block name="body">
+    <div class="page-group">
+        <div class="page page-current" style="background: #fbfbfb" id="page-activity-seckill">
+            <div class="content native-scroll" style="margin-bottom: 2.2rem;">
+                <div class="activity-bottom">
+                    <div class="active"><span class="iconfont icon-biaoqian" style="font-size:1rem;"></span>&nbsp;&nbsp;秒杀商品</div>
+                    <div class=""><a data-no-cache="true" href="{:U('my', array('type' => 'seckill'))}"><span class="iconfont icon-yonghu"></span>&nbsp;&nbsp;我的秒杀</a></div>
+                </div>
+
+                <div class="swiper-container" id="activity-seckill-swiper-container">
+                    <div class="activity-seckill-rule">
+                        <p style="margin-top:0.2rem;">活动</p>
+                        <p>规则</p>
+                    </div>
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="/Public/Uploads/5c1f2cc95e2fe.png" width="100%" height="100%"/></div>
+                        <div class="swiper-slide"><img src="/Public/Uploads/5c1f2cc95e2fe.png" width="100%" height="100%" /></div>
+                        <div class="swiper-slide"><img src="/Public/Uploads/5c1f2cc95e2fe.png" width="100%" height="100%" /></div>
+                    </div>
+                    <div class="swiper-pagination" style="bottom:-3px;"></div>
+                </div>
+
+
+                <div class="mask" style="display: none"></div>
+                <div class="activity-rule-detail" style="display: none">
+                    <p class="activity-rule-detail-title">活动规则</p>
+                    <div class="activity-rule-detail-content"><?php echo json_decode($system_config, true)['activity_seckill_rule']; ?></div>
+                    <div class="close iconfont icon-guanbi"></div>
+                </div>
+
+                <div class="activity-seckill-detail" style="display: none">
+                    <div class="swiper-container" id="activity-seckill-detail-swiper-container">
+                        <div class="swiper-wrapper">
+                            <!-- <div class="swiper-slide"><img src="/Public/Uploads/5c1f2cc95e2fe.png" width="100%" height="100%" /></div>
+                            <div class="swiper-slide"><img src="/Public/Uploads/5c1f2cc95e2fe.png" width="100%" height="100%" /></div>
+                            <div class="swiper-slide"><img src="/Public/Uploads/5c1f2cc95e2fe.png" width="100%" height="100%" /></div> -->
+                        </div>
+                        <div class="swiper-pagination" style="bottom:-3px;"></div>
+                    </div>
+                    <div class="activity-seckill-detail-title"></div>
+                    <div class="activity-seckill-detail-price"></div>
+                    <div class="progress">
+                        <div class="tt">剩余0%</div>
+                        <div class="bar2">
+                            <div class="progress-true"></div>
+                        </div>
+                        <div class="both"></div>
+                    </div>
+                    <div class="activity-seckill-detail-djs">
+                        <span class="iconfont icon-naozhong"></span>
+                        <span class="daojishi"></span>
+                    </div>
+                    <input type="hidden" value="" name="activity_id"/>
+                    <div class="activity-seckill-detail-btn">立即支付</div>
+                    <div class="close iconfont icon-guanbi"></div>
+                </div>
+                <input type="hidden" name="callback" value="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['HTTP_HOST']}{:U('my', array('type' => 'seckill'))}" />
+
+                <div class="datalist">
+                    <?php foreach($data as $k => $d) { ?>
+                    <div class="list-block media-list activity-list seckill {$d['status']}" data-id="{$d.id}" data-status="{$d.status}" data-play-status="{$d['play']['status']}" data-play-order-id="{$d['play']['order_id']}" data-start_time="{:strtotime($d['start_time'])}" data-end_time="{:strtotime($d['end_time'])}">
+                        <div class="seckill-top">
+                            <?php if($k == 0){ ?>
+                            <div class="seckill-top-left">限时秒杀 疯狂抢购</div>
+                            <?php } ?>
+                            <?php if ($d['status'] == 'closed'){ ?>
+                            <!-- <div class="seckill-top-right">距结束：<span>03</span>:<span>03</span>:<span>03</span></div> -->
+                            <div class="seckill-top-right">活动已结束</div>
+                            <?php } else { ?>
+                                <div class="seckill-top-right"></div>
+                            <?php } ?>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-media">
+                                        <img src="{$d.thumb}"
+                                            style='width: 5rem;height: 5rem;'>
+                                    </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div class="item-title">{$d.title}</div>
+                                        </div>
+                                        <div class="money">
+                                            ¥<?=sprintf("%.2f", $d['price'] / 100);?><br />
+                                            <s>¥<?=sprintf("%.2f", $d['original_price'] / 100);?></s>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="tt">已售<?=sprintf("%.1f", ($d['rule']['product_sum'] - $d['rule']['product_remaind']) / $d['rule']['product_sum'] * 100)?>%</div>
+                                            <div class="bar2">
+                                                <div class="progress-true" style="width:<?=sprintf("%.1f", ($d['rule']['product_sum'] - $d['rule']['product_remaind']) / $d['rule']['product_sum'] * 100)?>%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="status_btn active">
+                                            <?php 
+                                                if ($d['status'] == 'closed') { 
+                                                    echo '已结束';
+                                                } elseif ($d['status'] == 'unstart') {
+                                                    echo '未开始';
+                                                } elseif ($d['status'] == 'ongoing') {
+                                                    if ($d['play']) {
+                                                        if ($d['play']['status'] == 'ongoing') {
+                                                            echo '去支付';
+                                                        } else {
+                                                            echo '秒杀成功';
+                                                        }
+                                                    } else {
+                                                        echo '立即抢购';
+                                                    }
+                                                }
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <?php } ?>
+
+                    <?php if (!$data) { ?>
+                    <div class="empty">
+                        <span class="iconfont icon-ico_meiyoushuju"></span>
+                        <p>暂无可参于的活动</p>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

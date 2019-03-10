@@ -792,7 +792,7 @@ input[type="button"], input[type="submit"], input[type="reset"], input[type="tex
 }
 
 .activity-list .money {
-	font-size: 0.9rem;
+	font-size: 1rem;
 	font-weight: normal;
 	color: red;
 	margin-top: 0.6rem;
@@ -838,6 +838,14 @@ input[type="button"], input[type="submit"], input[type="reset"], input[type="tex
 .activity-bottom div.active {
 	background: #f9bf1f;
 	color: #fff;
+}
+
+.activity-bottom div.active a{
+	color: #fff;
+}
+
+.activity-bottom div a{
+	color: #f9bf1f;
 }
 
 #page-vip-equity .swiper-container {

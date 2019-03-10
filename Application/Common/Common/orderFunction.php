@@ -115,9 +115,7 @@ function orderPaid($orderId)
 
             openVip($order['user_id'], $items[0]['target_id']);
 
-        }
-
-        if ($order['type'] == 'hall') {
+        } elseif ($order['type'] == 'hall') {
             if ($order['payment'] == 'balance') {
                 M('user')->where(['id' => $order['user_id']])->setDec('balance', $order['amount']);
                 M('cash_flow')->add([
@@ -140,6 +138,8 @@ function orderPaid($orderId)
                     'create_time' => date('Y-m-d H:i:s'),
                 ]);
             }
+        } elseif ($order['type'] == 'activity_seckill') {
+            
         }
     }
 }

@@ -762,6 +762,9 @@ $(function () {
         $("#type a").click(function () {
             $("#type a").removeClass('active');
             $(this).addClass('active');
+            var type = $(this).attr('data-type');
+            $(".activity-bottom").hide();
+            $(".activity-bottom.activity_"+type).show();
             loadData();
         });
 
@@ -783,7 +786,39 @@ $(function () {
                 url: 'index.php?m=Home&c=Activity&a=getMyActivity',
                 success: function (res) {
                     var html = '';
-
+                    res.data.forEach(function(item, index){
+                        if (item.activity.type == 'seckill') {
+                            html += '<div class="list-block media-list activity-list">';
+                                html += '<ul>';
+                                    html += '<li>';
+                                        html += '<div class="item-content">';
+                                        html += '<div class="item-media">';
+                                            html += '<img src="'+item.activity.thumb+'" style="height:5rem; width: 5rem;">';
+                                        html += '</div>';
+                                        html += '<div class="item-inner">';
+                                            html += '<div class="item-title-row">';
+                                            html += '<div class="item-title">'+item.activity.title+'</div>';
+                                            html += '</div>';
+                                            html += '<div class="remark">&nbsp;</div>';
+                                            html += '<div class="money">¥'+(item.activity.price / 100)+' <s>¥'+(item.activity.original_price / 100)+'</s></div>';
+                                            if (item.status == 'ongoing') { 
+                                                html += '<div class="status_btn active" onclick="pay('+item.order_id+')">去支付</div>';
+                                            } else if (item.status == 'closed') {
+                                                html += '<div class="status_btn">已结束</div>';
+                                            } else if (item.status == 'success') {
+                                                if (item.is_use == 1) {
+                                                    html += '<div class="status_btn">已使用</div>';
+                                                } else {
+                                                    html += '<div class="status_btn active" data-id="'+item.id+' use_coupon">去使用</div>';
+                                                }
+                                            }
+                                        html += '</div>';
+                                        html += '</div>';
+                                    html += '</li>';
+                                html += '</ul>';
+                            html += '</div>';
+                        }
+                    })
                     if (html == '') {
                         $(".empty").show();
                     } else {
@@ -893,7 +928,7 @@ $(function () {
                 }
             ],
             onClose: function () {
-                location.href = 'index.php?m=Home&c=Menu&a=index&id=' + shops[$("#change-shop-id").val()].id;
+                location.replace('index.php?m=Home&c=Menu&a=index&id=' + shops[$("#change-shop-id").val()].id);
             }
         });
         $(".change-shop").click(function(){
@@ -1215,6 +1250,169 @@ $(function () {
         }
     });
 
+    $(document).on("pageInit", "#page-activity-seckill", function (e, id, page) {
+        new Swiper('#activity-seckill-swiper-container', {
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+            },
+            autoplay: {
+                delay: 3000,
+                stopOnLastSlide: false,
+                disableOnInteraction: false,
+            },
+        });
+
+        var sleep = setInterval(function(){
+            var timestamp = parseInt(new Date().getTime() / 1000);
+            $(".activity-list").each(function(){
+                var status = $(this).attr('data-status');
+                var start_time = $(this).attr('data-start_time');
+                var end_time = $(this).attr('data-end_time');
+                switch (status) {
+                    case 'unstart':
+                        //显示倒计划
+                        if (timestamp < start_time) {
+                            var times = getTime(parseInt(start_time));
+                            $(this).find('.seckill-top-right').html('距开始：<span>' + times.hour + '</span>:<span>' + times.minute + '</span>:<span>' + times.second + '</span>')
+                        } else {
+                            $(this).addClass('ongoing');
+                            var times = getTime(parseInt(end_time));
+                            $(this).find('.seckill-top-right').html('距结束：<span>' + times.hour + '</span>:<span>' + times.minute + '</span>:<span>' + times.second + '</span>')
+                            $(this).find('.status_btn').html('立即抢购')
+                        }
+                        break;
+
+                    case 'ongoing':
+                        //显示倒计划
+                        if (parseInt(timestamp) < parseInt(end_time)) {
+                            var times = getTime(parseInt(end_time));
+                            $(this).find('.seckill-top-right').html('距结束：<span>' + times.hour + '</span>:<span>' + times.minute + '</span>:<span>' + times.second +'</span>')
+                        } else {
+                            $(this).find('.seckill-top-right').html('活动已结束')
+                            $(this).find('.status_btn').html('已结束')
+                            $(this).addClass('closed');
+                        }
+
+                        break;
+                    
+                    case 'closed':
+                        $(this).find('.seckill-top-right').html('活动已结束')
+                        $(this).find('.status_btn').html('已结束')
+                        $(this).addClass('closed');
+
+                        break;
+                
+                    default:
+                        break;
+                }
+            });
+        }, 1000);
+
+        function getTime(deadline) {
+            var timestamp = parseInt(new Date().getTime() / 1000);
+            var times = deadline - timestamp;
+            var hour = 0;
+            var minute = 0;
+            var second = 0;
+            if (times > 0) {
+                second = times % 60;
+                minute = ~~(times / 60) % 60;
+                hour = ~~(times / 60 / 60);
+            }
+            if (second < 10) second = '0' + second;
+            if (minute < 10) minute = '0' + minute;
+            if (hour < 10) hour = '0' + hour;
+            return { hour, minute, second};
+        }
+
+        var activity_detail_time;
+        $(".status_btn").click(function(){
+            var status = $(this).parents('.seckill').eq(0).attr('data-status');
+            var id = $(this).parents('.seckill').eq(0).attr('data-id');
+            if ($(this).parents('.seckill').eq(0).attr('data-play-status') == 'ongoing' && $(this).parents('.seckill').eq(0).attr('data-play-order-id') > 0) {
+                pay($(this).parents('.seckill').eq(0).attr('data-play-order-id'), $("[name='callback']").val());
+                return;
+            }
+            if (status == 'ongoing') {
+                $(".activity-seckill-detail, .mask").show();
+            }
+            $.showIndicator()
+            $.ajax({
+                type: 'POST',
+                data: { id: id },
+                url: 'index.php?m=Home&c=Activity&a=findActivity',
+                success: function (res) {
+                    if (res.code == 0) {
+                        $(".activity-seckill-detail-title").html(res.data.title);
+                        $(".activity-seckill-detail-price").html(res.data.price + '<s>' + res.data.original_price+'</s>');
+                        var carousel = '';
+                        res.data.carousel.forEach(function(item, index){
+                            carousel += '<div class="swiper-slide"><img src="/Public/Uploads/5c1f2cc95e2fe.png" width="100%" height="100%" /></div>';
+                            carousel += '<div class="swiper-slide"><img src="/Public/Uploads/5c1f2cc95e2fe.png" width="100%" height="100%" /></div>';
+                        });
+                        $("#activity-seckill-detail-swiper-container .swiper-wrapper").html(carousel);
+                        new Swiper('#activity-seckill-detail-swiper-container', {
+                            loop: true,
+                            pagination: {
+                                el: '.swiper-pagination',
+                            },
+                            autoplay: {
+                                delay: 3000,
+                                stopOnLastSlide: false,
+                                disableOnInteraction: false,
+                            },
+                        });
+                        $(".activity-seckill-detail [name='activity_id']").val(res.data.id);
+                        var percentage = ((parseInt(res.data.rule.product_sum) - parseInt(res.data.rule.product_remaind)) / parseInt(res.data.rule.product_sum) * 100).toFixed(1);
+                        $('.progress .tt').html('剩余'+percentage+'%')
+                        $('.progress .progress-true').css('width', percentage+'%');
+                        var times = getTime(parseInt(res.data.end_time_str));
+                        $(".daojishi").html('秒杀倒计划 ' + times.hour + ' : ' + times.minute + ' : ' + times.second);
+                        activity_detail_time = setInterval(function () {
+                            var times = getTime(parseInt(res.data.end_time_str));
+                            $(".daojishi").html('秒杀倒计划 ' + times.hour +' : '+times.minute+' : '+times.second);
+                        }, 1000)
+                    } else {
+                        $.alert(res.msg, '提示');
+                    }
+                    $.hideIndicator();
+                }
+            })
+        });
+
+        $(".activity-seckill-detail-btn").click(function(){
+            var id = $(".activity-seckill-detail [name='activity_id']").val();
+            $.showPreloader('秒杀中');
+            $.ajax({
+                type: 'POST',
+                data: { id: id },
+                url: 'index.php?m=Home&c=Activity&a=createSeckill',
+                success: function (res) {
+                    $.hidePreloader();
+                    if (res.code == 0) {
+                        pay(res.data.id, $("[name='callback']").val());
+                    } else {
+                        $.alert(res.msg, '提示');
+                    }
+                }
+            });
+        });
+
+        $(".activity-seckill-detail .close").click(function(){
+            window.clearInterval(activity_detail_time)
+            $(".activity-seckill-detail, .mask").hide();
+        });
+
+        $('.activity-seckill-rule').click(function(){
+            $(".activity-rule-detail, .mask").show();
+        });
+
+        $(".activity-rule-detail .close").click(function(){
+            $(".activity-rule-detail, .mask").hide();
+        });
+
+    });
 
     $.init();
 });

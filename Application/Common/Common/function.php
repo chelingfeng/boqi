@@ -1,11 +1,12 @@
 <?php
 require dirname(__FILE__).'/couponFunction.php';
 require dirname(__FILE__).'/orderFunction.php';
+require dirname(__FILE__).'/activityFunction.php';
 
 function setting($type) {
     return json_decode(
        M('setting')->where(['type' => $type])->find()['val'], true
-    );
+    ) ?? [];
 }
 
 function setSetting($type, $val) {

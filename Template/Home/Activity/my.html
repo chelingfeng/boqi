@@ -3,20 +3,32 @@
     <div class="page-group">
         <div class="page page-current" style="background: #fbfbfb" id="page-activity-my">
             <div class="buttons-tab buttons-list-three" id="type">
-                <a class="button" data-type="cut">砍价</a>
-                <a class="button active" data-type="groupon">拼团</a>
-                <a class="button" data-type="seckill">秒杀</a>
+                <a class="button <?php if($_GET['type'] == 'cut'){ echo 'active';}?>" data-type="cut">砍价</a>
+                <a class="button <?php if($_GET['type'] == 'groupon'){ echo 'active';}?>" data-type="groupon">拼团</a>
+                <a class="button <?php if($_GET['type'] == 'seckill'){ echo 'active';}?>" data-type="seckill">秒杀</a>
             </div>
             <div class="buttons-tab coupon-tab" id="status">
-                <a class="tab-link button " data-status="opening">进行中</a>
-                <a class="tab-link button active" data-status="created">已完成</a>
+                <a class="tab-link button active" data-status="ongoing">进行中</a>
+                <a class="tab-link button" data-status="success">已完成</a>
                 <a class="tab-link button" data-status="closed">已结束</a>
             </div>
+
+            <div class="activity-bottom activity_seckill" <?php if($_GET['type'] != 'seckill'){ ?>style="display:none"<?php } ?>>
+              <div class=""><a data-no-cache="true" href="{:U('seckill')}"><span class="iconfont icon-biaoqian" style="font-size:1rem;"></span>&nbsp;&nbsp;秒杀商品</a></div>
+              <div class="active"><span class="iconfont icon-yonghu"></span>&nbsp;&nbsp;我的秒杀</div>
+            </div>
             
-            <!-- <div class="activity-bottom">
-              <div><span class="iconfont icon-ico_meiyoushuju"></span>&nbsp;&nbsp;拼团活动</div>
-              <div class="active"><span class="iconfont icon-ico_meiyoushuju"></span>&nbsp;&nbsp;我的拼团</div>
-            </div> -->
+            <div class="activity-bottom activity_cut" <?php if($_GET['type'] != 'cut'){ ?>style="display:none"<?php } ?>>
+              <div class=""><a data-no-cache="true" href="{:U('cut')}"><span class="iconfont icon-dao"
+                    style="font-size:1rem;"></span>&nbsp;&nbsp;砍价商品</a></div>
+              <div class="active"><span class="iconfont icon-yonghu"></span>&nbsp;&nbsp;我的砍价</div>
+            </div>
+
+            <div class="activity-bottom activity_groupon" <?php if($_GET['type'] != 'groupon'){ ?>style="display:none"<?php } ?>> 
+              <div class=""><a data-no-cache="true" href="{:U('groupon')}"><span class="iconfont icon-pintuan"
+                    style="font-size:1rem;"></span>&nbsp;&nbsp;拼团商品</a></div>
+              <div class="active"><span class="iconfont icon-yonghu"></span>&nbsp;&nbsp;我的拼团</div>
+            </div>
 
             <div class="content" style="margin-top:5rem;margin-bottom: 2.2rem;">
                 <div class="empty" style="display:none">
@@ -46,10 +58,6 @@
                       </li>
                     </ul>
                   </div> -->
-                  
-
-                  
-
                   
                 </div>
             </div>
