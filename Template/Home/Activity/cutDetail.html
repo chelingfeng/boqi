@@ -1,0 +1,141 @@
+<extend name="Common/__base" />
+<block name="body">
+    <div class="page-group">
+        <div class="page page-current" style="background: #fbfbfb" id="page-activity-cut-detail">
+            <input type="hidden" name="activity_id" value="{$Think.get.id}" />
+            <input type="hidden" name="play_id" value="{$play.id}" />
+            <input type="hidden" name="callback" value="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['HTTP_HOST']}{:U('my', array('type' => 'cut'))}" />
+            <div class="mask" style="display: none"></div>
+            <div class="activity-seckill-detail activity-cut-detail" style="display: none">
+                <img src="__PUBLIC__/wx/img/cut.jpg" />
+                <p class="activity-seckill-detail-cut">您成功帮好友砍掉<span></span>元</p>
+            </div>
+
+            <div class="invite-modal" style="display:none">
+                <div class="invite-modal__content"><img src="__PUBLIC__/wx/img/invite_title@2x.38bd4c6.png" alt=""></div>
+                <span>点击转发，选择好友进行分享。</span>
+                <img src="data:image/png;base64,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"
+                    alt="" class="invite-modal__btn">
+            </div>
+            
+            <div class="content native-scroll">
+                <div class="mask" style="display: none"></div>
+                <div class="activity-rule-detail" style="display: none">
+                    <p class="activity-rule-detail-title">活动规则</p>
+                    <div class="activity-rule-detail-content"><?php echo json_decode($system_config, true)['activity_cut_rule']; ?>
+                    </div>
+                    <div class="close iconfont icon-guanbi"></div>
+                </div>
+                <div class="swiper-container cut" id="activity-seckill-swiper-container">
+                    <div class="activity-seckill-rule">
+                        <p style="margin-top:0.2rem;">活动</p>
+                        <p>规则</p>
+                    </div>
+                    <div class="swiper-wrapper">
+                        <?php foreach($activity['carousel'] as $carousel){ ?>
+                        <div class="swiper-slide"><img src="{$carousel}" width="100%" height="100%" /></div>
+                        <?php } ?>
+                    </div>
+                    <div class="swiper-pagination" style="bottom:-3px;"></div>
+                </div>
+                <div class="cut-message">
+                    <p class="cut-message-title">{$activity.title}</p>
+                    <p class="cut-message-price">¥<?=sprintf("%.2f", $activity['price'] / 100);?> <span>已有{$activity.successNumber}人已经砍价成功></span></p>
+                    <div class="cut-message-line">
+                        <?php if ($play) { ?>
+                        <div class="cut-message-line-true" style="width:<?=sprintf("%.1f", ($activity['original_price'] - $play['price']) / ($activity['original_price'] - $activity['price']) * 100);?>%;"><span></span></div>
+                        <?php } else { ?>
+                        <div class="cut-message-line-true" style="width:0%;"><span></span></div>
+                        <?php } ?>
+                    </div>
+                    <?php if ($play['user']){ ?>
+                    <img class="cut-message-img" src="{$play['user']['avatar']}" />
+                    <?php } else { ?>
+                        <img class="cut-message-img"
+                            src="<?=session('user.avatar');?>" />
+                    <?php } ?>
+                </div>
+                <?php if ($play) { ?>
+                <div class="cut-message-cut">
+                    <div class="cut-message-cut-left">已砍 ¥ <span><?=sprintf("%.2f", ($activity['original_price'] - $play['price']) / 100);?></span></div>
+                    <div class="cut-message-cut-right">还剩 ¥ <?=sprintf("%.2f", ($play['price'] - $activity['price']) / 100);?></div>
+                </div>
+                <?php } else { ?>
+                <div class="cut-message-cut">
+                    <div class="cut-message-cut-left">已砍 ¥ <span>0.00</span></div>
+                    <div class="cut-message-cut-right">还剩 ¥ <?=sprintf("%.2f", $activity['price'] / 100);?></div>
+                </div>
+                <?php } ?>
+               
+                <?php if($activity['status'] == 'unstart'){ ?>
+                <div class="cut-message-btn close">活动未开始</div>
+                <?php } elseif ($activity['status'] == 'closed') { ?>
+                <div class="cut-message-btn close">活动已结束</div>
+                <?php } else { ?>
+                    <?php if (empty($play)){ ?>
+                    <div class="cut-message-btn join">发起砍价</div>
+                    <?php } else { ?>
+                        <?php if ($play['user_id'] != session('user.id')){ ?>
+                            <?php if ($play['help'][session('user.id')]){ ?>
+                                <div class="cut-message-btn join">我也要参加</div>
+                            <?php } else { ?>
+                                <div class="cut-message-btn help">帮Ta砍价</div>
+                            <?php } ?>
+                        <?php } else { ?>
+                            <?php if ($play['status'] == 'success') { ?>
+                                <div class="cut-message-btn yellow">砍价成功</div>
+                            <?php } elseif ($play['is_success'] == '1'){ ?>
+                            <div class="cut-message-btn yellow pay" data-id="{$play.order_id}">去支付</div>
+                            <?php } else { ?>
+                                <div class="cut-message-btn yellow share">分享给好友帮砍</div>
+                            <?php } ?>
+                        <?php } ?>
+                    <?php } ?>
+                <?php } ?>
+
+                <div class="cut-message-djs" data-time="{:strtotime($activity['end_time'])}" data-status="{$activity.status}"></div>
+                <div class="cut-message-kjb">
+                    <p class="cut-message-kjb-title">砍价帮</p>
+                    <?php foreach ($play['help'] as $help){ ?>
+                        <div class="cut-message-kjb-list">
+                            <div class="cut-message-kjb-list-left">
+                                <img src="{$help['user']['avatar']}">
+                                <span>{:urldecode($help['user']['nickname'])}</span>
+                            </div>
+                            <div class="cut-message-kjb-list-right"><?=sprintf("%.2f", $help['cut_price'] / 100);?>元</div>
+                            <div class="both"></div>
+                        </div>
+                    <?php } ?>
+                    <?php if (!$play['help']) { ?>
+                        <p class="cut-message-kjb-none">暂无</p>
+                    <?php } ?>
+                </div>
+                <?php if ($moreActivity) { ?>
+                <?php foreach ($moreActivity as $act){ ?>
+                <div class="list-block media-list activity-list" onclick="location.replace('{:U('', array('id' => $act['id']))}')">
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media">
+                                    <img src="{$act.thumb}" style='width: 5rem;height: 5rem;'>
+                                </div>
+                                <div class="item-inner">
+                                    <div class="item-title-row cut">
+                                        {$act.title}
+                                    </div>
+                                    <div class="money" style="margin-top:0">
+                                        价值¥<?=sprintf("%.2f", $act['original_price'] / 100);?>
+                                    </div>
+                                    <div class="remark_cut" style="margin-top:0.3rem;">已有{$act.successNumber}人砍价成功</div>
+                                    <div class="status_btn active" style="bottom:0.7rem;">¥<?=sprintf("%.2f", $act['price'] / 100);?>抢</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <?php } ?>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</block>

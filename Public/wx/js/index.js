@@ -1309,23 +1309,6 @@ $(function () {
             });
         }, 1000);
 
-        function getTime(deadline) {
-            var timestamp = parseInt(new Date().getTime() / 1000);
-            var times = deadline - timestamp;
-            var hour = 0;
-            var minute = 0;
-            var second = 0;
-            if (times > 0) {
-                second = times % 60;
-                minute = ~~(times / 60) % 60;
-                hour = ~~(times / 60 / 60);
-            }
-            if (second < 10) second = '0' + second;
-            if (minute < 10) minute = '0' + minute;
-            if (hour < 10) hour = '0' + hour;
-            return { hour, minute, second};
-        }
-
         var activity_detail_time;
         $(".status_btn").click(function(){
             var status = $(this).parents('.seckill').eq(0).attr('data-status');
@@ -1413,6 +1396,148 @@ $(function () {
         });
 
     });
+
+    $(document).on("pageInit", "#page-activity-cut", function (e, id, page) {
+        new Swiper('#activity-seckill-swiper-container', {
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+            },
+            autoplay: {
+                delay: 3000,
+                stopOnLastSlide: false,
+                disableOnInteraction: false,
+            },
+        });
+
+        $('.activity-seckill-rule').click(function () {
+            $(".activity-rule-detail, .mask").show();
+        });
+
+        $(".activity-rule-detail .close").click(function () {
+            $(".activity-rule-detail, .mask").hide();
+        });
+
+    });
+
+    $(document).on("pageInit", "#page-activity-cut-detail", function (e, id, page) {
+
+        new Swiper('#activity-seckill-swiper-container', {
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+            },
+            autoplay: {
+                delay: 3000,
+                stopOnLastSlide: false,
+                disableOnInteraction: false,
+            },
+        });
+        
+        $('.activity-seckill-rule').click(function () {
+            $(".activity-rule-detail, .mask").show();
+        });
+
+        $(".activity-rule-detail .close").click(function () {
+            $(".activity-rule-detail, .mask").hide();
+        });
+
+        $(".activity-cut-detail .close").click(function(){
+            $(".activity-cut-detail, .mask").hide();
+        });
+
+        if ($_GET['share'] == '1') {
+            $(".invite-modal").show();
+        }
+
+        $(".share").click(function(){
+            $(".invite-modal").show();
+        });
+
+        $(".invite-modal__btn").click(function(){
+            $(".invite-modal").hide();
+        });
+
+        $(".help").click(function(){
+            var play_id = $("[name='play_id']").val();
+            $.showIndicator()
+            $.ajax({
+                type: 'POST',
+                data: { play_id: play_id },
+                url: 'index.php?m=Home&c=Activity&a=helpCut',
+                success: function (res) {
+                    if (res.code == 0) {
+                        $('.activity-seckill-detail-cut span').html(res.data.cut_price / 100);
+                        $(".activity-cut-detail, .mask").show();
+                        window.setTimeout(function(){
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        $.alert(res.msg, '提示');
+                    }
+                    $.hideIndicator();
+                }
+            });
+        });
+
+        // var callback = location.origin + '?m=Home&c=Vip&a=index&action=coupon_receive&openid={openid}&coupon_code=' + code;
+        // var data = {
+        //     data: {
+        //         type: 'share',
+        //         title: config.title,
+        //         path: '/pages/index/index?callback=' + encodeURIComponent(callback),
+        //         imageUrl: location.origin + config.share_coupon,
+        //     },
+        // };
+        // wx.miniProgram.postMessage(data);
+
+        $(".pay").click(function(){
+            pay($(this).attr('data-id'), $("[name='callback']").val());
+        });
+
+        $(".join").click(function(){
+            var id = $("[name='activity_id']").val();
+            $.showIndicator()
+            $.ajax({
+                type: 'POST',
+                data: {id:id},
+                url: 'index.php?m=Home&c=Activity&a=joinCut',
+                success: function (res) {
+                    if (res.code == 0) {
+                        location.replace('index.php?m=Home&c=Activity&a=cutDetail&id='+id+'&play_id='+res.data.id+'&share=1');
+                    } else {
+                        if (res.code == '20015') {
+                            location.replace('index.php?m=Home&c=Activity&a=cutDetail&id=' + id + '&share=1');
+                        }
+                        $.alert(res.msg, '提示');
+                    }
+                    $.hideIndicator();
+                }
+            });
+        });
+
+        var sleep = setInterval(function () {
+            var timestamp = parseInt(new Date().getTime() / 1000);
+            var end_time = parseInt($(".cut-message-djs").attr('data-time'));
+            if (parseInt(timestamp) < parseInt(end_time) && $('.cut-message-djs').attr('data-status') == 'ongoing') {
+                var times = getTime(end_time);
+                $(".cut-message-djs").html('还剩' + times.hour + ' : ' + times.minute + ' : ' + times.second +'结束，赶紧呼唤小伙伴，一起来砍价');
+            } else {
+                window.clearInterval(sleep)
+                if ($('.cut-message-djs').attr('data-status') == 'unstart') {
+                    $(".cut-message-djs").html('活动未开始');
+                } else if ($('.cut-message-djs').attr('data-status') == 'closed') {
+                    $(".cut-message-djs").html('活动已结束');
+                } else {
+                    $(".cut-message-djs").html('');
+                }
+            }
+        }, 1000)
+
+
+    });
+
+    
 
     $.init();
 });

@@ -1,0 +1,84 @@
+<extend name="Common/__base" />
+<block name="body">
+    <div class="page-group">
+        <div class="page page-current" style="background: #fbfbfb" id="page-activity-cut">
+            <div class="content native-scroll" style="margin-bottom: 2.2rem;">
+                <div class="activity-bottom">
+                    <div class="active"><span class="iconfont icon-biaoqian"
+                            style="font-size:1rem;"></span>&nbsp;&nbsp;砍价商品</div>
+                    <div class=""><a data-no-cache="true" href="{:U('my', array('type' => 'cut'))}"><span
+                                class="iconfont icon-yonghu"></span>&nbsp;&nbsp;我的砍价</a></div>
+                </div>
+
+                <div class="swiper-container" id="activity-seckill-swiper-container">
+                    <div class="activity-seckill-rule">
+                        <p style="margin-top:0.2rem;">活动</p>
+                        <p>规则</p>
+                    </div>
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="/Public/Uploads/5c1f2cc95e2fe.png" width="100%"
+                                height="100%" /></div>
+                        <div class="swiper-slide"><img src="/Public/Uploads/5c1f2cc95e2fe.png" width="100%"
+                                height="100%" /></div>
+                        <div class="swiper-slide"><img src="/Public/Uploads/5c1f2cc95e2fe.png" width="100%"
+                                height="100%" /></div>
+                    </div>
+                    <div class="swiper-pagination" style="bottom:-3px;"></div>
+                </div>
+
+
+                <div class="mask" style="display: none"></div>
+                <div class="activity-rule-detail" style="display: none">
+                    <p class="activity-rule-detail-title">活动规则</p>
+                    <div class="activity-rule-detail-content"><?php echo json_decode($system_config, true)['activity_cut_rule']; ?></div>
+                    <div class="close iconfont icon-guanbi"></div>
+                </div>
+
+                <div class="datalist">
+                   
+                    <?php foreach($data as $d){ ?>
+                    <div class="list-block media-list activity-list cut">
+                        <ul>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-media">
+                                        <img src="{$d.thumb}" style='width: 5rem;height: 5rem;'>
+                                    </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row cut">
+                                            {$d.title}
+                                        </div>
+                                        <div class="remark_cut">已有{$d.successNumber|default='0'}人砍价成功</div>
+                                        <div class="money" style="margin-top:0">
+                                            ¥<?=sprintf("%.2f", $d['price'] / 100);?> <s>¥<?=sprintf("%.2f", $d['original_price'] / 100);?></s>
+                                        </div>
+                                        <?php if($d['user']){ ?>
+                                            <a class="status_btn active" href="{:U('cutDetail', array('id' => $d['id']))}" data-no-cache="" style="bottom:0.7rem;">砍价成功</a>
+                                        <?php } else { ?>
+                                        <?php if ($d['status'] == 'ongoing') { ?>
+                                        <a class="status_btn active" href="{:U('cutDetail', array('id' => $d['id']))}" data-no-cache="" style="bottom:0.7rem;">进行中</a>
+                                        <?php } elseif ($d['status'] == 'unstart') { ?>
+                                        <div class="status_btn" style="bottom:0.7rem;">未开始</div>
+                                        <?php } elseif ($d['status'] == 'closed') { ?>
+                                        <div class="status_btn" style="bottom:0.7rem;">已结束</div>
+                                        <?php } ?>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <?php } ?>
+                  
+
+                    <?php if (!$data) { ?>
+                    <div class="empty">
+                        <span class="iconfont icon-ico_meiyoushuju"></span>
+                        <p>暂无可参于的活动</p>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

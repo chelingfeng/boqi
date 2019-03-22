@@ -140,6 +140,8 @@ function orderPaid($orderId)
             }
         } elseif ($order['type'] == 'activity_seckill') {
             
+        } elseif ($order['type'] == 'activity_cut') {
+            
         }
     }
 }
