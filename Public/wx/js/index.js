@@ -270,9 +270,13 @@ $(function () {
                 $("[name='address']").val(res.data.address);
                 $("[name='sex']").val(res.data.sex);
                 $("[name='birthday']").val(res.data.birthday);
-                $("#birthday").calendar({
-                    value: [res.data.birthday]
-                });
+                if (res.data.birthday) {
+                    $("#birthday").calendar({
+                        value: [res.data.birthday]
+                    });
+                } else {
+                    $("#birthday").calendar({});
+                }
                 $.hideIndicator();
             }
         })
@@ -776,6 +780,30 @@ $(function () {
 
         loadData();
 
+        $(document).on('click', '.use_action', function () {
+            var type = $(this).data('type');
+            var id = $(this).data('id');
+            $.showIndicator()
+            $.ajax({
+                type: 'POST',
+                data: {type:type, id:id},
+                url: 'index.php?m=Home&c=Activity&a=getActivityCouponQrcode',
+                success: function (res) {
+                    if (res.code == 0) {
+                        $('.coupon_use .code img').attr('src', res.data.qrcode);
+                        $(".mask, .coupon_use").show();
+                    } else {
+                        $.alert(res.msg, '提示');
+                    }
+                    $.hideIndicator();
+                }
+            });
+        });
+
+        $(".coupon_use .btn").click(function () {
+            $(".mask, .coupon_use").hide();
+        });
+
         function loadData() {
             var type = $('#type .active').data('type');
             var status = $('#status .active').data('status');
@@ -787,37 +815,52 @@ $(function () {
                 success: function (res) {
                     var html = '';
                     res.data.forEach(function(item, index){
-                        if (item.activity.type == 'seckill') {
-                            html += '<div class="list-block media-list activity-list">';
-                                html += '<ul>';
-                                    html += '<li>';
-                                        html += '<div class="item-content">';
-                                        html += '<div class="item-media">';
-                                            html += '<img src="'+item.activity.thumb+'" style="height:5rem; width: 5rem;">';
+                        html += '<div class="list-block media-list activity-list">';
+                            html += '<ul>';
+                                html += '<li>';
+                                    html += '<div class="item-content">';
+                                    html += '<div class="item-media">';
+                                        if (item.activity.type == 'cut') {
+                                            html += '<a class="list-block media-list activity-list" data-no-cache="true" href="index.php?m=Home&c=Activity&a=cutDetail&id=' + item.activity.id +'"><img src="'+item.activity.thumb+'" style="height:5rem; width: 5rem;"></a>';
+                                        } else if (item.activity.type == 'groupon') {
+                                            html += '<a class="list-block media-list activity-list" data-no-cache="true" href="index.php?m=Home&c=Activity&a=grouponDetail&id=' + item.activity.id + '"><img src="' + item.activity.thumb + '" style="height:5rem; width: 5rem;"></a>';
+                                        } else {
+                                            html += '<img src="' + item.activity.thumb + '" style="height:5rem; width: 5rem;">';
+                                        }
+                                    html += '</div>';
+                                    html += '<div class="item-inner">';
+                                        html += '<div class="item-title-row cut">';
+                                        html += '<div class="item-title">'+item.activity.title+'</div>';
                                         html += '</div>';
-                                        html += '<div class="item-inner">';
-                                            html += '<div class="item-title-row">';
-                                            html += '<div class="item-title">'+item.activity.title+'</div>';
-                                            html += '</div>';
+                                        if (item.activity.type == 'groupon') {
+                                            html += '<div class="remark"><span>' + item.activity.rule.member_num +'人团</span></div>';
+                                        } else {
                                             html += '<div class="remark">&nbsp;</div>';
-                                            html += '<div class="money">¥'+(item.activity.price / 100)+' <s>¥'+(item.activity.original_price / 100)+'</s></div>';
-                                            if (item.status == 'ongoing') { 
-                                                html += '<div class="status_btn active" onclick="pay('+item.order_id+')">去支付</div>';
-                                            } else if (item.status == 'closed') {
-                                                html += '<div class="status_btn">已结束</div>';
-                                            } else if (item.status == 'success') {
-                                                if (item.is_use == 1) {
-                                                    html += '<div class="status_btn">已使用</div>';
-                                                } else {
-                                                    html += '<div class="status_btn active" data-id="'+item.id+' use_coupon">去使用</div>';
-                                                }
+                                        }
+                                        html += '<div class="money">¥' + (item.price / 100) + ' <s>¥' + (item.activity.original_price / 100) + '</s></div>';
+                                        
+                                        if (item.status == 'ongoing' && item.order_id > 0 && item.activity.type != 'groupon') { 
+                                            html += '<div class="status_btn active" onclick="pay('+item.order_id+')">去支付</div>';
+                                        } else if (item.status == 'closed') {
+                                            html += '<div class="status_btn">已结束</div>';
+                                        } else if (item.status == 'success') {
+                                            if (item.is_use == 1) {
+                                                html += '<div class="status_btn">已使用</div>';
+                                            } else {
+                                                html += '<div class="status_btn active use_action" data-type="'+item.activity.type+'" data-id="'+item.id+'">去使用</div>';
                                             }
-                                        html += '</div>';
-                                        html += '</div>';
-                                    html += '</li>';
-                                html += '</ul>';
-                            html += '</div>';
-                        }
+                                        } else {
+                                            if (item.activity.type == 'cut') {
+                                                html += '<a class="status_btn active" data-no-cache="true" href="index.php?m=Home&c=Activity&a=cutDetail&id=' + item.activity.id + '">查看</a>';
+                                            } else if (item.activity.type == 'groupon') {
+                                                html += '<a class="status_btn active" data-no-cache="true" href="index.php?m=Home&c=Activity&a=grouponDetail&id=' + item.activity.id + '">查看</a>';
+                                            }
+                                        }
+                                    html += '</div>';
+                                    html += '</div>';
+                                html += '</li>';
+                            html += '</ul>';
+                        html += '</div>';
                     })
                     if (html == '') {
                         $(".empty").show();
@@ -1480,16 +1523,18 @@ $(function () {
             });
         });
 
-        // var callback = location.origin + '?m=Home&c=Vip&a=index&action=coupon_receive&openid={openid}&coupon_code=' + code;
-        // var data = {
-        //     data: {
-        //         type: 'share',
-        //         title: config.title,
-        //         path: '/pages/index/index?callback=' + encodeURIComponent(callback),
-        //         imageUrl: location.origin + config.share_coupon,
-        //     },
-        // };
-        // wx.miniProgram.postMessage(data);
+        if ($("[name='play_id']").val()) {
+            var callback = location.origin + '?m=Home&c=Activity&a=cutDetail&id=' + $("[name='activity_id']").val() + '&play_id=' + $("[name='play_id']").val()+'&openid={openid}';
+            var data = {
+                data: {
+                    type: 'share',
+                    title: $("[name='title']").val(),
+                    path: '/pages/index/index?callback=' + encodeURIComponent(callback),
+                    imageUrl: '',
+                },
+            };
+            wx.miniProgram.postMessage(data);
+        }
 
         $(".pay").click(function(){
             pay($(this).attr('data-id'), $("[name='callback']").val());
@@ -1537,6 +1582,107 @@ $(function () {
 
     });
 
+
+    $(document).on("pageInit", "#page-activity-groupon-detail", function (e, id, page) {
+
+
+        if ($("[name='play_id']").val()) {
+            var callback = location.origin + '?m=Home&c=Activity&a=grouponDetail&id=' + $("[name='activity_id']").val() + '&play_id=' + $("[name='play_id']").val() + '&openid={openid}';
+            var data = {
+                data: {
+                    type: 'share',
+                    title: $("[name='title']").val(),
+                    path: '/pages/index/index?callback=' + encodeURIComponent(callback),
+                    imageUrl: '',
+                },
+            };
+            wx.miniProgram.postMessage(data);
+        }
+
+
+        new Swiper('#activity-seckill-swiper-container', {
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+            },
+            autoplay: {
+                delay: 3000,
+                stopOnLastSlide: false,
+                disableOnInteraction: false,
+            },
+        });
+
+        $(".openGroupon").click(function(){
+            var id = $("[name='activity_id']").val();
+            $.showIndicator()
+            $.ajax({
+                type: 'POST',
+                data: { id: id },
+                url: 'index.php?m=Home&c=Activity&a=openGroupon',
+                success: function (res) {
+                    if (res.code == 0) {
+                        pay(res.data.order_id);
+                    } else {
+                        $.alert(res.msg, '提示');
+                    }
+                    $.hideIndicator();
+                }
+            });
+        });
+
+        $(".join").click(function () {
+            var id = $("[name='play_id']").val();
+            $.showIndicator()
+            $.ajax({
+                type: 'POST',
+                data: { id: id },
+                url: 'index.php?m=Home&c=Activity&a=joinGroupon',
+                success: function (res) {
+                    if (res.code == 0) {
+                        pay(res.data.order_id);
+                    } else {
+                        $.alert(res.msg, '提示');
+                    }
+                    $.hideIndicator();
+                }
+            });
+        });
+
+        $(".share").click(function(){
+            $(".invite-modal").show();
+        });
+
+        $(".invite-modal__btn").click(function () {
+            $(".invite-modal").hide();
+        });
+
+        $('.activity-seckill-rule').click(function () {
+            $(".activity-rule-detail, .mask").show();
+        });
+
+        $(".activity-rule-detail .close").click(function () {
+            $(".activity-rule-detail, .mask").hide();
+        });
+
+        var sleep = setInterval(function () {
+            var timestamp = parseInt(new Date().getTime() / 1000);
+            var end_time = parseInt($(".groupon-detail-time").attr('data-end-time'));
+            if (parseInt(timestamp) < parseInt(end_time)) {
+                var times = getTime(end_time);
+                $(".groupon-detail-time").html('<b class="iconfont icon-naozhong"></b>剩余<span>' + times.hour + '</span>:<span>' + times.minute + '</span>:<span>' + times.second+'</span>结束');
+            }
+
+            $(".more-groupon-right-p2").each(function(index){
+                var end_time = parseInt($(this).attr('data-end-time'));
+                if (parseInt(timestamp) < parseInt(end_time)) {
+                    var times = getTime(end_time);
+                    $(this).html('剩余 ' + times.hour + '：' + times.minute + '：' + times.second+' 结束');
+                }
+            });
+        }, 1000)
+
+
+    });
     
 
     $.init();

@@ -16,6 +16,7 @@ return array_merge($db, array(
         10004   => '该优惠券无法核销',
         10005   => '余额不足',
         10006   => '优惠券前缀已存在',
+        10007   => '无法再次核销',
 
         20001 => '余额不足，请充值！',
         20002 => '您的等级已经大于当前等级',
@@ -86,6 +87,13 @@ return array_merge($db, array(
     'activity_status' => [
         'unstart' => '未开始',
         'ongoing' => '进行中',
+        'closed' => '已结束',
+    ],
+
+    'activity_play_status' => [
+        'unstart' => '未开始',
+        'ongoing' => '进行中',
+        'success' => '已成功',
         'closed' => '已结束',
     ],
 

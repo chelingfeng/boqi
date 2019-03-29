@@ -190,5 +190,44 @@ class ActivityController extends CommonController
         M('activity_'.$activity['type'])->where(['activity_id' => $_POST['id']])->delete();
         $this->ajaxReturn(codeReturn(0));
     }
+
+    public function getCarousel()
+    {
+        $data = setting('activity_'.$_POST['type']);
+        $this->ajaxReturn(codeReturn(0, $data));
+    }
+
+    public function saveCarousel()
+    {
+        setSetting('activity_'.$_POST['type'], $_POST['data']);
+        $this->ajaxReturn(codeReturn(0));
+    }
+
+    public function order()
+    {
+        $activity = M('activity')->where(['id' => $_GET['id']])->find();
+        $where = "order_id > 0 AND activity_id = ". $_GET['id'];
+        if ($_POST['status']) {
+            $where .= " AND status = '".$_POST['status']."'";
+        }
+        if ($activity['type'] == 'seckill') {
+            $data = M('activity_seckill_play')->where($where)->page($_GET['epage'], C('PAGESIZEADMIN'))->order('id DESC')->select();
+            $count = M('activity_seckill_play')->where($where)->count();
+        } elseif ($activity['type'] == 'cut') {
+            $data = M('activity_cut_play')->where($where)->page($_GET['epage'], C('PAGESIZEADMIN'))->order('id DESC')->select();
+            $count = M('activity_cut_play')->where($where)->count();
+        } elseif ($activity['type'] == 'groupon') {
+            $data = M('activity_groupon_member')->where($where)->page($_GET['epage'], C('PAGESIZEADMIN'))->order('id DESC')->select();
+            $count = M('activity_groupon_member')->where($where)->count();
+        }
+        foreach ($data as &$d) {
+            $d['user'] = M('user')->where(['id' => $d['user_id']])->find();
+            $d['order'] = M('order')->where(['id' => $d['order_id']])->find();
+        }
+        $this->assign('page', page($count));
+        $this->assign('data', $data);
+        $this->assign('activity', $activity);
+        $this->display();
+    }
 }
 

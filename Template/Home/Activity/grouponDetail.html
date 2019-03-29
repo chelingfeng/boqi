@@ -1,16 +1,12 @@
 <extend name="Common/__base" />
 <block name="body">
     <div class="page-group">
-        <div class="page page-current" style="background: #fbfbfb" id="page-activity-cut-detail">
+        <div class="page page-current" style="background: #fbfbfb" id="page-activity-groupon-detail">
             <input type="hidden" name="activity_id" value="{$Think.get.id}" />
             <input type="hidden" name="play_id" value="{$play.id}" />
-            <input type="hidden" name="callback" value="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['HTTP_HOST']}{:U('my', array('type' => 'cut'))}" />
+            <input type="hidden" name="callback" value="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['HTTP_HOST']}{:U('my', array('type' => 'groupon'))}" />
             <input type="hidden" name="title" value="{$activity.title}" />
             <div class="mask" style="display: none"></div>
-            <div class="activity-seckill-detail activity-cut-detail" style="display: none">
-                <img src="__PUBLIC__/wx/img/cut.jpg" />
-                <p class="activity-seckill-detail-cut">您成功帮好友砍掉<span></span>元</p>
-            </div>
 
             <div class="invite-modal" style="display:none">
                 <div class="invite-modal__content"><img src="__PUBLIC__/wx/img/invite_title@2x.38bd4c6.png" alt=""></div>
@@ -23,7 +19,7 @@
                 <div class="mask" style="display: none"></div>
                 <div class="activity-rule-detail" style="display: none">
                     <p class="activity-rule-detail-title">活动规则</p>
-                    <div class="activity-rule-detail-content"><?php echo json_decode($system_config, true)['activity_cut_rule']; ?>
+                    <div class="activity-rule-detail-content"><?php echo json_decode($system_config, true)['activity_groupon_rule']; ?>
                     </div>
                     <div class="close iconfont icon-guanbi"></div>
                 </div>
@@ -41,40 +37,86 @@
                 </div>
                 <div class="cut-message">
                     <p class="cut-message-title">{$activity.title}</p>
-                    <p class="cut-message-price">¥<?=sprintf("%.2f", $activity['price'] / 100);?> <span>已有{$activity.successNumber}人已经砍价成功></span></p>
-                    <div class="cut-message-line">
-                        <?php if ($play) { ?>
-                        <div class="cut-message-line-true" style="width:<?=sprintf("%.1f", ($activity['original_price'] - $play['price']) / ($activity['original_price'] - $activity['price']) * 100);?>%;"><span></span></div>
-                        <?php } else { ?>
-                        <div class="cut-message-line-true" style="width:0%;"><span></span></div>
-                        <?php } ?>
-                    </div>
-                    <?php if ($play['user']){ ?>
-                    <img class="cut-message-img" src="{$play['user']['avatar']}" />
-                    <?php } else { ?>
-                        <img class="cut-message-img"
-                            src="<?=session('user.avatar');?>" />
+                    <p class="cut-message-price">¥<?=sprintf("%.2f", $activity['rule']['owner_price'] / 100);?> <s>¥<?=sprintf("%.2f", $activity['original_price'] / 100);?></s><span>{$activity.successNumber}人已抢购 ></span></p>
+                    <div class="groupon-number">{$activity['rule']['member_num']}人团</div>
+                </div>
+
+                <?php if(empty($currentUserPlay)) { ?>
+                    <?php if ($activity['status'] == 'ongoing') { ?>
+                    <div class="cut-message-btn openGroupon" style="margin-bottom:1.5rem">我要开团</div>
+                    <?php } elseif ($activity['status'] == 'unstart') { ?>
+                    <div class="cut-message-btn close" style="margin-bottom:1.5rem">活动未开始</div>
+                    <?php } elseif ($activity['status'] == 'closed') { ?>
+                    <div class="cut-message-btn close" style="margin-bottom:1.5rem">活动已结束</div>
                     <?php } ?>
-                </div>
-                <?php if ($play) { ?>
-                <div class="cut-message-cut">
-                    <div class="cut-message-cut-left">已砍 ¥ <span><?=sprintf("%.2f", ($activity['original_price'] - $play['price']) / 100);?></span></div>
-                    <div class="cut-message-cut-right">还剩 ¥ <?=sprintf("%.2f", ($play['price'] - $activity['price']) / 100);?></div>
-                </div>
-                <?php } else { ?>
-                <div class="cut-message-cut">
-                    <div class="cut-message-cut-left">已砍 ¥ <span>0.00</span></div>
-                    <div class="cut-message-cut-right">还剩 ¥ <?=sprintf("%.2f", ($activity['original_price'] - $activity['price']) / 100);?></div>
+                <?php } ?>
+                
+                <?php if($play){ ?>
+                <div class="groupon-detail">
+                    <div class="groupon-detail-time" data-end-time="{:strtotime($play['end_time'])}"><b class="iconfont icon-naozhong"></b>剩余<span>00</span>:<span>00</span>:<span>00</span>结束</div>
+                    <?php if($play['status'] == 'ongoing'){ ?>
+                    <div class="groupon-detail-title">还差<?=$activity['rule']['member_num'] - $play['member_num'];?>人拼团成功</div>
+                    <?php } elseif($play['status'] == 'success'){ ?>
+                    <div class="groupon-detail-title success"><span class="iconfont icon-quangou"></span>拼团成功</div>
+                    <?php } elseif($play['status'] == 'closed'){ ?>
+                    <div class="groupon-detail-title success"><span class="iconfont icon-xinsui"></span>拼团失败</div>
+                    <?php } ?>
+                    <div class="groupon-detail-member">
+                        <?php
+                            $k == 0;
+                            foreach ($play['member'] as $m){
+                                $k++;
+                        ?>
+                        <div class="groupon-detail-member-img">
+                            <img src="{$m['user']['avatar']}" />
+                            <?php if ($k == 1){ ?>
+                            <span>团长</span>
+                            <?php } ?>
+                        </div>
+                        <?php } ?>
+                        <div class="both"></div>
+                    </div>
+                    <?php if ($play['status'] == 'ongoing'){ ?>
+                        <?php if(isset($play['member'][session('user.id')])){ ?>
+                        <div class="cut-message-btn yellow share">邀请好友参团</div>
+                        <?php } else { ?>
+                        <div class="cut-message-btn yellow join">加入拼团</div>
+                        <?php } ?>
+                    <?php } ?>
+                    <div class="groupon-detail-rule">拼团规则：人满拼团成功，人不满自动退款</div>
                 </div>
                 <?php } ?>
-               
-                <?php if($activity['status'] == 'unstart'){ ?>
+                
+                <div class="activity-more-groupon">
+                    <p class="more-groupon-title">您也可以参与别人的拼团</p>
+                    <?php if (!$moreGroupon) { ?>
+                    <p class="cut-message-kjb-none">暂无</p>
+                    <?php } ?>
+                    <?php foreach ($moreGroupon as $g){ ?>
+                    <div class="more-groupon-list">
+                        <div class="more-groupon-list-left">
+                            <img src="{$g['user']['avatar']}">
+                            <span>{:urldecode($g['user']['nickname'])}</span>
+                        </div>
+                        <div class="more-groupon-right">
+                            <div class="more-groupon-right-btn" onclick="location.replace('{:U('', array('id' => $g['activity_id'], 'play_id' => $g['id']))}')">去参团</div>
+                        </div>
+                        <div class="more-groupon-right groupon">
+                            <div class="more-groupon-right-p1">还差<span><?=$g['rule']['member_num'] - $g['member_num'];?></span>人成团</div>
+                            <div class="more-groupon-right-p2" data-end-time="{:strtotime($g['end_time'])}">剩余 00：00：00 结束</div>
+                        </div>
+                        <div class="both"></div>
+                    </div>
+                    <?php } ?>
+                </div>
+            
+                <!-- <?php if($activity['status'] == 'unstart'){ ?>
                 <div class="cut-message-btn close">活动未开始</div>
                 <?php } elseif ($activity['status'] == 'closed') { ?>
                 <div class="cut-message-btn close">活动已结束</div>
                 <?php } else { ?>
                     <?php if (empty($play)){ ?>
-                    <div class="cut-message-btn join">发起砍价</div>
+                    <div class="cut-message-btn join">我要开团</div>
                     <?php } else { ?>
                         <?php if ($play['user_id'] != session('user.id')){ ?>
                             <?php if ($play['help'][session('user.id')]){ ?>
@@ -92,26 +134,9 @@
                             <?php } ?>
                         <?php } ?>
                     <?php } ?>
-                <?php } ?>
+                <?php } ?> -->
 
-                <div class="cut-message-djs" data-time="{:strtotime($activity['end_time'])}" data-status="{$activity.status}"></div>
-                <div class="cut-message-kjb">
-                    <p class="cut-message-kjb-title">砍价帮</p>
-                    <?php foreach ($play['help'] as $help){ ?>
-                        <div class="cut-message-kjb-list">
-                            <div class="cut-message-kjb-list-left">
-                                <img src="{$help['user']['avatar']}">
-                                <span>{:urldecode($help['user']['nickname'])}</span>
-                            </div>
-                            <div class="cut-message-kjb-list-right"><?=sprintf("%.2f", $help['cut_price'] / 100);?>元</div>
-                            <div class="both"></div>
-                        </div>
-                    <?php } ?>
-                    <?php if (!$play['help']) { ?>
-                        <p class="cut-message-kjb-none">暂无</p>
-                    <?php } ?>
-                </div>
-                <?php if ($moreActivity) { ?>
+             
                 <?php foreach ($moreActivity as $act){ ?>
                 <div class="list-block media-list activity-list" onclick="location.replace('{:U('', array('id' => $act['id']))}')">
                     <ul>
@@ -124,18 +149,18 @@
                                     <div class="item-title-row cut">
                                         {$act.title}
                                     </div>
+                                    <div class="remark" style="margin-top:0px;margin-bottom:10px"><span>{$act.rule.member_num}人团</span></div>
                                     <div class="money" style="margin-top:0">
-                                        价值¥<?=sprintf("%.2f", $act['original_price'] / 100);?>
+                                        ¥<?=sprintf("%.2f", $act['rule']['owner_price'] / 100);?> <s>¥<?=sprintf("%.2f", $act['original_price'] / 100);?></s>
                                     </div>
-                                    <div class="remark_cut" style="margin-top:0.3rem;">已有{$act.successNumber}人砍价成功</div>
-                                    <div class="status_btn active" style="bottom:0.7rem;">¥<?=sprintf("%.2f", $act['price'] / 100);?>抢</div>
+                                    <div class="status_btn active" style="bottom:0.7rem;">立即参团</div>
                                 </div>
                             </div>
                         </li>
                     </ul>
                 </div>
                 <?php } ?>
-                <?php } ?>
+
             </div>
         </div>
     </div>

@@ -3,6 +3,14 @@ require dirname(__FILE__).'/couponFunction.php';
 require dirname(__FILE__).'/orderFunction.php';
 require dirname(__FILE__).'/activityFunction.php';
 
+function initFunction()
+{
+    //处理过期优惠券
+    expiredCoupon();
+    //处理活动相关时间
+	initActivity();
+}
+
 function setting($type) {
     return json_decode(
        M('setting')->where(['type' => $type])->find()['val'], true

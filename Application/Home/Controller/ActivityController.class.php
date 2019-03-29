@@ -3,6 +3,7 @@
 namespace Home\Controller;
 
 use Codeages\Biz\Framework\Util\ArrayToolkit;
+use Endroid\QrCode\QrCode;
 
 class ActivityController extends CommonController
 {
@@ -16,7 +17,7 @@ class ActivityController extends CommonController
     {
         $activity = M('activity')->where(['type' => 'seckill'])->order('id DESC')->select();
         $myActivity = ArrayToolkit::index(
-            M('activity_seckill_play')->where(['user_id' => session('user.id')])->order('id DESC')->select(), 
+            M('activity_seckill_play')->where(['status' => ['neq', 'closed'], 'user_id' => session('user.id')])->order('id DESC')->select(), 
             'activity_id'
         );
         
@@ -47,6 +48,130 @@ class ActivityController extends CommonController
 
         $this->assign('data', $activity);
         $this->display();
+    }
+
+    public function groupon()
+    {
+        $activity = M('activity')->where(['type' => 'groupon'])->order('id DESC')->select();
+
+        foreach ($activity as &$d) {
+            $d['rule'] = M('activity_groupon')->where(['activity_id' => $d['id']])->find();
+            $d['successNumber'] = M('activity_groupon_play')->where(['activity_id' => $d['id'], 'status' => "success"])->count();
+            $d['user'] = M('activity_groupon_play')->where(['activity_id' => $d['id'], 'user_id' => session('user.id'), 'status' => "success"])->find();
+        }
+
+        $activity = ArrayToolkit::group($activity, 'status');
+        $activity = array_merge($activity['ongoing'] ?? [], $activity['unstart'] ?? [], $activity['closed'] ?? []);
+
+        $this->assign('data', $activity);
+        $this->display();
+    }
+
+    public function grouponDetail()
+    {
+        $activity = M('activity')->where(['id' => $_GET['id']])->find();
+        if (!$activity) {
+            exit();
+        }
+        $activity['carousel'] = json_decode($activity['carousel'], true);
+        $activity['rule'] = M('activity_groupon')->where(['activity_id' => $activity['id']])->find();
+        $activity['successNumber'] = M('activity_groupon_play')->where(['activity_id' => $activity['id'], 'status' => "success"])->count();
+        
+        if ($_GET['play_id']) {
+            $playId = $_GET['play_id'];
+        } else {
+            $currentUserPlay = M('activity_groupon_play')->where(['activity_id' => $_GET['id'], 'user_id' => session('user.id')])->find() ?? [];
+            if ($currentUserPlay) {
+                $playId = $currentUserPlay['id'];
+            }
+        }
+        if ($playId) {
+            $play = M('activity_groupon_play')->where(['id' => $playId])->find();
+            if ($play) {
+                $play['user'] = M('user')->where(['id' => $play['user_id']])->find();
+                $play['member'] = ArrayToolkit::index(M('activity_groupon_member')->where(['play_id' => $play['id']])->order('id ASC')->select(), 'user_id');
+                foreach ($play['member'] as &$member2) {
+                    $member2['user'] = M('user')->where(['id' => $member2['user_id']])->find();
+                }
+            }
+        }
+
+        $moreActivity = M('activity')->where("type = 'groupon' AND id != ".$_GET['id']." AND status = 'ongoing'")->order('id DESC')->limit(5)->select();
+        foreach ($moreActivity as &$v) {
+            $v['successNumber'] = M('activity_groupon_play')->where(['activity_id' => $v['id'], 'status' => "success"])->count();
+            $v['rule'] = M('activity_groupon')->where(['activity_id' => $v['id']])->find();
+        }
+
+        if ($play) {
+            $moreGroupon = M('activity_groupon_play')->where("status='ongoing' AND activity_id = ". $activity['id']." AND id !=  ".$play['id'] )->order('id')->select();
+        } else {
+            $moreGroupon = M('activity_groupon_play')->where("status='ongoing' AND activity_id = ". $activity['id'])->order('id')->select();
+        }
+
+        foreach ($moreGroupon as &$mg) {
+            $mg['rule'] = M('activity_groupon')->where(['activity_id' => $mg['activity_id']])->find();
+            $mg['user'] = M('user')->where(['id' => $mg['user_id']])->find();
+        }
+        
+        $this->assign('currentUserPlay', $currentUserPlay ?? []);
+        $this->assign('play', $play ?? []);
+        $this->assign('moreActivity', $moreActivity);
+        $this->assign('moreGroupon', $moreGroupon ?? [] );
+        $this->assign('activity', $activity);
+        $this->display();
+    }
+    
+    public function openGroupon()
+    {
+        $userId = session('user.id');
+        $activityId = $_POST['id'];
+        $activity = M('activity')->where(['id' => $activityId])->find();
+        $currentUserPlay = M('activity_groupon_play')->where(['activity_id' => $activityId, 'user_id' => session('user.id')])->find() ?? [];
+        if ($activity['status'] != 'ongoing') {
+            $this->ajaxReturn(codeReturn(20018));
+        }
+        if ($currentUserPlay) {
+            $this->ajaxReturn(codeReturn(20015));
+        }
+        $activity['rule'] = M('activity_groupon')->where(['activity_id' => $activityId])->find();
+        $data = [
+            'title' => $activity['title'],
+            'type' => 'activity_groupon',
+            'user_id' => session('user.id'),
+            'items' => [
+                ['target_id' => $activity['id'], 'target_type' => 'activity_open_groupon', 'amount' => $activity['rule']['owner_price']]
+            ],
+            'discounts' => [],
+        ];
+        $order = createOrder($data);
+        $this->ajaxReturn(codeReturn(0, ['order_id' => $order['id']]));
+    }
+
+    public function joinGroupon()
+    {
+        $userId = session('user.id');
+        $playId = $_POST['id'];
+        $play = M('activity_groupon_play')->where(['id' => $playId])->find();
+        $rule = M('activity_groupon')->where(['activity_id' => $play['activity_id']])->find();
+        $member = M('activity_groupon_member')->where(['play_id' => $playId, 'user_id' => $userId])->find();
+        $activity = M('activity')->where(['id' => $play['activity_id']])->find();
+        if ($play['status'] != 'ongoing') {
+            $this->ajaxReturn(codeReturn(20018));
+        }
+        if ($member) {
+            $this->ajaxReturn(codeReturn(20015));
+        }
+        $data = [
+            'title' => $activity['title'],
+            'type' => 'activity_groupon',
+            'user_id' => session('user.id'),
+            'items' => [
+                ['target_id' => $playId, 'target_type' => 'activity_join_groupon', 'amount' => $rule['owner_price']]
+            ],
+            'discounts' => [],
+        ];
+        $order = createOrder($data);
+        $this->ajaxReturn(codeReturn(0, ['order_id' => $order['id']]));
     }
 
     //发起砍价
@@ -173,28 +298,32 @@ class ActivityController extends CommonController
         }
 
         //判断是否参与过活动
-        $join = M('activity_seckill_play')->where(['user_id' => session('user.id')])->find();
+        $join = M('activity_seckill_play')->where(['status' => ['neq', 'closed'], 'user_id' => session('user.id')])->find();
         if ($join) {
             $this->ajaxReturn(codeReturn(20013));
         }
 
+        $playId = M('activity_seckill_play')->add([
+            'activity_id' => $activity['id'],
+            'user_id' => session('user.id'),
+            'price' => $activity['price'],
+            'create_time' => date('Y-m-d H:i:s'),
+            'update_time' => date('Y-m-d H:i:s'),
+        ]);
+
         $data = [
-            'title' => '秒杀:'.$activity['title'],
+            'title' => $activity['title'],
             'type' => 'activity_seckill',
             'user_id' => session('user.id'),
             'items' => [
-                ['target_id' => $activity['id'], 'target_type' => 'activity_seckill', 'amount' => $activity['price']]
+                ['target_id' => $playId, 'target_type' => 'activity_seckill', 'amount' => $activity['price']]
             ],
             'discounts' => [],
         ];
         $order = createOrder($data);
 
-        M('activity_seckill_play')->add([
-            'activity_id' => $activity['id'],
-            'user_id' => session('user.id'),
+        M('activity_seckill_play')->where(['id' => $playId])->save([
             'order_id' => $order['id'],
-            'create_time' => date('Y-m-d H:i:s'),
-            'update_time' => date('Y-m-d H:i:s'),
         ]);
         M('activity_seckill')->where(['id' => $activity['rule']['id']])->setDec('product_remaind');
 
@@ -217,15 +346,30 @@ class ActivityController extends CommonController
         if ($_GET['type'] == 'seckill') {
             $data = M('activity_seckill_play')->where(['status' => $_GET['status'], 'user_id' => session('user.id')])->order('id DESC')->select();
             foreach ($data as &$d) {
-                $d['activity'] = M('activity')->where(['activity_id' => $d['activity_id']])->find();
+                $d['activity'] = M('activity')->where(['id' => $d['activity_id']])->find();
             }
         }
         if ($_GET['type'] == 'cut') {
             $data = M('activity_cut_play')->where(['status' => $_GET['status'], 'user_id' => session('user.id')])->order('id DESC')->select();
             foreach ($data as &$d) {
-                $d['activity'] = M('activity')->where(['activity_id' => $d['activity_id']])->find();
+                $d['activity'] = M('activity')->where(['id' => $d['activity_id']])->find();
+            }
+        }
+        if ($_GET['type'] == 'groupon') {
+            $data = M('activity_groupon_member')->where(['status' => $_GET['status'], 'user_id' => session('user.id')])->order('id DESC')->select();
+            foreach ($data as &$d) {
+                $d['activity'] = M('activity')->where(['id' => $d['activity_id']])->find();
+                $d['activity']['rule'] = M('activity_groupon')->where(['activity_id' => $d['activity_id']])->find();
             }
         }
         $this->ajaxReturn(codeReturn(0, $data ?? []));
+    }
+
+    public function getActivityCouponQrcode()
+    {
+        $qrcodeUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/' . U('Home/Admin/index', ['action' => 'activity_coupon', 'target_type' => $_POST['type'], 'target_id' => $_POST['id']]);
+        $qrCode = new QrCode($qrcodeUrl);
+        $qrCode = 'data:image/png;base64,' . base64_encode($qrCode->writeString());
+        $this->ajaxReturn(codeReturn(0, ['qrcodeUrl' => $qrcodeUrl, 'qrcode' => $qrCode]));
     }
 }

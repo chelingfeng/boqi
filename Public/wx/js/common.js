@@ -17,10 +17,15 @@ function getTime(deadline) {
         second = times % 60;
         minute = ~~(times / 60) % 60;
         hour = ~~(times / 60 / 60);
+        if (second < 10) second = '0' + second;
+        if (minute < 10) minute = '0' + minute;
+        if (hour < 10) hour = '0' + hour;
+    } else {
+        second = 0;
+        minute = 0;
+        hour = 0;
     }
-    if (second < 10) second = '0' + second;
-    if (minute < 10) minute = '0' + minute;
-    if (hour < 10) hour = '0' + hour;
+   
     return { hour, minute, second };
 }
 

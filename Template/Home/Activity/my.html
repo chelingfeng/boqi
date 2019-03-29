@@ -8,9 +8,19 @@
                 <a class="button <?php if($_GET['type'] == 'seckill'){ echo 'active';}?>" data-type="seckill">秒杀</a>
             </div>
             <div class="buttons-tab coupon-tab" id="status">
-                <a class="tab-link button active" data-status="ongoing">进行中</a>
-                <a class="tab-link button" data-status="success">已完成</a>
+                <a class="tab-link button" data-status="ongoing">进行中</a>
+                <a class="tab-link button active" data-status="success">已完成</a>
                 <a class="tab-link button" data-status="closed">已结束</a>
+            </div>
+
+            <div class="mask" style="display:none"></div>
+            <div class="coupon_use" style="display:none">
+              <p class="tt">核销码展示</p>
+              <p class="tips">请出示给商家</p>
+              <p class="code">
+                <img src="" />
+              </p>
+              <div class="btn">已核销/关闭</div>
             </div>
 
             <div class="activity-bottom activity_seckill" <?php if($_GET['type'] != 'seckill'){ ?>style="display:none"<?php } ?>>

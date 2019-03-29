@@ -16,8 +16,7 @@ class CommonController extends Controller {
 		}
 		$user = M('user')->where(['openid' => session('user.openid')])->find();
 		session('user', $user);
-		expiredCoupon();
-		initActivity();
+		initFunction();
 		parent::__construct();
 		$this->assign('system_config', json_encode(setting('system')));
 	}

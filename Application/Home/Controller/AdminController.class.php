@@ -224,4 +224,44 @@ class AdminController extends Controller
         $result = useCoupon($_POST['code']);
         $this->ajaxReturn($result);
     }
+
+    public function passActivityCoupon()
+    {
+        if (empty($_POST['target_type']) || empty($_POST['target_id'])) {
+            $this->ajaxReturn(codeReturn(10001));
+        }
+        if ($_POST['target_type'] == 'seckill') {
+            $record = M('activity_seckill_play')->where(['id' => $_POST['target_id']])->find();
+            if (empty($record)) {
+                $this->ajaxReturn(codeReturn(10001));
+            }
+            if ($record['is_use'] == '1') {
+                $this->ajaxReturn(codeReturn(10007));
+            }
+            M('activity_seckill_play')->where(['id' => $_POST['target_id']])->save(['update_time' => date('Y-m-d H:i:s'), 'is_use' => '1']);
+            $this->ajaxReturn(codeReturn(0));
+        } elseif ($_POST['target_type'] == 'cut') {
+            $record = M('activity_cut_play')->where(['id' => $_POST['target_id']])->find();
+            if (empty($record)) {
+                $this->ajaxReturn(codeReturn(10001));
+            }
+            if ($record['is_use'] == '1') {
+                $this->ajaxReturn(codeReturn(10007));
+            }
+            M('activity_cut_play')->where(['id' => $_POST['target_id']])->save(['update_time' => date('Y-m-d H:i:s'), 'is_use' => '1']);
+            $this->ajaxReturn(codeReturn(0));
+        } elseif ($_POST['target_type'] == 'groupon') {
+            $record = M('activity_groupon_member')->where(['id' => $_POST['target_id']])->find();
+            if (empty($record)) {
+                $this->ajaxReturn(codeReturn(10001));
+            }
+            if ($record['is_use'] == '1') {
+                $this->ajaxReturn(codeReturn(10007));
+            }
+            M('activity_groupon_member')->where(['id' => $_POST['target_id']])->save(['update_time' => date('Y-m-d H:i:s'), 'is_use' => '1']);
+            $this->ajaxReturn(codeReturn(0));
+        } else {
+            $this->ajaxReturn(codeReturn(10001));
+        }
+    }
 }

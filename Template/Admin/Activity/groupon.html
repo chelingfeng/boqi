@@ -27,6 +27,7 @@
                     <div class="bar-full">
                         <a class="btn btn-addon btn-success ng-scope" id="add"><i
                                 class="glyphicon glyphicon-plus"></i>新建拼团</a>
+                        <a class="btn btn-addon btn-info ng-scope" id="manage_carousel"><i class="glyphicon glyphicon-plus"></i>轮播管理</a>
                     </div>
                     <div>
                         <select class="form-control type" style="width:160px;" name="status" id="status">
@@ -87,7 +88,7 @@
                                         <?php } ?>
                                     </td>
                                     <td>
-                                        <a class="btn btn-success btn-xs">订单数据</a>
+                                        <a class="btn btn-success btn-xs" href="{:U('order', array('id' => $v['id']))}">订单数据</a>
                                         <?php if ($v['status'] == 'unstart'){ ?>
                                         <a class="btn btn-info btn-xs edit" data-id="{$v.id}">修改</a>
                                         <?php } ?>
@@ -339,9 +340,122 @@
         </div>
     </div>
 
+    <div class="info-card fadeIn animated ng-scope" id="carousel_card">
+        <div class="info-card-wrapper">
+            <div class="info-card-dialog">
+                <div class="info-card-content">
+                    <div class="panel panel-info">
+                        <div class="panel-heading"> 轮播管理
+                            <a class="info-card-close"><i class="ALiconfont icon-close"></i></a>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-tabs">
+                                <ul class="form-tabs-container">
+                                    <li class="fadeIn animated active">
+                                        <table class="table-bordered bg-white table-form">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="require">轮播图</td>
+                                                    <td>
+                                                        建议大小：600px * 200px
+                                                        <div class="album" style="min-height:0px">
+                                                            <ul>
+                                                                <li class="album-plus relative">
+                                                                    <span class="ALiconfont icon-plus3"></span>
+                                                                    <i class="ALiconfont icon-trash i hide"></i>
+                                                                    <img src="" name="img">
+                                                                </li>
+                                                                <li class="album-plus relative">
+                                                                    <span class="ALiconfont icon-plus3"></span>
+                                                                    <i class="ALiconfont icon-trash i hide"></i>
+                                                                    <img src="" name="img">
+                                                                </li>
+                                                                <li class="album-plus relative">
+                                                                    <span class="ALiconfont icon-plus3"></span>
+                                                                    <i class="ALiconfont icon-trash i hide"></i>
+                                                                    <img src="" name="img">
+                                                                </li>
+                                                                <li class="album-plus relative">
+                                                                    <span class="ALiconfont icon-plus3"></span>
+                                                                    <i class="ALiconfont icon-trash i hide"></i>
+                                                                    <img src="" name="img">
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-btn-box" colspan="2">
+                                                        <a class="btn btn-info" id="carousel_action">保存</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script type="text/javascript">
         $(function () {
+
+            $("#carousel_action").click(function () {
+                var data = [];
+                var i = 0;
+                $("#carousel_card [name='img']").each(function () {
+                    if ($(this).attr('src') != '') {
+                        data[i] = {
+                            "img": $(this).attr('src')
+                        };
+                        i++;
+                    }
+                });
+                $(".loading").show();
+                $.ajax({
+                    url: "{:U('saveCarousel')}",
+                    type: 'POST',
+                    data: { type: 'groupon', data: data },
+                    success: function (data) {
+                        if (data.code == 0) {
+                            swal({ title: "提示", text: "保存成功", type: "success", timer: 1500, }, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            swal("提示", data.msg, "warning");
+                        }
+                        $(".loading").hide();
+                    }
+                })
+            });
+
+            $("#manage_carousel").click(function () {
+                $(".loading").show();
+                $.ajax({
+                    url: "{:U('getCarousel')}",
+                    type: 'POST',
+                    data: { type: 'groupon' },
+                    success: function (data) {
+                        if (data.code == 0) {
+                            $("#carousel_card [name='img']").attr('src', '');
+                            $("#carousel_card .icon-plus3").removeClass('hide');
+                            data.data.forEach(function (item, index) {
+                                $("#carousel_card [name='img']:eq(" + index + ")").attr('src', item.img);
+                                $("#carousel_card .icon-plus3:eq(" + index + ")").addClass('hide');
+                            });
+                            $("#carousel_card").addClass('show')
+                        } else {
+                            swal("提示", data.msg, "warning");
+                        }
+                        $(".loading").hide();
+                    }
+                })
+            });
+
             $("#add").click(function () {
                 $("#add_card").addClass('show');
                 return false;

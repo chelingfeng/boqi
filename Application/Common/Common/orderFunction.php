@@ -139,9 +139,54 @@ function orderPaid($orderId)
                 ]);
             }
         } elseif ($order['type'] == 'activity_seckill') {
-            
+            $playId = $items[0]['target_id'];
+            M('activity_seckill_play')->where(['id' => $playId])->save(['status' => 'success']);
         } elseif ($order['type'] == 'activity_cut') {
-            
+            $playId = $items[0]['target_id'];
+            M('activity_cut_play')->where(['id' => $playId])->save(['status' => 'success']);
+        } elseif ($order['type'] == 'activity_groupon') {
+            if ($items[0]['target_type'] == 'activity_open_groupon') {
+                $activityId = $items[0]['target_id'];
+                $activity = M('activity')->where(['id' => $activityId])->find();
+                $activity['rule'] = M('activity_groupon')->where(['activity_id' => $activityId])->find();
+                $playId = M('activity_groupon_play')->add([
+                    'user_id' => $order['user_id'],
+                    'activity_id' => $activityId,
+                    'end_time' => $activity['end_time'],
+                    'create_time' => date('Y-m-d H:i:s'),
+                    'update_time' => date('Y-m-d H:i:s'),
+                ]);
+                M('activity_groupon_member')->add([
+                    'play_id' => $playId,
+                    'user_id' => $order['user_id'],
+                    'activity_id' => $activityId,
+                    'type' => 'owner',
+                    'order_id' => $order['id'],
+                    'price' => $order['amount'],
+                    'create_time' => date('Y-m-d H:i:s'),
+                    'update_time' => date('Y-m-d H:i:s'),
+                ]);
+            } elseif ($items[0]['target_type'] == 'activity_join_groupon') {
+                $playId = $items[0]['target_id'];
+                $play = M('activity_groupon_play')->where(['id' => $playId])->find();
+                $activity = M('activity')->where(['id' => $play['activity_id']])->find();
+                $activity['rule'] = M('activity_groupon')->where(['activity_id' => $activity['id']])->find();
+                M('activity_groupon_member')->add([
+                    'play_id' => $playId,
+                    'user_id' => $order['user_id'],
+                    'activity_id' => $play['activity_id'],
+                    'type' => 'member',
+                    'price' => $order['amount'],
+                    'order_id' => $order['id'],
+                    'create_time' => date('Y-m-d H:i:s'),
+                    'update_time' => date('Y-m-d H:i:s'),
+                ]);
+                M('activity_groupon_play')->where(['id' => $playId])->setInc('member_num');
+                if ($play['member_num'] + 1 >= $activity['rule']['member_num']) {
+                    M('activity_groupon_play')->where(['id' => $playId])->save(['status' => 'success']);
+                    M('activity_groupon_member')->where(['play_id' => $playId])->save(['status' => 'success']);
+                }
+            }
         }
     }
 }
@@ -221,4 +266,9 @@ function openVip($userId, $levelId, $isAdmin = 0, $remark = '', $recharge = true
             ]);
         }
     }
+}
+
+function refund($id)
+{
+    echo $id;
 }

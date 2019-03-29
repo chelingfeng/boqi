@@ -15,8 +15,7 @@ class CommonController extends Controller {
 		$account = session('account');
 		$account['menu'] = C('roles')[$account['role']]['menus'];
 		session('account', $account);
-		expiredCoupon();
-		initActivity();
+		initFunction();
 	}
 
 	public function _empty($name){

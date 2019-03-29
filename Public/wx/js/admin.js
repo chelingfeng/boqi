@@ -121,9 +121,7 @@ $(function () {
                     }
                 }
             });
-        }
-
-        if ($_GET['action'] == 'coupon') {
+        } else if ($_GET['action'] == 'coupon') {
             var couponId = $_GET['couponId'];
             $.ajax({
                 type: 'GET',
@@ -163,6 +161,25 @@ $(function () {
                         $.alert(res.msg, '提示');
                     }
                 }
+            });
+        } else if ($_GET['action'] == 'activity_coupon') {
+            var target_type = $_GET['target_type'];
+            var target_id = $_GET['target_id'];
+            $.confirm('确定要核销吗?', function () {
+                $.ajax({
+                    type: 'POST',
+                    data: { target_type: target_type, target_id: target_id },
+                    url: 'index.php?m=Home&c=Admin&a=passActivityCoupon',
+                    success: function (res) {
+                        if (res.code == 0) {
+                            $.alert('核销成功', '提示', function () {
+                                
+                            });
+                        } else {
+                            $.alert(res.msg, '提示');
+                        }
+                    }
+                });
             });
         }
 

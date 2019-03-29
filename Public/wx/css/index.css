@@ -783,7 +783,7 @@ input[type="button"], input[type="submit"], input[type="reset"], input[type="tex
 }
 
 .activity-list .remark{
-	margin-top: 1rem;
+	/* margin-top: 1rem; */
 }
 
 .activity-list.list-block.media-list .item-media {
@@ -795,7 +795,7 @@ input[type="button"], input[type="submit"], input[type="reset"], input[type="tex
 	font-size: 1rem;
 	font-weight: normal;
 	color: red;
-	margin-top: 0.6rem;
+	margin-top: 1.3rem;
 }
 
 .activity-list .money s {

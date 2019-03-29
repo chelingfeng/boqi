@@ -245,7 +245,7 @@
 .remark_cut {
     color: #838383;
     font-size: 0.7rem;
-    margin-top:1.1rem;
+    margin-top:0.3rem;
 }
 .item-title-row.cut {
     max-height: 2.5rem;
@@ -276,6 +276,12 @@
     font-size: 0.75rem;
     color: #3b3b3b;
     font-weight: 200;
+}
+.cut-message-price s {
+    font-size: 0.75rem;
+    color: #3b3b3b;
+    font-weight: 200;
+    padding:0 0.3rem;
 }
 .cut-message-img {
     width: 3rem;
@@ -407,4 +413,156 @@
 }
 .activity-seckill-detail-cut span {
     color: #fd4545;
+}
+.groupon-number{
+    border: 1px solid #f9bf1f;
+    color: #f9bf1f;
+    font-weight: normal;
+    border-radius: 0.25rem;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.8rem;
+    position: absolute;
+    right: 0;
+    top: 0.7rem;
+}
+.more-groupon-title {
+    font-size: 0.9rem;
+    text-align: center;
+    width:100%;
+    padding: 0.2rem 0;
+}
+.more-groupon-list {
+    font-size: 0.9rem;
+    text-align: center;
+    width:100%;
+    padding: 0.2rem 3%;
+    margin-bottom: 0.5rem;
+}
+.more-groupon-list-left {
+    float: left;
+}
+.more-groupon-list-right {
+    float: right;
+}
+.more-groupon-list-left img {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+    float: left;
+    margin-top: -0.3rem;
+}
+.more-groupon-list-left span {
+    float: left;
+    margin-left: 0.5rem;
+    font-size: 0.7rem;
+    margin-top: 0.15rem;
+}
+.more-groupon-right {
+    float: right;
+}
+.more-groupon-right-p1 {
+    font-size:0.5rem;
+    text-align: right;
+    font-weight: 250;
+}
+.more-groupon-right-p1 span {
+    color:#f9bf1f;
+}
+.more-groupon-right-p2 {
+    font-size:0.5rem;
+    text-align: right;
+    font-weight: 250;
+}
+.activity-more-groupon {
+    width: 85%;
+    margin-left: 7.5%;
+    min-height: 3rem;
+    background: #fff;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+.more-groupon-right-btn {
+    color: #fff;
+    background: #f9bf1f;
+    font-size:0.5rem;
+    border-radius: 0.3rem;
+    padding:0.2rem 0.3rem;
+    margin-top: -0.2rem;
+}
+.more-groupon-right.groupon {
+    margin-top: -0.5rem;
+    margin-right: 0.4rem;
+}
+.groupon-detail {
+    width: 85%;
+    margin-left: 7.5%;
+    min-height: 3rem;
+    background: #fff;
+    border-radius: 0.5rem;
+    margin-top:0.8rem;
+}
+.groupon-detail-time {
+    text-align: center;
+    padding: 0.5rem 0;
+    padding-top: 1.3rem;
+    font-weight: 250;
+}
+.groupon-detail-title {
+    color:#f9bf1f;
+    font-size:1rem;
+    text-align: center;
+    padding: 0.5rem 0;
+    padding-top: 0;
+    font-weight: 300;
+    padding-bottom: 1rem;
+}
+.groupon-detail-member {
+    width: 80%;
+    margin-left: 10%;
+}
+.groupon-detail-member-img {
+    float: left;
+    position: relative;
+    margin-right: 1rem;
+}
+.groupon-detail-member img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border:1px solid #f9bf1f;
+}
+.groupon-detail-member span {
+    color: #fff;
+    background: #f9bf1f;
+    font-size: 0.4rem;
+    padding: 0.1rem 0.2rem;
+    border-radius: 0.5rem;
+    position: absolute;
+    right: -0.2rem;
+    bottom: 0;
+}
+.groupon-detail-rule {
+    text-align: center;
+    color: #a1a1a1;
+    font-size: 0.75rem;
+    padding: 0.8rem;
+}
+.groupon-detail-time b {
+    font-size: 1rem;
+    color: #f9bf1f;
+    font-weight: 250;
+    margin-right: 0.3rem;
+}
+.groupon-detail-time span {
+    background: #000;
+    color:#fff;
+    padding: 0.1rem;
+    border-radius: 0.2rem;
+}
+.groupon-detail-title.success {
+    padding-top: 1rem;
+}
+.groupon-detail-title.success span{
+    font-size: 1.3rem;
+    margin-right: 0.2rem;
 }
