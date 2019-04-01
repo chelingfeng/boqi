@@ -1,6 +1,8 @@
 <?php
 
 namespace Admin\Controller;
+use Qiniu\Auth;
+use Qiniu\Storage\UploadManager;
 
 class IndexController extends CommonController
 {
@@ -42,9 +44,31 @@ class IndexController extends CommonController
                 $error = $upload->getErrorMsg();
                 $this->ajaxReturn(array('code' => 1, 'msg' => $error));
             }else{
+
                 $uploadList = $upload->getUploadFileInfo();//取得成功上传的文件信息
-                $imgUrl = __ROOT__.'/Public/Uploads/'.$uploadList[0]['savename'];
-                $this->ajaxReturn(codeReturn(0, array('imgurl' => $imgUrl)));
+
+                $accessKey = C('qiniu_access_key');
+                $secretKey = C('qiniu_secret_key');
+                
+                $auth = new Auth($accessKey, $secretKey);
+                $bucket = 'boqi';
+                $token = $auth->uploadToken($bucket);
+
+                $filePath = './Public/Uploads/'.$uploadList[0]['savename'];
+               
+                $key = setting('system')['appid'].'/'.$uploadList['0']['savename'];
+                
+                $uploadMgr = new UploadManager();
+
+                list($ret, $err) = $uploadMgr->putFile($token, $key, $filePath);
+                
+                unlink($filePath);
+
+                if ($err !== null) {
+                    $this->ajaxReturn(array('code' => 1, 'msg' => $err->message()));
+                } else {
+                    $this->ajaxReturn(codeReturn(0, array('imgurl' => 'http://file.browqui.com/'.$key)));
+                }
             }
         }
     }

@@ -1,4 +1,9 @@
 <?php
+if (strpos($_SERVER['REQUEST_URI'], 'MP_verify_')) {
+    $s = explode('_', str_replace('.txt', '', $_SERVER['REQUEST_URI']));
+    header('Content-Type: text/plain');
+    exit($s['2']);
+}
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------

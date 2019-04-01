@@ -6,7 +6,8 @@
         "picqer/php-barcode-generator": "^0.2.2",
         "endroid/qrcode": "^3.5",
         "davedevelopment/phpmig": "^1.5",
-        "zoujingli/wechat-developer": "^1.2"
+        "zoujingli/wechat-developer": "^1.2",
+        "qiniu/php-sdk": "^7.2"
     },
     "config": {
         "bin-dir": "bin"

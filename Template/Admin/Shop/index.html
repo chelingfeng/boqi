@@ -151,9 +151,9 @@
                                                 <td class="require">店铺图</td>
                                                 <td>
                                                     <img src="" class="background" style="width: 285px;height: 165px;display: none;" />
+                                                    <input type="hidden" name="background" />
                                                     <a class="btn btn-default upload_action">点击上传</a>
                                                     <br />建议大小：570px * 330px
-                                                    <input type="hidden" name="background" />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -243,9 +243,9 @@
                                                 <td class="require">店铺图</td>
                                                 <td>
                                                     <img src="" class="background" style="width: 285px;height: 165px;" />
+                                                    <input type="hidden" name="background" />
                                                     <a class="btn btn-default upload_action">点击上传</a>
                                                     <br />建议大小：570px * 330px
-                                                    <input type="hidden" name="background" />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -271,6 +271,10 @@
         </div>
     </div>
 </div>
+
+<form style="display: none;" enctype="multipart/form-data" class="fileform">
+    <input type="file" name="img">
+</form>
 
 <script type="text/javascript">
     $(function(){
@@ -325,6 +329,29 @@
                     $(".loading").hide();
                 }
             })
+        });
+
+        var index;
+        $(".fileform input[name='img']").change(function () {
+            if ($(this).val() == '') return false;
+            $(".loading").show();
+            $.ajax({
+                url: "{:U('Admin/Index/upload')}",
+                type: 'POST',
+                cache: false,
+                data: new FormData($('.fileform')[0]),
+                processData: false,
+                contentType: false
+            }).done(function (res) {
+                if (res.code == 0) {
+                    $(".background:eq(" + index + ")").next().val(res.data.imgurl);
+                    $(".background:eq(" + index + ")").attr('src', res.data.imgurl);
+                    $(".background:eq(" + index + ")").show();
+                } else {
+                    swal("提示", res.msg, "warning");
+                }
+                $(".loading").hide();
+            });
         });
 
         $(".upload_action").click(function () {
