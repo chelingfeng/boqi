@@ -84,7 +84,7 @@
     padding: 0.5rem 0;
 }
 .menu-car {
-    position: fixed;
+    position: absolute;
     width: 60%;
     background:rgba(249, 191, 31, 0.8);
     z-index: 100;
@@ -389,7 +389,7 @@
     float: right;
 }
 .menu-order-bottom {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     height: 2.2rem;
     background: #fff;
