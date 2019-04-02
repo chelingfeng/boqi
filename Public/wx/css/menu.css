@@ -45,6 +45,7 @@
     height: 100%;
     float: left;
     overflow: auto;
+    padding-bottom:2rem;
 }
 .menu-content .menu-menu-content p {
     text-align: center;

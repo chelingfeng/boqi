@@ -29,7 +29,35 @@
     <script type='text/javascript' src='__PUBLIC__/wx/js/index.js?v={:C('version')}' charset='utf-8'></script>
     <script>
       var config = {$system_config};
-      
+      window.onload = function () {
+          //先禁止页面触摸
+          document.body.addEventListener("touchmove", function (evt) {
+            console.log(evt._isScroller)
+            if (!evt._isScroller) {
+              evt.preventDefault();
+            }
+          });
+          //.gamerule为需要滚动条的盒子.
+          var gamerule = document.querySelector(".gamerule");
+          // overscroll(document.querySelector('.gamerule'));
+          //封装overscroll函数, 来控制有滚动条的盒子不被影响
+          var overscroll = function (el) {
+            el.addEventListener("touchstart", function () {
+              var top = el.scrollTop,
+                totalScroll = el.scrollHeight,
+                currentScroll = top + el.offsetHeight;
+              if (top === 0) {
+                el.scrollTop = 1;
+              } else if (currentScroll === totalScroll) {
+                el.scrollTop = top - 1;
+              }
+            });
+            el.addEventListener("touchmove", function (evt) {
+              if (el.offsetHeight < el.scrollHeight)   //如果当前盒子的可视高度  <  实际高度,则开启触摸滑动事件
+                evt._isScroller = true;
+            });
+          };
+        };
     </script>
   </body>
 </html>
