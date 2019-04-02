@@ -4,7 +4,13 @@ $(function () {
     $(document).on("pageInit", "", function(e, id, page) {
         $(".qidai").die("click").live('click', function () {
     		$.alert('该功能即将开放!', '提示');
-    	});
+        });
+        
+        $('textarea, input, select').on('blur', function () {
+            setTimeout(function () {
+                window.scrollTo(0, 0)
+            }, 100)
+        })
     });
 
     //会员首页
