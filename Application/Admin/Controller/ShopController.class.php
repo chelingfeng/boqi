@@ -3,6 +3,7 @@
 namespace Admin\Controller;
 
 use Codeages\Biz\Framework\Util\ArrayToolkit;
+use WeMini\Qrcode;
 
 class ShopController extends CommonController
 {
@@ -223,6 +224,19 @@ class ShopController extends CommonController
         $_POST['update_time'] = date('Y-m-d H:i:s');
         M('shop_goods_type')->where(array('id' => $_POST['id']))->save($_POST);
         $this->ajaxReturn(codeReturn(0));
+    }
+
+    public function downLoadQrcode()
+    {
+        header('Content-type:image/png');
+        $config = setting('system');
+        $qrcode = new Qrcode([
+            'appid' => $config['appid'],
+            'appsecret' => $config['secret'],
+            'cache_path' => './Runtime/',
+        ]);
+        $path = 'https://'.$_SERVER['SERVER_NAME'].'/?c=Menu&openid={openid}&table_number_id='.$_GET['id'].'&id='.$_GET['shop_id'];
+        echo $qrcode->createMiniPath('?callback='.urlencode($path));
     }
 }
 
