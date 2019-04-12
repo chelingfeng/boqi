@@ -51,6 +51,7 @@
     text-align: center;
     line-height: 3rem;
     margin: 0;
+    font-size: 0.7rem;
 }
 .menu-content .menu-menu-content p.active {
     color: #f9bf1f;

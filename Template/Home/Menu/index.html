@@ -1,7 +1,16 @@
 <extend name="Common/__base" />
 <block name="body">
 <div class="page-group">
+    
     <div class="page page-current" style="background: #fff" id="page-menu-index">
+        <div class="menu-car">
+            <div class="menu-car-gouwuche">
+                <span class="iconfont icon-gouwuche icon2"></span>
+                <span class="point">0</span>
+            </div>
+            <div class="menu-car-money">¥0</div>
+            <div class="menu-car-btn">下单</div>
+        </div>
         <input type="hidden" name="shop_id" value="{$shop.id}">
         <input type="hidden" name="table_number_id" value="{$Think.get.table_number_id}">
         <input type="hidden" name="shops" value='{:json_encode($shops)}'>
@@ -22,15 +31,6 @@
                 <div class="swiper-pagination" style="bottom:-3px;"></div>
             </div> -->
 
-            <div class="menu-car">
-                <div class="menu-car-gouwuche">
-                    <span class="iconfont icon-gouwuche icon2"></span>
-                    <span class="point">0</span>
-                </div>
-                <div class="menu-car-money">¥0</div>
-                <div class="menu-car-btn">下单</div>
-            </div>
-            
             <div class="new_mask"></div>
             <div class="menu-car-detail">
                 <div class="menu-car-detail-title">
