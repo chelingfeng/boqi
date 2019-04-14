@@ -883,6 +883,12 @@ $(function () {
 
     //菜单首页
     $(document).on("pageInit", "#page-menu-index", function (e, id, page) {
+
+        $('.menu-goods-content img').picLazyLoad({
+            window:'.menu-goods-content',
+            threshold :100,
+        });
+
         var buycarId = 'buycar'+$("[name='shop_id']").val();
         var shop = JSON.parse($("[name='shop']").val());
         if ($.fn.cookie(buycarId) == null) {
@@ -909,7 +915,6 @@ $(function () {
                         $(".menu-goods-detail [name='goods_title']").val(res.data.title);
                         $(".menu-goods-detail [name='goods_carousel']").val(res.data.carousel[0]);
                         $(".menu-goods-detail [name='goods_price']").val(res.data.price * 100);
-                        $('.menu-goods-detail-img').attr('src', res.data.carousel[0]);
                         var guige = '';
                         res.data.options.forEach(function (item, index) {
                             guige += '<div class="menu-goods-detail-guige">';
@@ -935,8 +940,25 @@ $(function () {
                             $(".menu-goods-detail-tuijian-list").html(tuijian);
                             $(".menu-goods-detail .close").css('bottom', '-7.5rem');
                         }
+
                         $(".menu-goods-detail .menu-goods-detail-guige-content").html(guige);
                         $('.mask,.menu-goods-detail').show();
+                        $("#menu-goods-detail-swiper-container .swiper-wrapper").html('');
+                        res.data.carousel.forEach(function(item, index){
+                            item = item + '?imageView2/1/w/' + $("#menu-goods-detail-swiper-container").width() + '/h/' + $("#menu-goods-detail-swiper-container").height()
+                            $("#menu-goods-detail-swiper-container .swiper-wrapper").append('<div class="swiper-slide"><img src="'+item+'"/></div>');
+                        });
+                        var swiper = new Swiper('#menu-goods-detail-swiper-container', {
+                            loop: true,
+                            pagination: {
+                                el: '.swiper-pagination',
+                            },
+                            autoplay: {
+                                delay: 3000,
+                                stopOnLastSlide: false,
+                                disableOnInteraction: false,
+                            },
+                        });
                     } else {
                         $.alert(res.msg, '提示');
                     }
@@ -1069,7 +1091,7 @@ $(function () {
             var index = $(this).parent().parent().attr('data-index');
             buycar[index].number = buycar[index].number - 1;
             if (buycar[index].number <= 0 ) {
-                buycar.splice(index, index + 1);
+                buycar.splice(index, 1);
             }
             $.fn.cookie(buycarId, JSON.stringify(buycar), { expires: 365 }); 
             showCarDetail();
@@ -1119,23 +1141,28 @@ $(function () {
 
         $(".menu-menu-content p").click(function(){
             var index = $(".menu-menu-content p").index(this);
-            var contentHeight = parseInt($('.menu-content').offset().top);
-            var thisHeight = $('.menu-goods-content .content-block-title').eq(index).offset().top;
+            var height = 0;
+            for (var i = 0; i < index; i++) {
+                height += $('.content-block-title').eq(i).height();
+                height += $('.content-block-title').eq(i).next().height();
+            }
             $(".menu-menu-content p").removeClass('active');
             $(this).addClass('active');
-            $(".menu-goods-content").scrollTop((thisHeight - contentHeight) - 20);
+            $(".menu-goods-content").scrollTop(height);
         });
 
         $('.menu-goods-content').scroll(function(){
-            var height = $(window).height();
-            var i = 0;
+            var height = $('.menu-index-message').height() + $(".menu-contact").height() + 25;
+            var i = -1;
             $('.menu-goods-content .content-block-title').each(function(index){
-                if (height > ($(this).offset().top + 100)) {
+                if ($(this).offset().top < height && $(this).offset().top > 5) {
                     i = index;
                 }
             });
-            $(".menu-menu-content p").removeClass('active');
-            $(".menu-menu-content p").eq(i).addClass('active');
+            if (i > -1) {
+                $(".menu-menu-content p").removeClass('active');
+                $(".menu-menu-content p").eq(i).addClass('active');
+            }
         });
 
         $(".menu-goods-detail .close").click(function(){

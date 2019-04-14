@@ -52,6 +52,10 @@
     line-height: 3rem;
     margin: 0;
     font-size: 0.7rem;
+    width: 100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
 }
 .menu-content .menu-menu-content p.active {
     color: #f9bf1f;
@@ -60,7 +64,8 @@
 }
 
 .menu-content .content-block-title {
-    margin: 1.25rem .75rem .5rem;
+    padding: 1.25rem .75rem .5rem;
+    margin: 0;
 }
 .menu-content .item-subtitle {
     font-size: 0.6rem;
@@ -249,9 +254,13 @@
     border-radius: 0.8rem;
     padding: 0.5rem;
 }
-.menu-goods-detail .menu-goods-detail-img {
+.menu-goods-detail #menu-goods-detail-swiper-container {
     width: 100%;
     height: 9rem;
+}
+.menu-goods-detail #menu-goods-detail-swiper-container img {
+    width: 100%;
+    height: 100%;
     border-radius: 0.8rem;
 }
 .menu-goods-detail .close {

@@ -71,7 +71,15 @@
                 <input type="hidden" name="goods_title" />
                 <input type="hidden" name="goods_price" />
                 <input type="hidden" name="goods_carousel" />
-                <img src="" class="menu-goods-detail-img">
+
+                <div class="swiper-container" id="menu-goods-detail-swiper-container">
+                    <div class="swiper-wrapper">
+                        
+                    </div>
+                    <div class="swiper-pagination" style="bottom:-3px;"></div>
+                </div>
+                <!-- <img src="" class="menu-goods-detail-img"> -->
+
                 <div class="menu-goods-detail-guige-content">
                     <!-- <div class="menu-goods-detail-guige">
                         <div class="menu-goods-detail-guige-tt">规格</div>
@@ -103,14 +111,14 @@
                 <div class="menu-goods-content">
                     <?php foreach($shop['goodsType'] as $key => $type){ ?>
                     <div class="content-block-title">{$type.title}</div>
-                    <div class="list-block media-list">
+                    <div class="list-block media-list" style="margin:0px">
                         <ul>
                             <?php foreach($type['goods'] as $goods){ ?>
                             <li data-id="{$goods.id}">
                                 <div class="item-content padding05">
                                     <?php if($goods['thumb']){ ?>
                                     <div class="item-media">
-                                        <img src="{$goods.thumb}?imageView2/1/w/90/h/90/q/75" style='height:4.5rem; width: 4.5rem;'>
+                                        <img data-original="{$goods.thumb}?imageView2/1/w/90/h/90" style='height:4.5rem; width: 4.5rem;'>
                                     </div>
                                     <?php } ?>
                                     <div class="item-inner">

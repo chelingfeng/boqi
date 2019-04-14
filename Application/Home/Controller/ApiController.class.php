@@ -87,14 +87,14 @@ class ApiController extends Controller {
 				'create_time' => date('Y-m-d H:i:s'),
 				'amount' => $order['amount'],
 			]);
-			M('order')->where(['id' => $order['id']])->save(['status' => 'paying']);
-			M('order_discount')->where(['order_id' => $order['id']])->save(['status' => 'paying']);
-			M('order_item')->where(['order_id' => $order['id']])->save(['status' => 'paying']);
-			M('order_log')->add([
-				'order_id' => $order['id'],
-				'status' => 'paying',
-				'create_time' => date('Y-m-d H:i:s'),
-			]);
+			// M('order')->where(['id' => $order['id']])->save(['status' => 'paying']);
+			// M('order_discount')->where(['order_id' => $order['id']])->save(['status' => 'paying']);
+			// M('order_item')->where(['order_id' => $order['id']])->save(['status' => 'paying']);
+			// M('order_log')->add([
+			// 	'order_id' => $order['id'],
+			// 	'status' => 'paying',
+			// 	'create_time' => date('Y-m-d H:i:s'),
+			// ]);
 			//创建支付订单改变状态
 			$payData = $response->getJsOrderData();
 			$this->ajaxReturn(codeReturn(0, $payData));
