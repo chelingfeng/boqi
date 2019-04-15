@@ -920,11 +920,7 @@ $(function () {
                             guige += '<div class="menu-goods-detail-guige">';
                             guige += '<div class="menu-goods-detail-guige-tt">' + item.key + '</div>';
                             item.val.forEach(function (item, index) {
-                                if (index == 0) {
-                                    guige += '<div class="menu-goods-detail-guige-list active">' + item + '</div>';
-                                } else {
-                                    guige += '<div class="menu-goods-detail-guige-list">' + item + '</div>';
-                                }
+                                guige += '<div class="menu-goods-detail-guige-list" data-amount="'+item.value+'">' + item.key + '</div>';
                             });
                             guige += '<div class="both"></div>';
                             guige += '</div>';
@@ -970,6 +966,11 @@ $(function () {
         $(document).on('click', '.menu-goods-detail-guige-list', function(){
             $(this).parent().find('.menu-goods-detail-guige-list').removeClass('active');
             $(this).addClass('active');
+            var price = parseInt($(".menu-goods-detail [name='goods_price']").val());
+            $('.menu-goods-detail-guige-list.active').each(function(){
+                price += parseInt($(this).data('amount'));
+            });
+            $(".menu-goods-detail .price-price").html('¥' + (price / 100).toFixed(2));
         })
 
         //商品详情
@@ -1032,13 +1033,17 @@ $(function () {
                 }
             });
             if (flag == 1) {
+                var price = parseInt($(".menu-goods-detail [name='goods_price']").val());
+                $('.menu-goods-detail-guige-list.active').each(function () {
+                    price += parseInt($(this).data('amount'));
+                });
                 buycar.push({
                     id: $(".menu-goods-detail [name='goods_id']").val(),
                     title: $(".menu-goods-detail [name='goods_title']").val(),
                     carousel: $(".menu-goods-detail [name='goods_carousel']").val(),
                     number: 1,
                     options: options,
-                    price: parseInt($(".menu-goods-detail [name='goods_price']").val()),
+                    price: price,
                 });
             }
             $.fn.cookie(buycarId, JSON.stringify(buycar), { expires: 365 }); 

@@ -8,7 +8,7 @@ function createOrder($fields)
         'user_id' => $fields['user_id'],
         'type' => $fields['type'],
         'title' => $fields['title'],
-        'detail' => json_encode($fields['detail']),
+        'detail' => json_encode($fields['detail'], JSON_UNESCAPED_UNICODE),
         'order_sn' => generateSn(),
         'amount' => 0,
         'discount' => 0,

@@ -43,7 +43,7 @@ class MenuController extends CommonController
         }
         $buycar = $this->getBuyCar($shopId);
         $tables = M('shop_table')->where(['shop_id' => $shopId])->order('sort ASC, id DESC')->select();
-        $this->assign( 'tables', $tables);
+        $this->assign('tables', $tables);
         $this->assign('buycar', $buycar);
         $this->assign('user', $this->getUserInfo());
         $this->display();
@@ -122,7 +122,6 @@ class MenuController extends CommonController
                 unset($buycar[$key]);
             } else {
                 $buycar[$key]['title'] = $goods['title'];
-                $buycar[$key]['price'] = $goods['price'] * 100;
                 $buycar[$key]['carousel'] = $goods['carousel'][0];
             }
         }

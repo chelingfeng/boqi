@@ -236,7 +236,11 @@
                         var html = '';
                         data.data.detail.forEach(function(item, index){
                             html += '<tr class="goods">';
-                                html += '<td>'+item.title+'</td>';
+                                if (item.options.length > 0) {
+                                    html += '<td>' + item.title + ' '+item.options.join('、')+'</td>';
+                                } else {
+                                    html += '<td>' + item.title + '</td>';
+                                }
                                 html += '<td>' + item.number +'</td>';
                                 html += '<td>'+(item.number * item.price / 100).toFixed(2)+'</td>';
                             html += '</tr>';

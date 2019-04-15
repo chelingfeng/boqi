@@ -122,14 +122,22 @@ class ShopController extends CommonController
         $data['original_price'] = sprintf("%.2f", $data['original_price'] / 100);
         $data['price'] = sprintf("%.2f", $data['price'] / 100);
         $data['carousel'] = json_decode($data['carousel'], true);
+        $options = [];
         if ($data['options']) {
-            $data['options'] = json_decode($data['options'], true);
-            $options = '';
+            $data['options'] = json_decode($data['options'], true) ?? [];
             foreach ($data['options'] as $option) {
-                $options .= $option['key'].'='.implode(',', $option['val'])."\n";
+                $thisOption = [
+                    'key' => $option['key'],
+                    'val' => '',
+                ];
+                foreach ($option['val'] as $val) {
+                    $thisOption['val'] .= $val['key'].'='.($val['value'] / 100)."\n";
+                }
+                $thisOption['val'] = rtrim($thisOption['val'], "\n");
+                $options[] = $thisOption;
             }
-            $data['options'] = rtrim($options, "\n");
         }
+        $data['options'] = $options;
         $this->ajaxReturn(codeReturn(0, $data));
     }
 
@@ -140,17 +148,24 @@ class ShopController extends CommonController
         $_POST['original_price'] = $_POST['original_price'] * 100;
         $_POST['price'] = $_POST['price'] * 100;
         if ($_POST['options']) {
-            $options = explode("\n", $_POST['options']);
-            $_POST['options'] = [];
-            foreach ($options as $option) {
-                list($key, $value) = explode('=', $option);
-                $values = explode(',', $value);
-                $_POST['options'][] = [
-                    'key' => $key,
-                    'val' => $values,
+            $_POST['options'] = json_decode($_POST['options'], true) ?? [];
+            $options = [];
+            foreach ($_POST['options'] as $option) {
+                $vals = explode("\n", $option['val']);
+                $thisOption = [
+                    'key' => $option['key'],
+                    'val' => [],
                 ];
+                foreach ($vals as $val) {
+                    list($key, $value) = explode('=', $val);
+                    $thisOption['val'][] = [
+                        'key' => $key,
+                        'value' => $value * 100,
+                    ];
+                }
+                $options[] = $thisOption;
             }
-            $_POST['options'] = json_encode($_POST['options'], JSON_UNESCAPED_UNICODE);
+            $_POST['options'] = json_encode($options, JSON_UNESCAPED_UNICODE);
         }
         M('shop_goods')->add($_POST);
         $this->ajaxReturn(codeReturn(0));
@@ -166,17 +181,24 @@ class ShopController extends CommonController
             $_POST['price'] = $_POST['price'] * 100;
         }
         if ($_POST['options']) {
-            $options = explode("\n", $_POST['options']);
-            $_POST['options'] = [];
-            foreach ($options as $option) {
-                list($key, $value) = explode('=', $option);
-                $values = explode(',', $value);
-                $_POST['options'][] = [
-                    'key' => $key,
-                    'val' => $values,
+            $_POST['options'] = json_decode($_POST['options'], true) ?? [];
+            $options = [];
+            foreach ($_POST['options'] as $option) {
+                $vals = explode("\n", $option['val']);
+                $thisOption = [
+                    'key' => $option['key'],
+                    'val' => [],
                 ];
+                foreach ($vals as $val) {
+                    list($key, $value) = explode('=', $val);
+                    $thisOption['val'][] = [
+                        'key' => $key,
+                        'value' => $value * 100,
+                    ];
+                }
+                $options[] = $thisOption;
             }
-            $_POST['options'] = json_encode($_POST['options'], JSON_UNESCAPED_UNICODE);
+            $_POST['options'] = json_encode($options, JSON_UNESCAPED_UNICODE);
         }
         M('shop_goods')->where(['id' => $_POST['id']])->save($_POST);
         $this->ajaxReturn(codeReturn(0));

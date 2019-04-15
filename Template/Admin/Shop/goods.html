@@ -244,9 +244,24 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="">选项</td>
-                                                    <td>
-                                                        <textarea name="options" placeholder="备注=不要葱,不要香菜" style="width:80%" rows="5"></textarea>
+                                                    <td class="" colspan="2">
+                                                        规格设置
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="" colspan="2">
+                                                        <table class="table-bordered bg-white table-form">
+                                                            <tr>
+                                                                <td><input type="text" placeholder="规格名称" name="options_key"></td>
+                                                                <td><input type="text" placeholder="规格名称" name="options_key"></td>
+                                                                <td><input type="text" placeholder="规格名称" name="options_key"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><textarea name="options_val" placeholder="规格=差价&#13;&#10;规格2=差价2" rows="3"></textarea></td>
+                                                                <td><textarea name="options_val" placeholder="规格=差价&#13;&#10;规格2=差价2" rows="3"></textarea></td>
+                                                                <td><textarea name="options_val" placeholder="规格=差价&#13;&#10;规格2=差价2" rows="3"></textarea></td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -410,10 +425,24 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="">选项</td>
-                                                    <td>
-                                                        <textarea name="options" placeholder="备注=不要葱,不要香菜" style="width:80%"
-                                                            rows="5"></textarea>
+                                                    <td class="" colspan="2">
+                                                        规格设置
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="" colspan="2">
+                                                        <table class="table-bordered bg-white table-form">
+                                                            <tr>
+                                                                <td><input type="text" placeholder="规格名称" name="options_key"></td>
+                                                                <td><input type="text" placeholder="规格名称" name="options_key"></td>
+                                                                <td><input type="text" placeholder="规格名称" name="options_key"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><textarea name="options_val" placeholder="规格=差价&#13;&#10;规格2=差价2" rows="3"></textarea></td>
+                                                                <td><textarea name="options_val" placeholder="规格=差价&#13;&#10;规格2=差价2" rows="3"></textarea></td>
+                                                                <td><textarea name="options_val" placeholder="规格=差价&#13;&#10;规格2=差价2" rows="3"></textarea></td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -473,7 +502,8 @@
                             $("#edit_card [name='goods_type_id']").val(data.data.goods_type_id);
                             $("#edit_card .icon-plus3").removeClass('hide');
                             $("#edit_card .album-plus img").attr('src', '');
-                            $("#edit_card [name='options']").val(data.data.options);
+                            $("#edit_card [name='options_key']").val('');
+                            $("#edit_card [name='options_val']").val('');
                             $("#edit_card [name='description']").val(data.data.description);
                             if (data.data.thumb != '') {
                                 $("#edit_card [name='thumb']").attr('src', data.data.thumb);
@@ -492,6 +522,10 @@
                             tuijian.forEach(function(val, index){
                                 $("#edit_card [name='tuijian']:eq("+index+")").selectpicker('val', val);
                             });
+                            data.data.options.forEach(function(item, index){
+                                $("#edit_card [name='options_key']").eq(index).val(item.key);
+                                $("#edit_card [name='options_val']").eq(index).val(item.val);
+                            })
                             $("#edit_card").addClass('show');
                         } else {
                             swal("提示", data.msg, "warning");
@@ -601,7 +635,7 @@
                     price: $("#add_card [name='price']").val(),
                     shop_id: $("[name='shop_id']").val(),
                     thumb: $("#add_card [name='thumb']").attr('src'),
-                    options: $("#add_card [name='options']").val(),
+                    options: [],
                     description: $("#add_card [name='description']").val(),
                     carousel: [],
                     tuijian: [],
@@ -654,6 +688,15 @@
                 });
                 data.tuijian = JSON.stringify(data.tuijian);
 
+                for (var i = 0; i <= 2; i++) {
+                    var key = $("#add_card [name='options_key']").eq(i).val();
+                    var val = $("#add_card [name='options_val']").eq(i).val();
+                    if (key != '' && val != '') {
+                        data.options.push({key, val});
+                    }
+                }
+                data.options = JSON.stringify(data.options);
+
                 $(".loading").show();
                 $.ajax({
                     type: 'POST',
@@ -683,7 +726,7 @@
                     price: $("#edit_card [name='price']").val(),
                     shop_id: $("[name='shop_id']").val(),
                     thumb: $("#edit_card [name='thumb']").attr('src'),
-                    options: $("#edit_card [name='options']").val(),
+                    options: [],
                     description: $("#edit_card [name='description']").val(),
                     carousel: [],
                     tuijian: [],
@@ -735,6 +778,16 @@
                     }
                 });
                 data.tuijian = JSON.stringify(data.tuijian);
+
+                for (var i = 0; i <= 2; i++) {
+                    var key = $("#edit_card [name='options_key']").eq(i).val();
+                    var val = $("#edit_card [name='options_val']").eq(i).val();
+                    if (key != '' && val != '') {
+                        data.options.push({ key, val });
+                    }
+                }
+                data.options = JSON.stringify(data.options);
+
 
                 $(".loading").show();
                 $.ajax({
