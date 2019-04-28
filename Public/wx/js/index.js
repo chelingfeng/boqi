@@ -945,7 +945,7 @@ $(function () {
                             $("#menu-goods-detail-swiper-container .swiper-wrapper").append('<div class="swiper-slide"><img src="'+item+'"/></div>');
                         });
                         var swiper = new Swiper('#menu-goods-detail-swiper-container', {
-                            loop: true,
+                            loop: false,
                             pagination: {
                                 el: '.swiper-pagination',
                             },
