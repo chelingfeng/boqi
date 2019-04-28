@@ -949,11 +949,11 @@ $(function () {
                             pagination: {
                                 el: '.swiper-pagination',
                             },
-                            autoplay: {
-                                delay: 3000,
-                                stopOnLastSlide: false,
-                                disableOnInteraction: false,
-                            },
+                            // autoplay: {
+                            //     delay: 3000,
+                            //     stopOnLastSlide: false,
+                            //     disableOnInteraction: false,
+                            // },
                         });
                     } else {
                         $.alert(res.msg, '提示');
