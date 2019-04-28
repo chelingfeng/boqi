@@ -941,7 +941,7 @@ $(function () {
                         $('.mask,.menu-goods-detail').show();
                         $("#menu-goods-detail-swiper-container .swiper-wrapper").html('');
                         res.data.carousel.forEach(function(item, index){
-                            item = item + '?imageView2/1/w/' + $("#menu-goods-detail-swiper-container").width() + '/h/' + $("#menu-goods-detail-swiper-container").height()
+                            item = item + '?imageView2/1/w/' + (parseInt($("#menu-goods-detail-swiper-container").width()) * 1.5) + '/h/' + (parseInt($("#menu-goods-detail-swiper-container").height()) * 1.5)
                             $("#menu-goods-detail-swiper-container .swiper-wrapper").append('<div class="swiper-slide"><img src="'+item+'"/></div>');
                         });
                         var swiper = new Swiper('#menu-goods-detail-swiper-container', {
