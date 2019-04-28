@@ -290,6 +290,7 @@
     padding: 0.2rem 0.8rem;
     border-radius: 0.3rem;
     border: 1px solid #f9bf1d;
+    margin-bottom: 0.5rem;
 }
 .menu-goods-detail-guige-list.active {
     background: #f9bf1d;
