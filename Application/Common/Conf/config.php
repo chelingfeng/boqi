@@ -108,6 +108,9 @@ return array_merge($db, array(
     'qiniu_secret_key' => 'WcI8wWpoKx12qfkhGqwCaVxkZCEvN8G9yeWqvc1I',
     'qiniu_bucket' => 'boqi',
 
-    // 'version' => 'v1.0.6',
-    'version' => time(),
+    'version' => 'v1.0.7.1',
+    // 'version' => time(),
+
+    'yly_id' => '1034489432',
+    'yly_secret' => '4a3c2a877d83ce7392888c2502c5adbf',
 ));

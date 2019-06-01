@@ -7,7 +7,8 @@
         "endroid/qrcode": "^3.5",
         "davedevelopment/phpmig": "^1.5",
         "zoujingli/wechat-developer": "^1.2",
-        "qiniu/php-sdk": "^7.2"
+        "qiniu/php-sdk": "^7.2",
+        "yly-openapi/yly-openapi-sdk": "v1.0.1"
     },
     "config": {
         "bin-dir": "bin"

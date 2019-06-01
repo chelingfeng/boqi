@@ -1,4 +1,7 @@
 <?php
+use App\Config\YlyConfig;
+use App\Oauth\YlyOauthClient;
+use App\Api\PrintService;
 
 function createOrder($fields)
 {
@@ -138,6 +141,7 @@ function orderPaid($orderId)
                     'create_time' => date('Y-m-d H:i:s'),
                 ]);
             }
+            printByOrderId($order['id']);
         } elseif ($order['type'] == 'activity_seckill') {
             $playId = $items[0]['target_id'];
             M('activity_seckill_play')->where(['id' => $playId])->save(['status' => 'success']);
@@ -187,6 +191,56 @@ function orderPaid($orderId)
                     M('activity_groupon_member')->where(['play_id' => $playId])->save(['status' => 'success']);
                 }
             }
+        }
+    }
+}
+
+function printByOrderId($orderId)
+{   
+    $order = M('order')->where(['id' => $orderId])->find();
+    if (empty($order)) return;
+    $order['detail'] = json_decode($order['detail'], true);
+    $prints = M('print_device')->where(['shop_id' => $order['shop_id']])->select();
+    foreach ($prints as $key => $print) {
+        $prints[$key]['goods_type_ids'] = json_decode($print['goods_type_ids'], true);
+        $prints[$key]['goods'] = [];
+    }
+
+    foreach ($order['detail'] as $goods) {
+        $goodsTypeId = M('shop_goods')->where(['id' => $goods['id']])->find()['goods_type_id'];
+        foreach ($prints as $key => $print) {
+            if (in_array($goodsTypeId, $print['goods_type_ids'])) {
+                $prints[$key]['goods'][] = $goods;
+            }
+        }
+    }
+
+    $config = new YlyConfig(C('yly_id'), C('yly_secret'));
+    $client = new YlyOauthClient($config);
+    $token = $client->getToken();   //若是开放型应用请传授权码code
+    $printClient = new PrintService($token->access_token, $config);
+
+    foreach ($prints as $key => $print) {
+        if (!empty($print['goods'])) {
+            $str = '@@2             点菜单
+台位:@@2 %s
+单号:%s  人数:%s
+日期: %s       餐段:全天
+================================%s
+--------------------------------
+@@2                          合计:%s
+下单时间:%s';
+            $gStr = '';
+            $num = 0;
+            foreach ($print['goods'] as $g) {
+                $num = $num + $g['number'];
+                $gStr .= '\r<LR>@@2'.$g['title'].','.$g['number'].'份</LR>';
+            }
+
+            $printStr = sprintf($str, $order['table_number'], $order['order_sn'], $order['people_number'], substr($order['create_time'], 0, 10), $gStr
+        , $num, $order['create_time']);
+            
+            $data = $printClient->index($print['number'], $printStr, time());
         }
     }
 }
