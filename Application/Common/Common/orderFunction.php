@@ -200,7 +200,9 @@ function printByOrderId($orderId)
     $order = M('order')->where(['id' => $orderId])->find();
     if (empty($order)) return;
     $order['detail'] = json_decode($order['detail'], true);
-    $prints = M('print_device')->where(['shop_id' => $order['shop_id']])->select();
+    $tableAreaId = M('shop_table')->where(['shop_id' => $order['shop_id'], 'title' => $order['table_number']])->getField('area_id');
+    $prints = M('print_device')->where("shop_id = ".$order['shop_id']." AND area_ids like '%".$tableAreaId."%'")->select();
+    if (empty($prints)) return;
     foreach ($prints as $key => $print) {
         $prints[$key]['goods_type_ids'] = json_decode($print['goods_type_ids'], true);
         $prints[$key]['goods'] = [];

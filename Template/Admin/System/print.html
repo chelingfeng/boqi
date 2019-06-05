@@ -127,6 +127,12 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td class="require">打印区域</td>
+                                                    <td class="area_ids">
+                                                
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td class="">备注</td>
                                                     <td>
                                                         <input type="text" name="remark">
@@ -197,6 +203,12 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td class="require">打印区域</td>
+                                                    <td class="area_ids">
+                                                        
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td class="">备注</td>
                                                     <td>
                                                         <input type="text" name="remark">
@@ -224,6 +236,7 @@
         $(function () {
 
             var shops = {:json_encode($shops)};
+            var area = {:json_encode($area)};
 
             $("#shop_id").change(function () {
                 $('#formsubmit').attr('action', '{:U('print')}').submit();
@@ -232,6 +245,7 @@
             $("#add_card [name='shop_id']").change(function () {
                 var shop_id = $(this).val();
                 $("#add_card .types").html('');
+                $("#add_card .area_ids").html('');
                 if (shop_id != '') {
                     var types = shops[shop_id].types;
                     var html = '';
@@ -242,6 +256,16 @@
                         }
                     });
                     $("#add_card .types").html(html);
+
+                    var ar = area[shop_id];
+                    var html = '';
+                    ar.forEach(function(item, index){
+                        html += '<input type="checkbox" name="area_ids" value="' + item.id + '"/> ' + item.title + ' ';
+                        if (((index + 1) % 5) == 0) {
+                            html += '<br>';
+                        }
+                    });
+                    $("#add_card .area_ids").html(html);
                 }
             });
 
@@ -258,6 +282,16 @@
                         }
                     });
                     $("#edit_card .types").html(html);
+
+                    var ar = area[shop_id];
+                    var html = '';
+                    ar.forEach(function (item, index) {
+                        html += '<input type="checkbox" name="area_ids" value="' + item.id + '"/> ' + item.title + ' ';
+                        if (((index + 1) % 5) == 0) {
+                            html += '<br>';
+                        }
+                    });
+                    $("#edit_card .area_ids").html(html);
                 }
             });
 
@@ -274,7 +308,8 @@
                     title: $("#add_card [name='title']").val(),
                     number: $("#add_card [name='number']").val(),
                     remark: $("#add_card [name='remark']").val(),
-                    goods_type_ids: []
+                    goods_type_ids: [],
+                    area_ids: []
                 };
                 if (data.title == '') {
                     swal({ title: "提示", text: "打印机名称不能为空", type: "warning" }, function () {
@@ -299,6 +334,21 @@
                 if (data.goods_type_ids.length == 0) {
                     swal({ title: "提示", text: "请至少选择一个打印范围", type: "warning" }, function () {
                         
+                    });
+                    return false;
+                }
+
+                var i = 0;
+                $("#add_card [name='area_ids']").each(function () {
+                    if ($(this).is(":checked")) {
+                        data.area_ids[i] = $(this).val();
+                        i++;
+                    }
+                });
+
+                if (data.area_ids.length == 0) {
+                    swal({ title: "提示", text: "请至少选择一个打印区域", type: "warning" }, function () {
+
                     });
                     return false;
                 }
@@ -370,7 +420,10 @@
                             $("#edit_card [name='remark']").val(data.data.remark);
                             $("#edit_card [name='title']").val(data.data.title);
                             data.data.goods_type_ids.forEach(function(item){
-                                $("#edit_card [value='"+item+"']").attr('checked', true);
+                                $("#edit_card .types [value='"+item+"']").attr('checked', true);
+                            })
+                            data.data.area_ids.forEach(function (item) {
+                                $("#edit_card .area_ids [value='" + item + "']").attr('checked', true);
                             })
                             $("#edit_card").addClass('show');
                         } else {
@@ -390,7 +443,8 @@
                     title: $("#edit_card [name='title']").val(),
                     number: $("#edit_card [name='number']").val(),
                     remark: $("#edit_card [name='remark']").val(),
-                    goods_type_ids: []
+                    goods_type_ids: [],
+                    area_ids: []
                 };
                 if (data.title == '') {
                     swal({ title: "提示", text: "打印机名称不能为空", type: "warning" }, function () {
@@ -414,6 +468,21 @@
 
                 if (data.goods_type_ids.length == 0) {
                     swal({ title: "提示", text: "请至少选择一个打印范围", type: "warning" }, function () {
+
+                    });
+                    return false;
+                }
+
+                var i = 0;
+                $("#edit_card [name='area_ids']").each(function () {
+                    if ($(this).is(":checked")) {
+                        data.area_ids[i] = $(this).val();
+                        i++;
+                    }
+                });
+
+                if (data.area_ids.length == 0) {
+                    swal({ title: "提示", text: "请至少选择一个打印区域", type: "warning" }, function () {
 
                     });
                     return false;

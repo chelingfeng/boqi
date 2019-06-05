@@ -31,6 +31,8 @@ class ShopController extends CommonController
         }
         $data = M('shop_table')->where($where)->order('sort ASC, id DESC')->select();
         $shop = M('shop')->where(['id' => $_GET['id']])->find();
+        $area = ArrayToolkit::index(M('shop_table_area')->where("shop_id = ".$_GET['id'])->order('id DESC')->select(), 'id');
+        $this->assign('area', $area);
         $this->assign('data', $data);
         $this->assign('shop', $shop);
         $this->display();
@@ -259,6 +261,43 @@ class ShopController extends CommonController
         ]);
         $path = 'https://'.$_SERVER['SERVER_NAME'].'/?c=Menu&openid={openid}&table_number_id='.$_GET['id'].'&id='.$_GET['shop_id'];
         echo $qrcode->createMiniPath('?callback='.urlencode($path));
+    }
+
+    public function tableArea()
+    {
+        $where = "shop_id = ".$_GET['id'];
+        $data = M('shop_table_area')->where($where)->order('id DESC')->select();
+        $shop = M('shop')->where(['id' => $_GET['id']])->find();
+        $this->assign('data', $data);
+        $this->assign('shop', $shop);
+        $this->display();
+    }
+
+    public function addTableArea()
+    {
+        $_POST['create_time'] = date('Y-m-d H:i:s');
+        $_POST['update_time'] = date('Y-m-d H:i:s');
+        M('shop_table_area')->add($_POST);
+        $this->ajaxReturn(codeReturn(0));
+    }
+
+    public function delTableArea()
+    {
+        M('shop_table_area')->where(['id' => $_POST['id']])->delete();
+        $this->ajaxReturn(codeReturn(0));
+    }
+
+    public function findTableArea()
+    {
+        $data = M('shop_table_area')->where($_POST)->find();
+        $this->ajaxReturn(codeReturn(0, $data));
+    }
+
+    public function updateTableArea()
+    {
+        $_POST['update_time'] = date('Y-m-d H:i:s');
+        M('shop_table_area')->where(array('id' => $_POST['id']))->save($_POST);
+        $this->ajaxReturn(codeReturn(0));
     }
 }
 

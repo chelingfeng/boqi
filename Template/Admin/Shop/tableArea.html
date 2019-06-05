@@ -17,8 +17,8 @@
         <input type="hidden" name="shop_id" value="{$Think.get.id}" />
         <div class="page-tabs" style="top:50px;">
             <ul class="page-tabs-nav" id="changeaction">
-                <li class="active" onclick="location.href='{:U('table', array('id' => $_GET['id']))}'">餐桌管理</li>
-                <li class="" onclick="location.href='{:U('tableArea', array('id' => $_GET['id']))}'">区域管理</li>
+                <li class="" onclick="location.href='{:U('table', array('id' => $_GET['id']))}'">餐桌管理</li>
+                <li class="active" onclick="location.href='{:U('tableArea', array('id' => $_GET['id']))}'">区域管理</li>
             </ul>
             <form method="post" action="" id="formsubmit">
                 <div class="tool-bar ng-scope" style="background:#fff;border-bottom:1px solid #dfe0e0">
@@ -47,26 +47,17 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>排序</th>
                                     <th>名称</th>
-                                    <th>区域</th>
-                                    <th>人数</th>
-                                    <th>备注</th>
-                                    <th>添加时间</th>
+                                    <th>最后更新时间</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach($data as $v){ ?>
                                 <tr>
-                                    <td>{$v.sort}</td>
                                     <td>{$v.title}</td>
-                                    <th>{$area[$v['area_id']]['title']|default='-'}</th>
-                                    <td>{$v.number}</td>
-                                    <td>{$v.remark|default='-'}</td>
-                                    <td>{$v.create_time}</td>
+                                    <td>{$v.update_time}</td>
                                     <td>
-                                        <a href="{:U('downLoadQrcode', array('shop_id' => $v['shop_id'], 'id' => $v['id']))}" class="btn btn-success btn-xs" download="{$v.title}.png">下载二维码</a>
                                         <a class="btn btn-info btn-xs edit" data-id="{$v.id}">修改</a>
                                         <a class="btn btn-danger btn-xs delete" data-id="{$v.id}">删除</a>
                                     </td>
@@ -103,38 +94,9 @@
                                         <table class="table-bordered bg-white table-form">
                                             <tbody>
                                                 <tr>
-                                                    <td class="require" width="160">排序</td>
-                                                    <td>
-                                                        <input type="text" name="sort" value="1">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="require">区域</td>
-                                                    <td>
-                                                        <select name="area_id">
-                                                            <option value="">请选择区域</option>
-                                                            <?php foreach($area as $a){ ?>
-                                                            <option value="{$a.id}">{$a.title}</option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="require">桌号</td>
+                                                    <td class="require">名称</td>
                                                     <td>
                                                         <input type="text" name="title">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="require">人数</td>
-                                                    <td>
-                                                        <input type="number" name="number">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="">备注</td>
-                                                    <td>
-                                                        <input type="text" name="remark">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -169,38 +131,9 @@
                                         <table class="table-bordered bg-white table-form">
                                             <tbody>
                                                 <tr>
-                                                    <td class="require" width="160">排序</td>
-                                                    <td>
-                                                        <input type="text" name="sort" value="1">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="require">区域</td>
-                                                    <td>
-                                                        <select name="area_id">
-                                                            <option value="">请选择区域</option>
-                                                            <?php foreach($area as $a){ ?>
-                                                            <option value="{$a.id}">{$a.title}</option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="require">桌号</td>
+                                                    <td class="require">名称</td>
                                                     <td>
                                                         <input type="text" name="title">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="require">人数</td>
-                                                    <td>
-                                                        <input type="number" name="number">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="">备注</td>
-                                                    <td>
-                                                        <input type="text" name="remark">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -221,7 +154,7 @@
         </div>
     </div>
 
-   
+
     <script type="text/javascript">
         $(function () {
             $("#add").click(function () {
@@ -234,17 +167,13 @@
                 var id = $(this).attr('data-id');
                 $(".loading").show();
                 $.ajax({
-                    url: "{:U(findTable)}",
+                    url: "{:U(findTableArea)}",
                     type: 'POST',
                     data: { id: id },
                     success: function (data) {
                         if (data.code == 0) {
-                            $("#edit_card [name='sort']").val(data.data.sort);
                             $("#edit_card [name='title']").val(data.data.title);
-                            $("#edit_card [name='number']").val(data.data.number);
-                            $("#edit_card [name='remark']").val(data.data.remark);
                             $("#edit_card [name='id']").val(data.data.id);
-                            $("#edit_card [name='area_id']").val(data.data.area_id);
                             $("#edit_card").addClass('show');
                         } else {
                             swal("提示", data.msg, "warning");
@@ -254,7 +183,7 @@
                 })
             });
 
-          
+
             $(".delete").click(function () {
                 var id = $(this).attr('data-id');
                 swal({
@@ -268,7 +197,7 @@
                 }, function () {
                     $(".loading").show();
                     $.ajax({
-                        url: "{:U('delTable')}",
+                        url: "{:U('delTableArea')}",
                         type: 'POST',
                         data: { id: id },
                         success: function (data) {
@@ -289,40 +218,18 @@
             $("#add_action").click(function () {
                 var data = {
                     shop_id: $("[name='shop_id']").val(),
-                    sort: $("#add_card [name='sort']").val(),
                     title: $("#add_card [name='title']").val(),
-                    number: $("#add_card [name='number']").val(),
-                    remark: $("#add_card [name='remark']").val(),
-                    area_id: $("#add_card [name='area_id']").val(),
                 };
-                if (data.sort == '') {
-                    swal({ title: "提示", text: "排序不能为空", type: "warning" }, function () {
-                        $("#add_card [name='sort']").focus();
-                    });
-                    return false;
-                }
-                if (data.area_id == '') {
-                    swal({ title: "提示", text: "请选择区域", type: "warning" }, function () {
-
-                    });
-                    return false;
-                }
                 if (data.title == '') {
-                    swal({ title: "提示", text: "桌号不能为空", type: "warning" }, function () {
+                    swal({ title: "提示", text: "名称不能为空", type: "warning" }, function () {
                         $("#add_card [name='title']").focus();
-                    });
-                    return false;
-                }
-                if (data.number == '') {
-                    swal({ title: "提示", text: "人数不能为空", type: "warning" }, function () {
-                        $("#add_card [name='number']").focus();
                     });
                     return false;
                 }
                 $(".loading").show();
                 $.ajax({
                     type: 'POST',
-                    url: "{:U('addTable')}",
+                    url: "{:U('addTableArea')}",
                     data: data,
                     success: function (data) {
                         if (data.code == 0) {
@@ -341,40 +248,18 @@
             $("#edit_action").click(function () {
                 var data = {
                     id: $("#edit_card [name='id']").val(),
-                    sort: $("#edit_card [name='sort']").val(),
                     title: $("#edit_card [name='title']").val(),
-                    number: $("#edit_card [name='number']").val(),
-                    remark: $("#edit_card [name='remark']").val(),
-                    area_id: $("#edit_card [name='area_id']").val(),
                 };
-                if (data.sort == '') {
-                    swal({ title: "提示", text: "排序不能为空", type: "warning" }, function () {
-                        $("#edit_card [name='sort']").focus();
-                    });
-                    return false;
-                }
-                if (data.area_id == '') {
-                    swal({ title: "提示", text: "请选择区域", type: "warning" }, function () {
-                        
-                    });
-                    return false;
-                }
                 if (data.title == '') {
                     swal({ title: "提示", text: "桌号不能为空", type: "warning" }, function () {
                         $("#edit_card [name='title']").focus();
                     });
                     return false;
                 }
-                if (data.number == '') {
-                    swal({ title: "提示", text: "人数不能为空", type: "warning" }, function () {
-                        $("#edit_card [name='number']").focus();
-                    });
-                    return false;
-                }
                 $(".loading").show();
                 $.ajax({
                     type: 'POST',
-                    url: "{:U('updateTable')}",
+                    url: "{:U('updateTableArea')}",
                     data: data,
                     success: function (data) {
                         if (data.code == 0) {

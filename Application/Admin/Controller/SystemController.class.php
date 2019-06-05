@@ -91,6 +91,8 @@ class SystemController extends CommonController{
             $shop['types'] = M('shop_goods_type')->where(['shop_id' => $shop['id']])->order('sort asc, id desc')->select();
         }
         $data = M('print_device')->order('id desc')->where($where)->select();
+        $area = ArrayToolkit::group(M('shop_table_area')->where('')->order('id DESC')->select(), 'shop_id');
+        $this->assign('area', $area);
         $this->assign('data', $data);
         $this->assign('shops', $shops);
         $this->display();
@@ -100,6 +102,7 @@ class SystemController extends CommonController{
     {
         $_POST['create_time'] = date('Y-m-d H:i:s');
         $_POST['goods_type_ids'] = json_encode($_POST['goods_type_ids']);
+        $_POST['area_ids'] = json_encode($_POST['area_ids']);
         M('print_device')->add($_POST);
         $this->ajaxReturn(codeReturn(0));
     }
@@ -114,11 +117,13 @@ class SystemController extends CommonController{
     {
         $data = M('print_device')->where($_POST)->find();
         $data['goods_type_ids'] = json_decode($data['goods_type_ids'], true);
+        $data['area_ids'] = json_decode($data['area_ids'], true) ?? [];
         $this->ajaxReturn(codeReturn(0, $data));
     }
 
     public function editPrint(){
         $_POST['goods_type_ids'] = json_encode($_POST['goods_type_ids']);
+        $_POST['area_ids'] = json_encode($_POST['area_ids']);
         M('print_device')->where(array('id' => $_POST['id']))->save($_POST);
         $this->ajaxReturn(codeReturn(0));
     }
