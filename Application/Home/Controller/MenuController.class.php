@@ -106,7 +106,7 @@ class MenuController extends CommonController
 
     public function getOrder()
     {
-        $orders = M('order')->where(['status' => $_GET['status'], 'type' => $_GET['type']])->order('id DESC')->select();
+        $orders = M('order')->where(['status' => $_GET['status'], 'user_id' => session('user.id'), 'type' => $_GET['type']])->order('id DESC')->select();
         foreach ($orders as &$order) {
             $order['detail'] = json_decode($order['detail'], true);
         }
