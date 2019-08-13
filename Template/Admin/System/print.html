@@ -133,6 +133,15 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td class="require">打印模式</td>
+                                                    <td class="">
+                                                        <select name="mode">
+                                                            <option value="normal">总单</option>
+                                                            <option value="split">一菜一切</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td class="">备注</td>
                                                     <td>
                                                         <input type="text" name="remark">
@@ -206,6 +215,15 @@
                                                     <td class="require">打印区域</td>
                                                     <td class="area_ids">
                                                         
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="require">打印模式</td>
+                                                    <td class="">
+                                                        <select name="mode">
+                                                            <option value="normal">总单</option>
+                                                            <option value="split">一菜一切</option>
+                                                        </select>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -308,6 +326,7 @@
                     title: $("#add_card [name='title']").val(),
                     number: $("#add_card [name='number']").val(),
                     remark: $("#add_card [name='remark']").val(),
+                    mode: $("#add_card [name='mode']").val(),
                     goods_type_ids: [],
                     area_ids: []
                 };
@@ -417,7 +436,8 @@
                             $("#edit_card [name='shop_id']").trigger('change');
                             $("#edit_card [name='id']").val(data.data.id);
                             $("#edit_card [name='number']").val(data.data.number);
-                            $("#edit_card [name='remark']").val(data.data.remark);
+                            $("#edit_card [name='number']").val(data.data.number);
+                            $("#edit_card [name='mode']").val(data.data.mode);
                             $("#edit_card [name='title']").val(data.data.title);
                             data.data.goods_type_ids.forEach(function(item){
                                 $("#edit_card .types [value='"+item+"']").attr('checked', true);
@@ -443,6 +463,7 @@
                     title: $("#edit_card [name='title']").val(),
                     number: $("#edit_card [name='number']").val(),
                     remark: $("#edit_card [name='remark']").val(),
+                    mode: $("#edit_card [name='mode']").val(),
                     goods_type_ids: [],
                     area_ids: []
                 };

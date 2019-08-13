@@ -232,17 +232,28 @@ function printByOrderId($orderId)
 --------------------------------
 @@2                          合计:%s
 下单时间:%s';
-            $gStr = '';
-            $num = 0;
-            foreach ($print['goods'] as $g) {
-                $num = $num + $g['number'];
-                $gStr .= '\r<LR>@@2'.$g['title'].','.$g['number'].'份</LR>';
-            }
 
-            $printStr = sprintf($str, $order['table_number'], $order['order_sn'], $order['people_number'], substr($order['create_time'], 0, 10), $gStr
-        , $num, $order['create_time']);
-            
-            $data = $printClient->index($print['number'], $printStr, time());
+            if ($print['mode'] == 'normal') {
+                $gStr = '';
+                $num = 0;
+                foreach ($print['goods'] as $g) {
+                    $num = $num + $g['number'];
+                    $gStr .= '\r<LR>@@2'.$g['title'].','.$g['number'].'份</LR>';
+                }
+
+                $printStr = sprintf($str, $order['table_number'], $order['order_sn'], $order['people_number'], substr($order['create_time'], 0, 10), $gStr
+            , $num, $order['create_time']);
+                
+                $data = $printClient->index($print['number'], $printStr, time());
+            } elseif ($print['mode'] == 'split') {
+                    foreach ($print['goods'] as $g) {
+                        $gStr = '\r<LR>@@2'.$g['title'].','.$g['number'].'份</LR>';
+                        $printStr = sprintf($str, $order['table_number'], $order['order_sn'], $order['people_number'], substr($order['create_time'], 0, 10), $gStr
+                , $g['number'], $order['create_time']);
+                    
+                        $data = $printClient->index($print['number'], $printStr, time());
+                    }
+            }
         }
     }
 }
